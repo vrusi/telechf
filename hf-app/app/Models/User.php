@@ -18,8 +18,16 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'surname',
         'email',
         'password',
+        'mobile',
+        'sex',
+        'age',
+        'height',
+        'weight',
+        'is_coordinator',
+        'coordinator_id',
     ];
 
     /**
@@ -40,4 +48,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function patients()
+    {
+        return $this->hasMany('App\Models\User');
+    }
 }
