@@ -164,6 +164,7 @@ class MeasurementSeeder extends Seeder
             'decreased_stamina' => true,
             'sleeping_difficulties' => true,
             'triggered_alarm' => true,
+            'checked' => true,
             'created_at' => Carbon::now()->subDays(3),
         ]);
 
@@ -183,7 +184,7 @@ class MeasurementSeeder extends Seeder
             'value' => 121,
             'swellings' => true,
             'sleeping_difficulties' => true,
-            'created_at' => Carbon::now()->subDays(3),
+            'created_at' => Carbon::now()->subDays(10),
         ]);
 
         DB::table('measurements')->insert([
@@ -192,7 +193,7 @@ class MeasurementSeeder extends Seeder
             'value' => 82,
             'swellings' => true,
             'sleeping_difficulties' => true,
-            'created_at' => Carbon::now()->subDays(3),
+            'created_at' => Carbon::now()->subDays(10),
         ]);
 
         DB::table('measurements')->insert([
@@ -201,7 +202,7 @@ class MeasurementSeeder extends Seeder
             'value' => 70,
             'swellings' => true,
             'sleeping_difficulties' => true,
-            'created_at' => Carbon::now()->subDays(3),
+            'created_at' => Carbon::now()->subDays(10),
         ]);
 
         DB::table('measurements')->insert([
@@ -210,7 +211,7 @@ class MeasurementSeeder extends Seeder
             'value' => 96,
             'swellings' => true,
             'sleeping_difficulties' => true,
-            'created_at' => Carbon::now()->subDays(3),
+            'created_at' => Carbon::now()->subDays(10),
         ]);
 
         DB::table('measurements')->insert([
@@ -220,7 +221,8 @@ class MeasurementSeeder extends Seeder
             'swellings' => true,
             'sleeping_difficulties' => true,
             'triggered_alarm' => true,
-            'created_at' => Carbon::now()->subDays(3),
+            'checked' => true,
+            'created_at' => Carbon::now()->subDays(10),
         ]);
 
         // Peter Sharp
@@ -231,7 +233,8 @@ class MeasurementSeeder extends Seeder
             'swellings' => true,
             'decreased_stamina' => true,
             'triggered_alarm' => true,
-            'created_at' => Carbon::now()->subDays(3),
+            'checked' => true,
+            'created_at' => Carbon::now()->subDays(13),
         ]);
 
         DB::table('measurements')->insert([
@@ -241,7 +244,8 @@ class MeasurementSeeder extends Seeder
             'swellings' => true,
             'decreased_stamina' => true,
             'triggered_alarm' => true,
-            'created_at' => Carbon::now()->subDays(3),
+            'checked' => true,
+            'created_at' => Carbon::now()->subDays(13),
         ]);
 
         DB::table('measurements')->insert([
@@ -251,7 +255,8 @@ class MeasurementSeeder extends Seeder
             'swellings' => true,
             'decreased_stamina' => true,
             'triggered_alarm' => true,
-            'created_at' => Carbon::now()->subDays(3),
+            'checked' => true,
+            'created_at' => Carbon::now()->subDays(13),
         ]);
 
         DB::table('measurements')->insert([
@@ -260,7 +265,7 @@ class MeasurementSeeder extends Seeder
             'value' => 98,
             'swellings' => true,
             'decreased_stamina' => true,
-            'created_at' => Carbon::now()->subDays(3),
+            'created_at' => Carbon::now()->subDays(13),
         ]);
 
         DB::table('measurements')->insert([
@@ -269,7 +274,7 @@ class MeasurementSeeder extends Seeder
             'value' => 84.5,
             'swellings' => true,
             'decreased_stamina' => true,
-            'created_at' => Carbon::now()->subDays(3),
+            'created_at' => Carbon::now()->subDays(13),
         ]);
 
         // Adam White
@@ -281,7 +286,8 @@ class MeasurementSeeder extends Seeder
             'decreased_stamina' => true,
             'sleeping_difficulties' => true,
             'triggered_alarm' => true,
-            'created_at' => Carbon::now()->subDays(3),
+            'checked' => true,
+            'created_at' => Carbon::now()->subDays(15),
         ]);
 
         DB::table('measurements')->insert([
@@ -292,7 +298,8 @@ class MeasurementSeeder extends Seeder
             'decreased_stamina' => true,
             'sleeping_difficulties' => true,
             'triggered_alarm' => true,
-            'created_at' => Carbon::now()->subDays(3),
+            'checked' => true,
+            'created_at' => Carbon::now()->subDays(15),
         ]);
 
         DB::table('measurements')->insert([
@@ -302,7 +309,7 @@ class MeasurementSeeder extends Seeder
             'swellings' => true,
             'decreased_stamina' => true,
             'sleeping_difficulties' => true,
-            'created_at' => Carbon::now()->subDays(3),
+            'created_at' => Carbon::now()->subDays(15),
         ]);
 
         DB::table('measurements')->insert([
@@ -312,7 +319,7 @@ class MeasurementSeeder extends Seeder
             'swellings' => true,
             'decreased_stamina' => true,
             'sleeping_difficulties' => true,
-            'created_at' => Carbon::now()->subDays(3),
+            'created_at' => Carbon::now()->subDays(15),
         ]);
 
         DB::table('measurements')->insert([
@@ -322,7 +329,7 @@ class MeasurementSeeder extends Seeder
             'swellings' => true,
             'decreased_stamina' => true,
             'sleeping_difficulties' => true,
-            'created_at' => Carbon::now()->subDays(3),
+            'created_at' => Carbon::now()->subDays(15),
         ]);
     }
 }
