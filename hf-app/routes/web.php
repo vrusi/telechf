@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PatientController;
+use App\Http\Controllers\ThresholdController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +16,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [DashboardController::class, 'index']);
+Route::get('/patients', [PatientController::class, 'index']);
+Route::get('/thresholds', [ThresholdController::class, 'index']);
+
+
+
