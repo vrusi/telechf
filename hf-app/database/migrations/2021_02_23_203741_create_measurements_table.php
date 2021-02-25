@@ -17,11 +17,12 @@ class CreateMeasurementsTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->foreignId('parameter_id')->constrained();
-            $table->integer('value');
+            $table->float('value');
             $table->boolean('swellings')->default(false);
             $table->boolean('decreased_stamina')->default(false);
             $table->boolean('sleeping_difficulties')->default(false);
             $table->boolean('triggered_alarm')->default(false);
+            $table->boolean('checked')->default(false);
             $table->timestamps();
         });
     }

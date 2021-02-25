@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             ContactSeeder::class,
             UserContactSeeder::class,
             MessageSeeder::class,
+            MeasurementSeeder::class,
         ]);
     }
 }
