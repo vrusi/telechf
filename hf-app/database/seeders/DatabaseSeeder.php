@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             UserParameterSeeder::class,
             ContactSeeder::class,
             UserContactSeeder::class,
+            MessageSeeder::class,
         ]);
     }
 }
