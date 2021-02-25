@@ -21,6 +21,8 @@ class DatabaseSeeder extends Seeder
             UserDrugSeeder::class,
             ParameterSeeder::class,
             UserParameterSeeder::class,
+            ContactSeeder::class,
+            UserContactSeeder::class,
         ]);
     }
 }

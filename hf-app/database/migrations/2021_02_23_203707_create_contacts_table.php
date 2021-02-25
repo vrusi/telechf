@@ -16,15 +16,17 @@ class CreateContactsTable extends Migration
     {
         Schema::create('contacts', function (Blueprint $table) {
             $table->id();
+            $table->string('titles_prefix')->nullable();
             $table->string('name');
             $table->string('surname');
+            $table->string('titles_postfix')->nullable();
             $table->string('email');
             $table->string('mobile');
             $table->enum('type', ['general practitioner', 'cardiologist']);
             $table->timestamps();
         });
 
-        DB::statement('ALTER TABLE contacts ADD CONSTRAINT chk_contact_info CHECK ((email IS NOT NULL AND mobile IS NULL) OR (email IS NULL AND mobile IS NOT NULL))');
+        DB::statement('ALTER TABLE contacts ADD CONSTRAINT chk_contact_info CHECK ((email IS NOT NULL AND mobile IS NULL) OR (email IS NULL AND mobile IS NOT NULL) OR (email IS NOT NULL AND mobile IS NOT NULL))');
     }
 
     /**
