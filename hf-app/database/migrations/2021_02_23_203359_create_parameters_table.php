@@ -16,12 +16,12 @@ class CreateParametersTable extends Migration
         Schema::create('parameters', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->string('unit');
+            $table->string('unit')->nullable();
             $table->integer('measurement_times')->nullable();
             $table->enum('measurement_span', ['hour', 'day', 'week', 'month'])->nullable();
             $table->integer('threshold_min')->nullable();
             $table->integer('threshold_max')->nullable();
-            $table->string('instructions')->nullable();
+            $table->text('instructions')->nullable();
             $table->timestamps();
         });
     }

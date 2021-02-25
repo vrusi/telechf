@@ -19,6 +19,8 @@ class DatabaseSeeder extends Seeder
             UserConditionSeeder::class,
             DrugSeeder::class,
             UserDrugSeeder::class,
+            ParameterSeeder::class,
+            UserParameterSeeder::class,
         ]);
     }
 }
