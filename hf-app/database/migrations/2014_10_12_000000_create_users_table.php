@@ -18,14 +18,14 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('surname');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->string('mobile')->unique()->nullable();
+            $table->boolean('is_coordinator')->default(false);
             $table->string('password');
-            $table->string('mobile')->nullable();
             $table->enum('sex', ['male', 'female'])->nullable();
             $table->integer('age')->nullable();
             $table->integer('height')->nullable();
             $table->integer('weight')->nullable();
-            $table->boolean('is_coordinator')->default(false);
+            $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
