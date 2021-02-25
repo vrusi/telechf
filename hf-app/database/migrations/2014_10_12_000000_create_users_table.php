@@ -21,10 +21,10 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('mobile')->nullable();
-            $table->enum('sex', ['male', 'female']);
-            $table->integer('age');
-            $table->integer('height');
-            $table->integer('weight');
+            $table->enum('sex', ['male', 'female'])->nullable();
+            $table->integer('age')->nullable();
+            $table->integer('height')->nullable();
+            $table->integer('weight')->nullable();
             $table->boolean('is_coordinator')->default(false);
             $table->rememberToken();
             $table->timestamps();
