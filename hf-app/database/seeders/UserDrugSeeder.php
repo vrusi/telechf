@@ -15,10 +15,10 @@ class UserDrugSeeder extends Seeder
     public function run()
     {
         /* Oliver Reynolds takes has all 3 presciptions */
-        for ($i = 1; $i <= 3; $i++) {
+        for ($drug_id = 1; $drug_id <= 3; $drug_id++) {
             DB::table('user_drugs')->insert([
                 'user_id' => 2,
-                'drug_id' => $i,
+                'drug_id' => $drug_id,
             ]);
         }
 
