@@ -34,6 +34,7 @@ class UserSeeder extends Seeder
             'age' => 67,
             'height' => 182,
             'weight' => 79,
+            'coordinator_id' => 1,
         ]);
 
         DB::table('users')->insert([
@@ -46,6 +47,7 @@ class UserSeeder extends Seeder
             'age' => 74,
             'height' => 175,
             'weight' => 70,
+            'coordinator_id' => 1,
         ]);
 
         DB::table('users')->insert([
@@ -58,6 +60,7 @@ class UserSeeder extends Seeder
             'age' => 68,
             'height' => 168,
             'weight' => 82,
+            'coordinator_id' => 1,
         ]);
 
         DB::table('users')->insert([
@@ -70,6 +73,7 @@ class UserSeeder extends Seeder
             'age' => 66,
             'height' => 172,
             'weight' => 72,
+            'coordinator_id' => 1,
         ]);
 
         DB::table('users')->insert([
@@ -82,6 +86,7 @@ class UserSeeder extends Seeder
             'age' => 70,
             'height' => 177,
             'weight' => 79,
+            'coordinator_id' => 1,
         ]);
 
         DB::table('users')->insert([
@@ -94,6 +99,7 @@ class UserSeeder extends Seeder
             'age' => 73,
             'height' => 171,
             'weight' => 55,
+            'coordinator_id' => 1,
         ]);
 
         DB::table('users')->insert([
@@ -106,6 +112,7 @@ class UserSeeder extends Seeder
             'age' => 68,
             'height' => 179,
             'weight' => 84,
+            'coordinator_id' => 1,
         ]);
 
         DB::table('users')->insert([
@@ -118,6 +125,7 @@ class UserSeeder extends Seeder
             'age' => 74,
             'height' => 165,
             'weight' => 75,
+            'coordinator_id' => 1,
         ]);
 
         DB::table('users')->insert([
@@ -130,6 +138,7 @@ class UserSeeder extends Seeder
             'age' => 68,
             'height' => 177,
             'weight' => 89,
+            'coordinator_id' => 1,
         ]);
     }
 }
