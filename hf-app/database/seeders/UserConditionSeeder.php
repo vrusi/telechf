@@ -15,8 +15,8 @@ class UserConditionSeeder extends Seeder
      */
     public function run()
     {
-        for ($i = 1; $i <= 10; $i++) {
-            /* everyone has congrestive heart failure */
+        for ($i = 2; $i <= 10; $i++) {
+            /* everyone has congestive heart failure */
             DB::table('user_conditions')->insert([
                 'user_id' => $i,
                 'condition_id' => 1,
@@ -26,7 +26,7 @@ class UserConditionSeeder extends Seeder
             if (rand() % 100 <= 25) {
                 DB::table('user_conditions')->insert([
                     'user_id' => $i,
-                    'condition_id' => rand(2,7),
+                    'condition_id' => rand(2,6),
                 ]);
             }
         }

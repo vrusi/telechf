@@ -17,6 +17,8 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             ConditionSeeder::class,
             UserConditionSeeder::class,
+            DrugSeeder::class,
+            UserDrugSeeder::class,
         ]);
     }
 }

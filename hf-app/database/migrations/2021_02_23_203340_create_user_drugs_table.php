@@ -17,7 +17,7 @@ class CreateUserDrugsTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained();
             $table->foreignId('drug_id')->constrained();
-            $table->integer('dosage_volume')->nullable();
+            $table->float('dosage_volume')->nullable();
             $table->string('dosage_unit')->nullable();
             $table->integer('dosage_times')->nullable();
             $table->enum('dosage_span', ['hour', 'day', 'week', 'month'])->nullable();

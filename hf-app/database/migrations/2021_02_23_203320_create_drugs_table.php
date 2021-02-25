@@ -16,7 +16,7 @@ class CreateDrugsTable extends Migration
         Schema::create('drugs', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->integer('dosage_volume')->nullable();
+            $table->float('dosage_volume')->nullable();
             $table->string('dosage_unit')->nullable();
             $table->integer('dosage_times')->nullable();
             $table->enum('dosage_span', ['hour', 'day', 'week', 'month'])->nullable();
