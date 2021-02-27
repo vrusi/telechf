@@ -23,8 +23,8 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->enum('sex', ['male', 'female'])->nullable();
             $table->integer('age')->nullable();
-            $table->integer('height')->nullable();
-            $table->integer('weight')->nullable();
+            $table->float('height')->nullable();
+            $table->float('weight')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();

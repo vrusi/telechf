@@ -19,8 +19,8 @@ class CreateParametersTable extends Migration
             $table->string('unit')->nullable();
             $table->integer('measurement_times')->nullable();
             $table->enum('measurement_span', ['hour', 'day', 'week', 'month'])->nullable();
-            $table->integer('threshold_min')->nullable();
-            $table->integer('threshold_max')->nullable();
+            $table->float('threshold_min')->nullable();
+            $table->float('threshold_max')->nullable();
             $table->text('instructions')->nullable();
             $table->timestamps();
         });
