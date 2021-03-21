@@ -21,4 +21,9 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-require __DIR__.'/auth.php';
+Route::resource("/measurements", 'App\Http\Controllers\Patient\MeasurementController');
+
+
+
+
+require __DIR__ . '/auth.php';

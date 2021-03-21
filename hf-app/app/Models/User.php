@@ -49,8 +49,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function patients()
+    public function measurements()
     {
-        return $this->hasMany('App\Models\User');
+        return $this->hasMany('App\Models\Measurement');
     }
 }
