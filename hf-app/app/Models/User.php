@@ -53,4 +53,9 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\Measurement');
     }
+
+    public function parameters()
+    {
+        return $this->belongsToMany(Parameter::class, 'user_parameters');
+    }
 }

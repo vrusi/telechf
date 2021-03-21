@@ -25,9 +25,11 @@ class MeasurementController extends Controller
             $date = Carbon::createFromFormat('Y-m-d', $request->input('date'));
         }
 
-        $parameters = Parameter::all()->toArray();
+        $user = Auth::user();
 
-        $measurements = Measurement::where('user_id', Auth::user()->id)->whereDate('created_at', $date)->get()->toArray();
+        $parameters = $user->parameters->toArray();
+
+        $measurements = Measurement::where('user_id', $user->id)->whereDate('created_at', $date)->get()->toArray();
 
         $values = array_map(function ($parameter) use ($measurements) {
             $value = null;
@@ -74,7 +76,45 @@ class MeasurementController extends Controller
      */
     public function create()
     {
-        //
+        $today = Carbon::now();
+        $startOfWeek = $today->startOfWeek();
+        $endOfWeek = $today->endOfWeek();
+
+        $user = Auth::user();
+        $parameters = $user->parameters;
+
+        $takeToday = [];
+        $takeThisWeek = [];
+
+        foreach ($parameters as $parameter) {
+            if ($parameter['measurement_span'] == 'week') {
+                $count = Measurement::where('user_id', $user->id)
+                    ->where('parameter_id', $parameter->id)
+                    ->whereBetween('created_at', [$startOfWeek, $endOfWeek])->get()->count();
+                if ($count < $parameter->measurement_times) {
+                    array_push($takeThisWeek, $parameter);
+                }
+            } else if ($parameter['measurement_span'] == 'day') {
+                $count = Measurement::where('user_id', $user->id)
+                    ->where('parameter_id', $parameter->id)
+                    ->whereDate('created_at', $today)->get()->count();
+
+                if ($count < $parameter->measurement_times) {
+                    array_push($takeToday, $parameter);
+                }
+            }
+        }
+
+        $extra = array_udiff($parameters->toArray(), $takeToday, function ($a, $b) {
+            return $a['id'] - $b['id'];
+        });
+
+        $extra = array_udiff($extra, $takeThisWeek, function ($a, $b) {
+            return $a['id'] - $b['id'];
+        });
+
+        $results = ['takeToday' => $takeToday, 'takeThisWeek' => $takeThisWeek, 'extra' => $extra];
+        return view('patient.measurements.create', $results);
     }
 
     /**
