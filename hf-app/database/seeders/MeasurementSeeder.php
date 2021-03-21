@@ -25,9 +25,10 @@ class MeasurementSeeder extends Seeder
             'user_id' => 2,
             'parameter_id' => 1,
             'value' => 123,
-            'swellings' => true,
-            'decreased_stamina' => true,
-            'sleeping_difficulties' => true,
+            'swellings' => 5,
+            'exercise_tolerance' => 5,
+            'dyspnoea' => 5,
+            'triggered_safety_alarm' => true,
             'created_at' => Carbon::now()->subMinutes(15),
         ]);
 
@@ -36,9 +37,9 @@ class MeasurementSeeder extends Seeder
             'user_id' => 2,
             'parameter_id' => 2,
             'value' => 82,
-            'swellings' => true,
-            'decreased_stamina' => true,
-            'sleeping_difficulties' => true,
+            'swellings' => 5,
+            'exercise_tolerance' => 5,
+            'dyspnoea' => 5,
             'created_at' => Carbon::now()->subMinutes(10),
         ]);
 
@@ -46,11 +47,11 @@ class MeasurementSeeder extends Seeder
         DB::table('measurements')->insert([
             'user_id' => 2,
             'parameter_id' => 3,
-            'value' => 120,
-            'swellings' => true,
-            'decreased_stamina' => true,
-            'sleeping_difficulties' => true,
-            'triggered_alarm' => true,
+            'value' => 100,
+            'swellings' => 5,
+            'exercise_tolerance' => 5,
+            'dyspnoea' => 5,
+            'triggered_therapeutic_alarm' => true,
             'created_at' => Carbon::now()->subMinutes(5),
         ]);
 
@@ -59,10 +60,9 @@ class MeasurementSeeder extends Seeder
             'user_id' => 2,
             'parameter_id' => 4,
             'value' => 98,
-            'swellings' => true,
-            'decreased_stamina' => true,
-            'sleeping_difficulties' => true,
-
+            'swellings' => 5,
+            'exercise_tolerance' => 5,
+            'dyspnoea' => 5,
             'created_at' => Carbon::now()->subMinutes(20),
         ]);
 
@@ -71,9 +71,9 @@ class MeasurementSeeder extends Seeder
             'user_id' => 2,
             'parameter_id' => 5,
             'value' => 79.3,
-            'swellings' => true,
-            'decreased_stamina' => true,
-            'sleeping_difficulties' => true,
+            'swellings' => 5,
+            'exercise_tolerance' => 5,
+            'dyspnoea' => 5,
             'created_at' => Carbon::now()->subMinutes(25),
         ]);
 
@@ -134,8 +134,8 @@ class MeasurementSeeder extends Seeder
             'user_id' => 4,
             'parameter_id' => 1,
             'value' => 120,
-            'decreased_stamina' => true,
-            'sleeping_difficulties' => true,
+            'exercise_tolerance' => 3,
+            'dyspnoea' => 3,
             'created_at' => Carbon::now()->subDays(3),
         ]);
 
@@ -143,8 +143,8 @@ class MeasurementSeeder extends Seeder
             'user_id' => 4,
             'parameter_id' => 2,
             'value' => 81,
-            'decreased_stamina' => true,
-            'sleeping_difficulties' => true,
+            'exercise_tolerance' => 3,
+            'dyspnoea' => 3,
             'created_at' => Carbon::now()->subDays(3),
         ]);
 
@@ -152,8 +152,8 @@ class MeasurementSeeder extends Seeder
             'user_id' => 4,
             'parameter_id' => 3,
             'value' => 62,
-            'decreased_stamina' => true,
-            'sleeping_difficulties' => true,
+            'exercise_tolerance' => 3,
+            'dyspnoea' => 3,
             'created_at' => Carbon::now()->subDays(3),
         ]);
 
@@ -161,9 +161,9 @@ class MeasurementSeeder extends Seeder
             'user_id' => 4,
             'parameter_id' => 4,
             'value' => 76,
-            'decreased_stamina' => true,
-            'sleeping_difficulties' => true,
-            'triggered_alarm' => true,
+            'exercise_tolerance' => 5,
+            'dyspnoea' => 5,
+            'triggered_therapeutic_alarm' => true,
             'checked' => true,
             'created_at' => Carbon::now()->subDays(3),
         ]);
@@ -172,8 +172,8 @@ class MeasurementSeeder extends Seeder
             'user_id' => 4,
             'parameter_id' => 5,
             'value' => 81.9,
-            'decreased_stamina' => true,
-            'sleeping_difficulties' => true,
+            'exercise_tolerance' => 3,
+            'dyspnoea' => 3,
             'created_at' => Carbon::now()->subDays(3),
         ]);
 
@@ -182,8 +182,8 @@ class MeasurementSeeder extends Seeder
             'user_id' => 3,
             'parameter_id' => 1,
             'value' => 121,
-            'swellings' => true,
-            'sleeping_difficulties' => true,
+            'swellings' => 5,
+            'dyspnoea' => 5,
             'created_at' => Carbon::now()->subDays(10),
         ]);
 
@@ -191,8 +191,8 @@ class MeasurementSeeder extends Seeder
             'user_id' => 3,
             'parameter_id' => 2,
             'value' => 82,
-            'swellings' => true,
-            'sleeping_difficulties' => true,
+            'swellings' => 5,
+            'dyspnoea' => 5,
             'created_at' => Carbon::now()->subDays(10),
         ]);
 
@@ -200,8 +200,8 @@ class MeasurementSeeder extends Seeder
             'user_id' => 3,
             'parameter_id' => 3,
             'value' => 70,
-            'swellings' => true,
-            'sleeping_difficulties' => true,
+            'swellings' => 5,
+            'dyspnoea' => 5,
             'created_at' => Carbon::now()->subDays(10),
         ]);
 
@@ -209,8 +209,8 @@ class MeasurementSeeder extends Seeder
             'user_id' => 3,
             'parameter_id' => 4,
             'value' => 96,
-            'swellings' => true,
-            'sleeping_difficulties' => true,
+            'swellings' => 5,
+            'dyspnoea' => 5,
             'created_at' => Carbon::now()->subDays(10),
         ]);
 
@@ -218,9 +218,9 @@ class MeasurementSeeder extends Seeder
             'user_id' => 3,
             'parameter_id' => 5,
             'value' => 73,
-            'swellings' => true,
-            'sleeping_difficulties' => true,
-            'triggered_alarm' => true,
+            'swellings' => 5,
+            'dyspnoea' => 5,
+            'triggered_therapeutic_alarm' => true,
             'checked' => true,
             'created_at' => Carbon::now()->subDays(10),
         ]);
@@ -230,9 +230,9 @@ class MeasurementSeeder extends Seeder
             'user_id' => 8,
             'parameter_id' => 1,
             'value' => 145,
-            'swellings' => true,
-            'decreased_stamina' => true,
-            'triggered_alarm' => true,
+            'swellings' => 5,
+            'exercise_tolerance' => 5,
+            'triggered_therapeutic_alarm' => true,
             'checked' => true,
             'created_at' => Carbon::now()->subDays(13),
         ]);
@@ -241,9 +241,9 @@ class MeasurementSeeder extends Seeder
             'user_id' => 8,
             'parameter_id' => 2,
             'value' => 95,
-            'swellings' => true,
-            'decreased_stamina' => true,
-            'triggered_alarm' => true,
+            'swellings' => 5,
+            'exercise_tolerance' => 5,
+            'triggered_therapeutic_alarm' => true,
             'checked' => true,
             'created_at' => Carbon::now()->subDays(13),
         ]);
@@ -252,9 +252,9 @@ class MeasurementSeeder extends Seeder
             'user_id' => 8,
             'parameter_id' => 3,
             'value' => 90,
-            'swellings' => true,
-            'decreased_stamina' => true,
-            'triggered_alarm' => true,
+            'swellings' => 5,
+            'exercise_tolerance' => 5,
+            'triggered_therapeutic_alarm' => true,
             'checked' => true,
             'created_at' => Carbon::now()->subDays(13),
         ]);
@@ -263,8 +263,8 @@ class MeasurementSeeder extends Seeder
             'user_id' => 8,
             'parameter_id' => 4,
             'value' => 98,
-            'swellings' => true,
-            'decreased_stamina' => true,
+            'swellings' => 5,
+            'exercise_tolerance' => 5,
             'created_at' => Carbon::now()->subDays(13),
         ]);
 
@@ -272,8 +272,8 @@ class MeasurementSeeder extends Seeder
             'user_id' => 8,
             'parameter_id' => 5,
             'value' => 84.5,
-            'swellings' => true,
-            'decreased_stamina' => true,
+            'swellings' => 5,
+            'exercise_tolerance' => 5,
             'created_at' => Carbon::now()->subDays(13),
         ]);
 
@@ -282,10 +282,10 @@ class MeasurementSeeder extends Seeder
             'user_id' => 10,
             'parameter_id' => 1,
             'value' => 115,
-            'swellings' => true,
-            'decreased_stamina' => true,
-            'sleeping_difficulties' => true,
-            'triggered_alarm' => true,
+            'swellings' => 4,
+            'exercise_tolerance' => 4,
+            'dyspnoea' => 5,
+            'triggered_therapeutic_alarm' => true,
             'checked' => true,
             'created_at' => Carbon::now()->subDays(15),
         ]);
@@ -294,10 +294,10 @@ class MeasurementSeeder extends Seeder
             'user_id' => 10,
             'parameter_id' => 2,
             'value' => 75,
-            'swellings' => true,
-            'decreased_stamina' => true,
-            'sleeping_difficulties' => true,
-            'triggered_alarm' => true,
+            'swellings' => 4,
+            'exercise_tolerance' => 4,
+            'dyspnoea' => 5,
+            'triggered_therapeutic_alarm' => true,
             'checked' => true,
             'created_at' => Carbon::now()->subDays(15),
         ]);
@@ -306,9 +306,9 @@ class MeasurementSeeder extends Seeder
             'user_id' => 10,
             'parameter_id' => 3,
             'value' => 75,
-            'swellings' => true,
-            'decreased_stamina' => true,
-            'sleeping_difficulties' => true,
+            'swellings' => 4,
+            'exercise_tolerance' => 4,
+            'dyspnoea' => 4,
             'created_at' => Carbon::now()->subDays(15),
         ]);
 
@@ -316,9 +316,9 @@ class MeasurementSeeder extends Seeder
             'user_id' => 10,
             'parameter_id' => 4,
             'value' => 95,
-            'swellings' => true,
-            'decreased_stamina' => true,
-            'sleeping_difficulties' => true,
+            'swellings' => 4,
+            'exercise_tolerance' => 4,
+            'dyspnoea' => 4,
             'created_at' => Carbon::now()->subDays(15),
         ]);
 
@@ -326,9 +326,9 @@ class MeasurementSeeder extends Seeder
             'user_id' => 10,
             'parameter_id' => 5,
             'value' => 88.7,
-            'swellings' => true,
-            'decreased_stamina' => true,
-            'sleeping_difficulties' => true,
+            'swellings' => 4,
+            'exercise_tolerance' => 4,
+            'dyspnoea' => 4,
             'created_at' => Carbon::now()->subDays(15),
         ]);
     }

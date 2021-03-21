@@ -18,13 +18,17 @@ class CreateMeasurementsTable extends Migration
             $table->foreignId('user_id')->constrained();
             $table->foreignId('parameter_id')->constrained();
             $table->float('value');
-            $table->boolean('swellings')->default(false);
-            $table->boolean('decreased_stamina')->default(false);
-            $table->boolean('sleeping_difficulties')->default(false);
-            $table->boolean('triggered_alarm')->default(false);
+            $table->integer('swellings')->default(1);
+            $table->integer('exercise_tolerance')->default(1);
+            $table->integer('dyspnoea')->default(1);
+            $table->boolean('triggered_safety_alarm')->default(false);
+            $table->boolean('triggered_therapeutic_alarm')->default(false);
             $table->boolean('checked')->default(false);
             $table->timestamps();
         });
+
+        DB::statement('ALTER TABLE measurements ADD CONSTRAINT chk_alarm_type CHECK ((triggered_safety_alarm IS NOT NULL AND triggered_therapeutic_alarm IS NULL) OR (triggered_safety_alarm IS NULL AND triggered_therapeutic_alarm IS NOT NULL) OR (triggered_safety_alarm IS NOT NULL AND triggered_therapeutic_alarm IS NOT NULL))');
+
     }
 
     /**
