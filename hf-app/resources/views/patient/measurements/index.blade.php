@@ -39,7 +39,7 @@
 
                 <div class="p-6 bg-white border-b border-gray-200">
                     <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                        <a href="{{ url('/measurements/create') }}" class="bag-link">
+                        <a href="{{ url('/measurements/create') }}">
                             New measurement
                         </a>
                     </button>

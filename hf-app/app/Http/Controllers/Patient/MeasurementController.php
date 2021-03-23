@@ -172,4 +172,10 @@ class MeasurementController extends Controller
     {
         //
     }
+
+    public function measurementForm(Request $request)
+    {
+        $parameter = Parameter::find($request->route('parameterId'));
+        return view('patient.measurements.form', ['parameter' => $parameter]);
+    }
 }
