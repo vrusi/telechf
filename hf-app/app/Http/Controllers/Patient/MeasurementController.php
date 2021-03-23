@@ -125,7 +125,28 @@ class MeasurementController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $now = Carbon::now();
+        $validated = $request->validate([
+            'parameter_id' => 'required|exists:parameters,id',
+            'value' => 'required|numeric',
+            'swellings' => 'required|integer|between:1,5',
+            'exercise_tolerance' => 'required|integer|between:1,5',
+            'dyspnoea' => 'required|integer|between:1,5'
+        ]);
+
+        Measurement::create([
+            'user_id' => Auth::user()->id,
+            'parameter_id' => $validated['parameter_id'],
+            'value' => $validated['value'],
+            'swellings' => $validated['swellings'],
+            'exercise_tolerance' => $validated['exercise_tolerance'],
+            'dyspnoea' => $validated['dyspnoea'],
+            // TODO
+            'triggered_safety_alarm' => false,
+            'triggered_therapeutic_alarm' => false,
+        ]);
+
+        return redirect('/measurements');
     }
 
     /**

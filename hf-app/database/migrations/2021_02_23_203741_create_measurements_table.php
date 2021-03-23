@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class CreateMeasurementsTable extends Migration
@@ -27,8 +28,7 @@ class CreateMeasurementsTable extends Migration
             $table->timestamps();
         });
 
-        DB::statement('ALTER TABLE measurements ADD CONSTRAINT chk_alarm_type CHECK ((triggered_safety_alarm IS NOT NULL AND triggered_therapeutic_alarm IS NULL) OR (triggered_safety_alarm IS NULL AND triggered_therapeutic_alarm IS NOT NULL) OR (triggered_safety_alarm IS NOT NULL AND triggered_therapeutic_alarm IS NOT NULL))');
-
+        // DB::statement('ALTER TABLE measurements ADD CONSTRAINT chk_alarm_type CHECK ((triggered_safety_alarm IS NOT NULL AND triggered_therapeutic_alarm IS NULL) OR (triggered_safety_alarm IS NULL AND triggered_therapeutic_alarm IS NOT NULL))');
     }
 
     /**
