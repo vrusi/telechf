@@ -64,6 +64,7 @@ class ParameterSeeder extends Seeder
             'name' => 'ecg',
             'measurement_times' => '1',
             'measurement_span' => 'week',
+            'unit' => 'mV'
         ]);
     }
 }
