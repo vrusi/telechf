@@ -53,7 +53,7 @@
                                             {{$date}}
                                         </td>
                                         @foreach($day as $parameter)
-                                        <td style="background: #ffd1d1">
+                                        <td>
                                             {{$parameter['value'] ?? '--' }}
                                         </td>
                                         @endforeach

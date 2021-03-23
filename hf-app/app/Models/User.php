@@ -58,4 +58,9 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Parameter::class, 'user_parameters');
     }
+
+    public function contacts() 
+    {
+        return $this->belongsToMany(Contact::class, 'user_contacts');
+    }
 }

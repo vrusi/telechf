@@ -18,9 +18,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::resource('/measurements', 'App\Http\Controllers\Patient\MeasurementController')->middleware(['auth']);
 Route::get('/dashboard', 'App\Http\Controllers\Patient\DashboardController@index')->middleware(['auth'])->name('dashboard');
+
+Route::resource('/measurements', 'App\Http\Controllers\Patient\MeasurementController')->middleware(['auth']);
 Route::get('/measurements/create/{parameterId}', 'App\Http\Controllers\Patient\MeasurementController@measurementForm')->middleware(['auth']);
+
+Route::resource('/contacts', 'App\Http\Controllers\Patient\ContactController')->middleware(['auth']);
 
 
 require __DIR__ . '/auth.php';
