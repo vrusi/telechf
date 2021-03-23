@@ -1,5 +1,6 @@
 <?php
 
+use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,12 +18,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
-
 Route::resource('/measurements', 'App\Http\Controllers\Patient\MeasurementController')->middleware(['auth']);
-
+Route::get('/dashboard', 'App\Http\Controllers\Patient\DashboardController@index')->middleware(['auth'])->name('dashboard');
 Route::get('/measurements/create/{parameterId}', 'App\Http\Controllers\Patient\MeasurementController@measurementForm')->middleware(['auth']);
 
 
