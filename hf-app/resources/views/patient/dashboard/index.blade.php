@@ -35,15 +35,12 @@
                                             {{$parameter['name']}}
                                         </th>
                                         @endforeach
-
                                         <th>
                                             Swellings
                                         </th>
-
                                         <th>
                                             Exercise Tolerance
                                         </th>
-
                                         <th>
                                             Nocturnal Dyspnoea
                                         </th>
@@ -56,13 +53,10 @@
                                             {{$date}}
                                         </td>
                                         @foreach($day as $parameter)
-
-                                        <td>
+                                        <td style="background: #ffd1d1">
                                             {{$parameter['value'] ?? '--' }}
                                         </td>
-
                                         @endforeach
-
                                     </tr>
                                     @endforeach
                                 </tbody>
@@ -75,10 +69,5 @@
         </div>
     </div>
 
-    <script>
-        $(document).ready(function() {
-            $('#table').DataTable();
-        });
 
-    </script>
 </x-app-layout>

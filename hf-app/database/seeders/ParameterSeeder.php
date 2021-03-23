@@ -15,7 +15,7 @@ class ParameterSeeder extends Seeder
     public function run()
     {
         DB::table('parameters')->insert([
-            'name' => 'systolic blood pressure',
+            'name' => 'Systolic Blood Pressure',
             'unit' => 'mmHg',
             'measurement_times' => '3',
             'measurement_span' => 'week',
@@ -24,7 +24,7 @@ class ParameterSeeder extends Seeder
         ]);
 
         DB::table('parameters')->insert([
-            'name' => 'diastolic blood pressure',
+            'name' => 'Diastolic Blood Pressure',
             'unit' => 'mmHg',
             'measurement_times' => '3',
             'measurement_span' => 'week',
@@ -33,7 +33,7 @@ class ParameterSeeder extends Seeder
         ]);
 
         DB::table('parameters')->insert([
-            'name' => 'heart rate',
+            'name' => 'Heart Rate',
             'unit' => 'bps',
             'measurement_times' => '3',
             'measurement_span' => 'week',
@@ -43,7 +43,7 @@ class ParameterSeeder extends Seeder
         ]);
 
         DB::table('parameters')->insert([
-            'name' => 'spo2',
+            'name' => 'SpO2',
             'unit' => '%',
             'measurement_times' => '1',
             'measurement_span' => 'week',
@@ -52,7 +52,7 @@ class ParameterSeeder extends Seeder
         ]);
 
         DB::table('parameters')->insert([
-            'name' => 'weight',
+            'name' => 'Weight',
             'unit' => 'kg',
             'measurement_times' => '1',
             'measurement_span' => 'day',
@@ -61,7 +61,7 @@ class ParameterSeeder extends Seeder
         ]);
 
         DB::table('parameters')->insert([
-            'name' => 'ecg',
+            'name' => 'ECG',
             'measurement_times' => '1',
             'measurement_span' => 'week',
             'unit' => 'mV'

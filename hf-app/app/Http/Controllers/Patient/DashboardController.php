@@ -17,7 +17,7 @@ class DashboardController extends Controller
         $parameters = $user->parameters->toArray();
 
         $measurementsGrouped = Measurement::where('user_id', $user->id)->orderBy('created_at', 'desc')->get()->groupBy(function ($measurement) {
-            return $measurement->created_at->format('Y-m-d');
+            return $measurement->created_at->format('d M');
         })->toArray();
 
         $days = array_map(function ($measurementsPerDay) use ($parameters) {
