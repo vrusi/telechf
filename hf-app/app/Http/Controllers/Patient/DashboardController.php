@@ -54,6 +54,6 @@ class DashboardController extends Controller
             return array_merge($values, $conditions);
         }, $measurementsGrouped);
 
-        return view('patient.dashboard.index', ['summary' => $days]);
+        return view('patient.dashboard.index', ['summary' => $days, 'parameters' => $parameters]);
     }
 }
