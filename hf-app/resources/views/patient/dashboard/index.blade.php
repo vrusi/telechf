@@ -4,15 +4,21 @@
 <div class="container">
     <div class="py-12" x-data="{ tab: 'alarms' }">
 
+        <ul class="nav nav-tabs">
+            <div @click="tab='alarms'">
+                <li class="nav-item">
+                    <a :class="{'active': tab == 'alarms'}" class="nav-link active" href="#">Alarms</a>
+                </li>
+            </div>
+            <div @click="tab='summary'">
+                <li class="nav-item">
+                    <a :class="{'active': tab == 'summary'}" class="nav-link" href="#">Summary</a>
+                </li>
+            </div>
 
-        <div class="flex">
-            <button @click="tab='alarms'" :class="{'bg-blue-800': tab == 'alarms'}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                Alarms
-            </button>
-            <button @click="tab='summary'" :class="{'bg-blue-800': tab == 'summary'}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                Summary
-            </button>
-        </div>
+        </ul>
+
+
         <div class="mt-5">
             <div x-show="tab=='alarms'">
                 These measurements you took have triggered alarms
