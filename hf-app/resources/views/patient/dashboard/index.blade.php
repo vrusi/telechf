@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-
 <div class="container">
     <div class="py-12" x-data="{ tab: 'alarms' }">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
@@ -75,7 +74,5 @@
         $.noConflict();
         $('#summary-table').DataTable();
     });
-
 </script>
-
 @endsection
