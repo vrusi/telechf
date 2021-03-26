@@ -4,13 +4,13 @@
 <div class="container">
     <div class="py-12">
         @if($previous)
-        <a href="{{ url($previous) }}">
+        <a class="btn btn-outline-primary" href="{{ url($previous) }}">
             Previous
         </a>
         @endif
 
         @if($next)
-        <a href="{{ url($next) }}">
+        <a class="btn btn-outline-primary" href="{{ url($next) }}">
             Next
         </a>
         @endif
@@ -32,13 +32,11 @@
             </tbody>
         </table>
 
-        <div class="p-6 bg-white border-b border-gray-200">
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                <a href="{{ url('/measurements/create') }}">
-                    New measurement
-                </a>
-            </button>
-        </div>
+
+        <a class="btn btn-primary" href="{{ url('/measurements/create') }}" role="button">
+            New measurement
+        </a>
+
     </div>
 
 </div>
