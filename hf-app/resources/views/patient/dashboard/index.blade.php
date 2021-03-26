@@ -1,6 +1,18 @@
 @extends('layouts.app')
 
 @section('content')
+
+<style>
+    .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+    .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+        color: #333333 !important;
+        border: none;
+        border-radius: 100%;
+        background: #b5b5b540;
+    }
+
+</style>
+
 <div class="container">
     <div class="py-12" x-data="{ tab: 'alarms' }">
 
