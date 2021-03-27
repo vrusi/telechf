@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container">
-    <div class="py-12">
+    <div class="pb-5">
         @if($previous)
         <a class="btn btn-outline-primary" href="{{ url($previous) }}">
             Previous
@@ -14,30 +14,31 @@
             Next
         </a>
         @endif
+    </div>
+
+    <div class="pb-5">
 
         <table>
             <tbody>
                 @foreach($measurements as $measurement)
                 <tr>
-                    <td><strong>{{ $measurement['parameter']}}</strong></td>
-                    <td>{{ $measurement['value'] ?? '--'}} {{$measurement['unit'] ?? '--'}}</td>
+                    <td class="font-weight-bold">{{ $measurement['parameter'] }}</td>
+                    <td>{{ $measurement['value'] ?? '--' }} {{ $measurement['value'] && $measurement['unit'] ? $measurement['unit'] : '' }}</td>
                 </tr>
                 @endforeach
                 @foreach($conditions as $condition)
                 <tr>
-                    <td><strong>{{ $condition['name']}}</strong></td>
-                    <td>{{ $condition['value']}} </td>
+                    <td class="font-weight-bold">{{ $condition['name'] }}</td>
+                    <td>{{ $condition['value'] ?? '--' }} </td>
                 </tr>
                 @endforeach
             </tbody>
         </table>
-
-
-        <a class="btn btn-primary" href="{{ url('/measurements/create') }}" role="button">
-            New measurement
-        </a>
-
     </div>
+
+    <a class="btn btn-primary" href="{{ url('/measurements/create') }}" role="button">
+        New measurement
+    </a>
 
 </div>
 @endsection
