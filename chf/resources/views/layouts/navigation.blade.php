@@ -12,6 +12,8 @@
              <a class="nav-item nav-link" href="{{ route('measurements.index') }}">{{ __('Measurements') }}</a>
              <a class="nav-item nav-link" href="{{ route('contacts.index') }}">{{ __('Contacts') }}</a>
              <a class="nav-item nav-link" href="/profile">{{ __('Profile') }}</a>
+             <a class="nav-item nav-link" href="/therapy">{{ __('Therapy') }}</a>
+
          </div>
 
          <!-- Right Side Of Navbar -->

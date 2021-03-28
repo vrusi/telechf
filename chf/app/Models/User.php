@@ -59,8 +59,18 @@ class User extends Authenticatable
         return $this->belongsToMany(Parameter::class, 'user_parameters');
     }
 
-    public function contacts() 
+    public function contacts()
     {
         return $this->belongsToMany(Contact::class, 'user_contacts');
+    }
+
+    public function conditions()
+    {
+        return $this->belongsToMany(Condition::class, 'user_conditions');
+    }
+
+    public function drugs()
+    {
+        return $this->belongsToMany(Drug::class, 'user_drugs');
     }
 }

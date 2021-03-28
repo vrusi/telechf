@@ -4,7 +4,6 @@
 
 @section('content')
 
-
 <div class="container">
 
     <h1>
@@ -103,12 +102,6 @@
             </td>
         </tr>
         @endif
-
-
-
-
     </table>
 </div>
-
-
 @endsection
