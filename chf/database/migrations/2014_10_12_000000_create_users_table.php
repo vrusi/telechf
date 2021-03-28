@@ -25,6 +25,7 @@ class CreateUsersTable extends Migration
             $table->integer('age')->nullable();
             $table->float('height')->nullable();
             $table->float('weight')->nullable();
+            $table->string('recommendations')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();

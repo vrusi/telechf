@@ -34,6 +34,7 @@ class UserSeeder extends Seeder
             'age' => 67,
             'height' => 182,
             'weight' => 79,
+            'recommendations' => '<ul><li>Do not smoke.</li><li>Exercise 3 times a week.</li></ul>',
             'coordinator_id' => 1,
         ]);
 
