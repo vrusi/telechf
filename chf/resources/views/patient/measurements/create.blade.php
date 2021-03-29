@@ -26,26 +26,22 @@
                     {{ $parameter->name }}
                 </a>
             </div>
-
             @endforeach
+            @else
+            <p>
+                You have taken all your daily measurements.
+            </p>
+            @endif
         </div>
     </div>
-    @else
-    <div class="my-3">
-        <p>
-            You have taken all your daily measurements.
-        </p>
-    </div>
-    @endif
 
-
-    @if(!empty($takeThisWeek))
     <div class="row">
         <div class="col">
             <h2>
                 To take this week
             </h2>
 
+            @if(!empty($takeThisWeek))
             @foreach($takeThisWeek as $parameter)
             <div class="my-3">
                 <a class="btn btn-outline-primary w-100 text-left" href="{{ url('/measurements/create/'.$parameter->id) }}">
@@ -53,16 +49,25 @@
                 </a>
             </div>
             @endforeach
+            @else
+            <p>
+                You have taken all your weekly measurements.
+            </p>
+            @endif
         </div>
     </div>
-    @endif
 
-    @if(!empty($extra))
+
+
     <div class="row">
         <div class="col">
             <h2>
                 Extra measurements
             </h2>
+            <p>
+                If you are feeling unwell, you can take and record a measurement even if you have already reached your prescribed measurement frequency.
+            </p>
+            @if(!empty($extra))
             @foreach($extra as $parameter)
             <div class="my-3">
                 <a class="btn btn-outline-primary w-100 text-left" href="{{ url('/measurements/create/'.$parameter['id']) }}">
@@ -70,10 +75,14 @@
                 </a>
             </div>
             @endforeach
+            @else
+            <p>
+                You have not yet taken all your mandatory measurements.
+            </p>
+            @endif
 
         </div>
     </div>
-    @endif
 
     <div class="row pt-5">
         <div class="col">
@@ -96,4 +105,5 @@
     </div>
 
 </div>
+
 @endsection
