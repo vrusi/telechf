@@ -1,23 +1,27 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container patient">
     <div class="row">
-        <div class="col">
-            <div class="d-flex justify-content-center pb-3">
-                <h1>
-                    Your measurements
-                </h1>
-            </div>
+        <div class="col pb-3">
+            <h1>
+                Your measurements
+            </h1>
         </div>
     </div>
     <div class="row">
         <div class="col">
             <div class="pb-5 d-flex align-items-center justify-content-center">
                 @if($previous)
-                <a class="btn btn-outline-primary" href="{{ url($previous) }}">
-                    <i class="fas fa-chevron-left"></i>
+                <a href="{{ url($previous) }}">
+                    <button type="button" class="btn btn-outline-primary">
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
                 </a>
+                @else
+                <button type="button" class="btn btn-outline-primary" disabled>
+                    <i class="fas fa-chevron-left"></i>
+                </button>
                 @endif
 
                 <div class="mx-5">
@@ -25,9 +29,15 @@
                 </div>
 
                 @if($next)
-                <a class="btn btn-outline-primary" href="{{ url($next) }}">
-                    <i class="fas fa-chevron-right"></i>
+                <a href="{{ url($next) }}">
+                    <button type="button" class="btn btn-outline-primary">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
                 </a>
+                @else
+                <button type="button" class="btn btn-outline-primary" disabled>
+                    <i class="fas fa-chevron-right"></i>
+                </button>
                 @endif
             </div>
         </div>
@@ -36,7 +46,6 @@
     <div class="row">
         <div class="col">
             <div class="pb-5 d-flex justify-content-center">
-
                 <table>
                     <thead>
                         <tr>
@@ -90,7 +99,7 @@
             {{-- button on tablets and desktop --}}
             <div class="d-none d-md-block">
                 <div class="d-flex justify-content-center">
-                    <a class="btn btn-primary" href="{{ url('/measurements/create') }}" role="button">
+                    <a class="btn btn-primary w-50" href="{{ url('/measurements/create') }}" role="button">
                         New measurement
                     </a>
                 </div>

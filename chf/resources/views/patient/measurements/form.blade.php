@@ -1,19 +1,30 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
+<div class="container patient">
     <div x-data="{ instructionsRead: false }">
         <div x-show="!instructionsRead">
 
-            <div class="mb-5 text-justify">
+            <div class="text-justify">
                 {!! $parameter->instructions !!}
             </div>
 
-            <div class="flex">
-                <a class="btn btn-primary" href="{{ url('/measurements/create') }}">Back</a>
-                <button class="btn btn-primary" @click="instructionsRead = !instructionsRead">Continue</button>
-            </div>
 
+            <div class="row pt-5">
+                <div class="col">
+                    <div class="d-flex d-md-none flex-row fixed-bottom">
+                        <a class="btn btn-primary w-50 rounded-0" href="{{ url('/measurements/create') }}">Back</a>
+                        <button class="btn btn-primary w-50 rounded-0" @click="instructionsRead = !instructionsRead">Continue</button>
+                    </div>
+
+
+                    <div class="d-none d-md-flex justify-content-center">
+                        <a class="btn btn-secondary mr-3 w-50" href="{{ url('/measurements/create') }}">Back</a>
+                        <button class="btn btn-primary w-50" @click="instructionsRead = !instructionsRead">Continue</button>
+                    </div>
+
+                </div>
+            </div>
         </div>
 
         <div x-show="instructionsRead">
@@ -34,7 +45,7 @@
 
                     <div class="form-group">
                         <label for="value">{{ $parameter->name }} ({{ $parameter->unit }})</label>
-                        <input required type="number" class="form-control" id="value" placeholder="Enter your weight measurement">
+                        <input required type="number" class="form-control" id="value" placeholder="Enter your measurement">
                     </div>
 
                     <div class="form-group">
@@ -78,9 +89,19 @@
                     </div>
                 </div>
 
-                <div class="flex">
-                    <button class="btn btn-primary" @click="instructionsRead = !instructionsRead">Back</button>
-                    <a class="btn btn-primary" href="{{ url('/measurements/') }}">Finish</a>
+
+                <div class="row pt-5">
+                    <div class="col">
+                        <div class="d-flex d-md-none flex-row fixed-bottom">
+                            <button class="btn btn-primary w-50 rounded-0" @click="instructionsRead = !instructionsRead"">Back</button>
+                            <a class=" btn btn-primary w-50 rounded-0" href="{{ url('/measurements/') }}">Finish</a>
+                        </div>
+
+                        <div class="d-none d-md-flex justify-content-center">
+                            <button class="btn btn-secondary mr-3 w-50" @click="instructionsRead = !instructionsRead"">Back</button>
+                            <a class=" btn btn-primary w-50" href="{{ url('/measurements/') }}">Finish</a>
+                        </div>
+                    </div>
                 </div>
             </form>
 

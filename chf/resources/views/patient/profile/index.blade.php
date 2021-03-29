@@ -4,9 +4,8 @@
 
 @section('content')
 
-<div class="container">
-
-    <h1>
+<div class="container patient">
+    <h1  class="mb-3">
         Personal information
     </h1>
 

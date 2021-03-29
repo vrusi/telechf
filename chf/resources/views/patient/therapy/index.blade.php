@@ -4,7 +4,7 @@
 
 @section('content')
 
-<div class="container">
+<div class="container patient">
 
     <h1 class="mb-3">
         Your therapy
