@@ -30,7 +30,9 @@
                                 E-mail
                             </td>
                             <td>
-                                {{$contact->email}}
+                                <a href="mailto:{{$contact->email}}">
+                                    {{$contact->email}}
+                                </a>
                             </td>
                         </tr>
                         @endif
@@ -40,7 +42,9 @@
                                 Mobile
                             </td>
                             <td>
-                                {{$contact->mobile}}
+                                <a href="tel:{{$contact->mobile}}">
+                                    {{$contact->mobile}}
+                                </a>
                             </td>
                         </tr>
                         @endif
