@@ -5,6 +5,9 @@
     <div x-data="{ instructionsRead: false }">
         <div x-show="!instructionsRead">
 
+            <h1 class="pb-3">
+                Instructions
+            </h1>
             <div class="text-justify">
                 {!! $parameter->instructions !!}
             </div>
@@ -28,6 +31,9 @@
         </div>
 
         <div x-show="instructionsRead">
+            <h1 class="pb-3">
+                Measurement form
+            </h1>
 
             <form method="POST" action="/measurements" class="m-5">
                 @if ($errors->any())
@@ -45,11 +51,11 @@
 
                     <div class="form-group">
                         <label for="value">{{ $parameter->name }} ({{ $parameter->unit }})</label>
-                        <input required type="number" class="form-control" id="value" placeholder="Enter your measurement">
+                        <input required type="number" class="form-control" name="value" id="value" placeholder="Enter your measurement">
                     </div>
 
                     <div class="form-group">
-                        <label class="mt-5">
+                        <label class="mt-3">
                             Rate your swellings
                         </label>
                         <select required name="swellings" class="form-control">
@@ -62,7 +68,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="mt-5">
+                        <label class="mt-3">
                             Rate your physical exertion tolerance
                         </label>
                         <select required name="exercise_tolerance" class="form-control">
@@ -76,7 +82,7 @@
 
 
                     <div class="form-group">
-                        <label class="mt-5">
+                        <label class="mt-3">
                             Rate your sleeping breathlessness
                         </label>
                         <select required name="dyspnoea" class="form-control">
@@ -89,22 +95,28 @@
                     </div>
                 </div>
 
-
                 <div class="row pt-5">
                     <div class="col">
                         <div class="d-flex d-md-none flex-row fixed-bottom">
-                            <button class="btn btn-primary w-50 rounded-0" @click="instructionsRead = !instructionsRead"">Back</button>
-                            <a class=" btn btn-primary w-50 rounded-0" href="{{ url('/measurements/') }}">Finish</a>
+                            <button class="btn btn-primary w-50 rounded-0" @click="instructionsRead = !instructionsRead">
+                                Back
+                            </button>
+                            <button type="submit" class="btn btn-primary w-50 rounded-0">
+                                Finish
+                            </button>
                         </div>
 
                         <div class="d-none d-md-flex justify-content-center">
-                            <button class="btn btn-secondary mr-3 w-50" @click="instructionsRead = !instructionsRead"">Back</button>
-                            <a class=" btn btn-primary w-50" href="{{ url('/measurements/') }}">Finish</a>
+                            <button class="btn btn-secondary mr-3 w-50" @click="instructionsRead = !instructionsRead">
+                                Back
+                            </button>
+                            <button type="submit" class="btn btn-primary w-50">
+                                Finish
+                            </button>
                         </div>
                     </div>
                 </div>
             </form>
-
         </div>
     </div>
 </div>

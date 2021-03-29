@@ -53,7 +53,7 @@ class MeasurementController extends Controller
                 }
                 $avg = $avg / count($measurements);
             }
-            
+
             return ['name' => $name, 'value' => $avg];
         });
 
@@ -126,6 +126,7 @@ class MeasurementController extends Controller
     public function store(Request $request)
     {
         $now = Carbon::now();
+
         $validated = $request->validate([
             'parameter_id' => 'required|exists:parameters,id',
             'value' => 'required|numeric',
