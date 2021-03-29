@@ -79,13 +79,28 @@
         <h2>
             You are being treated for
         </h2>
-        <ul>
-            @foreach($conditions as $condition)
-            <li>
-                {{ $condition->name }}
-            </li>
-            @endforeach
-        </ul>
+
+        @foreach($conditions as $condition)
+        <div x-data="{ descriptionOpen: false }">
+
+            <div @click="descriptionOpen=!descriptionOpen" class="d-flex align-items-center" data-toggle="collapse" data-target="{{'#conditionDescription'.$condition->id}}" aria-expanded="false" aria-controls="conditionDescription">
+                <div class="mr-3">
+                    {{ ucfirst(trans($condition->name)) }}
+                </div>
+
+                <i x-show="!descriptionOpen" class="fas fa-caret-down"></i>
+                <i x-show="descriptionOpen" class="fas fa-caret-up"></i>
+
+            </div>
+        </div>
+
+        <div class="collapse" id="{{'conditionDescription'.$condition->id}}">
+            <div class="card card-body">
+                {!! $condition->description !!}
+            </div>
+        </div>
+        @endforeach
+
     </div>
     <div class="my-5">
         <h2>

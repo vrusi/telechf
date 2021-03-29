@@ -15,6 +15,11 @@ class UserConditionSeeder extends Seeder
      */
     public function run()
     {
+        DB::table('user_conditions')->insert([
+            'user_id' => 2,
+            'condition_id' => 2,
+        ]);
+
         for ($user_id = 2; $user_id <= 10; $user_id++) {
             /* everyone has congestive heart failure */
             DB::table('user_conditions')->insert([
