@@ -40,7 +40,7 @@ class MeasurementController extends Controller
                 }
             }
 
-            return ['parameter' => $parameter['name'], 'value' => $value, 'unit' => $parameter['unit']];
+            return ['parameter' => $parameter['name'], 'value' => $value, 'unit' => $parameter['unit'], 'date' => $measurement['created_at']];
         }, $parameters);
 
         $conditions = Arr::map(['swellings' => 'Swellings', 'exercise_tolerance' => 'Exercise Tolerance', 'dyspnoea' => 'Nocturnal Dyspnoea'], function ($key, $name) use ($measurements) {
@@ -53,7 +53,7 @@ class MeasurementController extends Controller
                 }
                 $avg = $avg / count($measurements);
             }
-
+            
             return ['name' => $name, 'value' => $avg];
         });
 
