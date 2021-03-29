@@ -19,8 +19,10 @@ class CreateUserParametersTable extends Migration
             $table->foreignId('parameter_id')->constrained();
             $table->integer('measurement_times')->nullable();
             $table->enum('measurement_span', ['hour', 'day', 'week', 'month'])->nullable();
-            $table->float('threshold_min')->nullable();
-            $table->float('threshold_max')->nullable();
+            $table->float('threshold_safety_min')->nullable();
+            $table->float('threshold_safety_max')->nullable();
+            $table->float('threshold_therapeutic_min')->nullable();
+            $table->float('threshold_therapeutic_max')->nullable();
             $table->timestamps();
         });
     }

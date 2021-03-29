@@ -18,13 +18,12 @@
         <table>
             <thead>
                 <tr>
-                    <th>Parameter</th>
-                    {{--
-                    TODO:
-                    <td>
+                    <th>
+                        Parameter
+                    </th>
+                    <th>
                         Goal values
-                    </td>
-                --}}
+                    </th>
                     <th>
                         Measurement frequency
                     </th>
@@ -33,15 +32,28 @@
             <tbody>
                 @foreach($parameters as $parameter)
                 <tr>
-                    <td class="pr-3">
+                    <td>
                         {{ $parameter->name }}
                     </td>
 
-                    {{-- TODO:
-                 <td>
+                    <td class="px-3">
+                        {{-- both min and max --}}
+                        @if($parameter->pivot->threshold_therapeutic_min && $parameter->pivot->threshold_therapeutic_max)
+                        {{ $parameter->pivot->threshold_therapeutic_min }} - {{ $parameter->pivot->threshold_therapeutic_max }} {{ $parameter->unit }}
 
-                </td>
-                 --}}
+                        {{-- only min --}}
+                        @elseif($parameter->pivot->threshold_therapeutic_min && !$parameter->pivot->threshold_therapeutic_max)
+                        ≥ {{ $parameter->pivot->threshold_therapeutic_min }} {{ $parameter->unit }}
+
+                        {{-- only max --}}
+                        @elseif(!$parameter->pivot->threshold_therapeutic_min && $parameter->pivot->threshold_therapeutic_max)
+                        ≤ {{ $parameter->pivot->threshold_therapeutic_max }} {{ $parameter->unit }}
+
+                        {{-- neither --}}
+                        @else
+                        --
+                        @endif
+                    </td>
 
                     <td>
                         @if($parameter->measurement_times)

@@ -51,12 +51,12 @@ class User extends Authenticatable
 
     public function measurements()
     {
-        return $this->hasMany('App\Models\Measurement');
+        return $this->hasMany(Measurement::class);
     }
 
     public function parameters()
     {
-        return $this->belongsToMany(Parameter::class, 'user_parameters');
+        return $this->belongsToMany(Parameter::class, 'user_parameters')->withPivot('threshold_safety_min', 'threshold_safety_max', 'threshold_therapeutic_min', 'threshold_therapeutic_max');
     }
 
     public function contacts()

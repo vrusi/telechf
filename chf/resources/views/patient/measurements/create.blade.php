@@ -20,13 +20,15 @@
                 To take today
             </h2>
             @if(!empty($takeToday))
-            @foreach($takeToday as $parameter)
-            <div class="my-3">
-                <a class="btn btn-outline-primary w-100 text-left" href="{{ url('/measurements/create/'.$parameter->id) }}">
-                    {{ $parameter->name }}
-                </a>
-            </div>
-            @endforeach
+                @foreach($takeToday as $parameter)
+                    @if($parameter->fillable)
+                    <div class="my-3">
+                        <a class="btn btn-outline-primary w-100 text-left" href="{{ url('/measurements/create/'.$parameter->id) }}">
+                            {{ $parameter->name }}
+                        </a>
+                    </div>
+                    @endif
+                @endforeach
             @else
             <p>
                 You have taken all your daily measurements.
@@ -42,13 +44,15 @@
             </h2>
 
             @if(!empty($takeThisWeek))
-            @foreach($takeThisWeek as $parameter)
-            <div class="my-3">
-                <a class="btn btn-outline-primary w-100 text-left" href="{{ url('/measurements/create/'.$parameter->id) }}">
-                    {{ $parameter->name }}
-                </a>
-            </div>
-            @endforeach
+                @foreach($takeThisWeek as $parameter)
+                        @if($parameter->fillable)
+                        <div class="my-3">
+                            <a class="btn btn-outline-primary w-100 text-left" href="{{ url('/measurements/create/'.$parameter->id) }}">
+                                {{ $parameter->name }}
+                            </a>
+                        </div>
+                        @endif
+                @endforeach
             @else
             <p>
                 You have taken all your weekly measurements.
@@ -103,7 +107,6 @@
             </div>
         </div>
     </div>
-
 </div>
 
 @endsection

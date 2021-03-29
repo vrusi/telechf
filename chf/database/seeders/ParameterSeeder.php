@@ -56,8 +56,16 @@ class ParameterSeeder extends Seeder
             'unit' => 'kg',
             'measurement_times' => '1',
             'measurement_span' => 'day',
-            'threshold_max' => 2,
             'instructions' => 'For the most accurate weight, weigh yourself first thing in the morning.</p><p>Be consistent when you weigh yourself. Weigh yourself at the same time. If you go to the bathroom before you weigh yourself, go before you do it again next time. You can weigh yourself naked every time or try wearing the same clothes.</p>',
+        ]);
+
+        DB::table('parameters')->insert([
+            'name' => 'Weight Change',
+            'unit' => 'kg',
+            'measurement_times' => '1',
+            'measurement_span' => 'day',
+            'threshold_max' => 2,
+            'fillable' => false,
         ]);
 
         DB::table('parameters')->insert([

@@ -22,6 +22,7 @@ class CreateParametersTable extends Migration
             $table->float('threshold_min')->nullable();
             $table->float('threshold_max')->nullable();
             $table->text('instructions')->nullable();
+            $table->boolean('fillable')->default(true);
             $table->timestamps();
         });
     }
