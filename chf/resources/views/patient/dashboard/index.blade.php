@@ -3,12 +3,18 @@
 @section('content')
 
 <style>
+    .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+        border-radius: 16px;
+        border: none;
+        background: #585858;
+    }
+
     .dataTables_wrapper .dataTables_paginate .paginate_button.current,
     .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
         color: #333333 !important;
-        border: none;
-        border-radius: 100%;
         background: #b5b5b540;
+        border-radius: 16px;
+        border: none;
     }
 
 </style>
@@ -46,7 +52,7 @@
                             </th>
                             @foreach($parameters as $parameter)
                             <th>
-                                {{$parameter['name']}}
+                                {{ $parameter['name'] }} ({{ $parameter['unit'] }})
                             </th>
                             @endforeach
                             <th>
