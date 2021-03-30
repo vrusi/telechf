@@ -35,14 +35,15 @@ class MeasurementController extends Controller
 
         $values = array_map(function ($parameter) use ($measurements) {
             $value = null;
-
+            $date = null;
             foreach ($measurements as $measurement) {
                 if ($measurement['parameter_id'] == $parameter['id']) {
                     $value = $measurement['value'];
+                    $date = $measurement['created_at'];
                 }
             }
 
-            return ['parameter' => $parameter['name'], 'value' => $value, 'unit' => $parameter['unit'], 'date' => $measurement['created_at']];
+            return ['parameter' => $parameter['name'], 'value' => $value, 'unit' => $parameter['unit'], 'date' => $date];
         }, $parameters);
 
         $conditions = Arr::map(['swellings' => 'Swellings', 'exercise_tolerance' => 'Exercise Tolerance', 'dyspnoea' => 'Nocturnal Dyspnoea'], function ($key, $name) use ($measurements) {
@@ -123,7 +124,6 @@ class MeasurementController extends Controller
     {
         return ($type == 'min') ? $value < $threshold : $value > $threshold;
     }
-
     /**
      * Store a newly created resource in storage.
      *
