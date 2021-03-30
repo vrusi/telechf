@@ -61,7 +61,7 @@ class UserParameterSeeder extends Seeder
             'parameter_id' => 5,
             'measurement_times' => '1',
             'measurement_span' => 'day',
-            'threshold_safety_max' => 85,
+            'threshold_therapeutic_max' => 85,
         ]);
 
         // Weight Change

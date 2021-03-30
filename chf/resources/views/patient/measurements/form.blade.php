@@ -48,7 +48,6 @@
                 @csrf
                 <div class="mb-5">
                     <input type="hidden" name="parameter_id" value="{{ $parameter->id }}">
-
                     <div class="form-group">
                         <label for="value">{{ $parameter->name }} ({{ $parameter->unit }})</label>
                         <input required type="number" class="form-control" name="value" id="value" placeholder="Enter your measurement">

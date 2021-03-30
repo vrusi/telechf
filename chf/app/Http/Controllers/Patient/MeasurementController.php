@@ -9,6 +9,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Minwork\Helper\Arr;
+use phpDocumentor\Reflection\Types\Boolean;
+use Ramsey\Uuid\Type\Integer;
 
 class MeasurementController extends Controller
 {
@@ -115,6 +117,11 @@ class MeasurementController extends Controller
 
         $results = ['takeToday' => $takeToday, 'takeThisWeek' => $takeThisWeek, 'extra' => $extra];
         return view('patient.measurements.create', $results);
+    }
+
+    private function isAlarming(Integer $value, Integer $threshold, String $type)
+    {
+        return ($type == 'min') ? $value < $threshold : $value > $threshold;
     }
 
     /**
