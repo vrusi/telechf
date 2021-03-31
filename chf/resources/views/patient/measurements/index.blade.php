@@ -66,7 +66,7 @@
                         <tr>
                             <td>{{ $measurement['parameter'] }}</td>
                             <td class="px-3">{{ $measurement['value'] ?? '--' }} {{ $measurement['value'] && $measurement['unit'] ? $measurement['unit'] : '' }}</td>
-                            <td>{{ date('H:m', strtotime($measurement['date'])) ?? '--' }}</td>
+                            <td>{{ date('H:i', strtotime($measurement['date'])) ?? '--' }}</td>
                         </tr>
                         @endforeach
 

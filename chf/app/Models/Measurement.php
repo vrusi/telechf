@@ -16,7 +16,9 @@ class Measurement extends Model
         'swellings',
         'exercise_tolerance',
         'dyspnoea',
-        'triggered_safety_alarm',
-        'triggered_therapeutic_alarm',
+        'triggered_safety_alarm_min',
+        'triggered_safety_alarm_max',
+        'triggered_therapeutic_alarm_min',
+        'triggered_therapeutic_alarm_max',
     ];
 }

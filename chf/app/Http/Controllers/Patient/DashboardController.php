@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Patient;
 
 use App\Http\Controllers\Controller;
 use App\Models\Measurement;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr as SupportArr;
 use Illuminate\Support\Facades\Auth;
@@ -41,7 +42,10 @@ class DashboardController extends Controller
             return $measurement->created_at->format('d M');
         })->toArray();
 
-        $days = array_map(function ($measurementsPerDay) use ($parameters) {
+        // TODO
+        $alarm_general = false;
+
+        $days = array_map (function ($measurementsPerDay) use ($parameters) {
             $values = array_map(function ($parameter) use ($measurementsPerDay) {
                 $value = null;
                 $alarm = false;
@@ -50,8 +54,13 @@ class DashboardController extends Controller
                     if ($measurement['parameter_id'] == $parameter['id']) {
                         $value = $measurement['value'];
                         $alarm = $measurement['triggered_therapeutic_alarm_min'] || $measurement['triggered_therapeutic_alarm_max'] ||  $measurement['triggered_safety_alarm_min'] || $measurement['triggered_safety_alarm_max'];
+                        
+                        if ($alarm) {
+                            $alarm_general = true;
+                        }
                     }
                 }
+
                 return ['parameter' => $parameter['name'], 'value' => $value, 'unit' => $parameter['unit'], 'alarm' => $alarm];
             }, $parameters);
 
@@ -73,8 +82,10 @@ class DashboardController extends Controller
 
                 return ['name' => $name, 'value' => $avg_mapped, 'alarm' => $alarm];
             });
+
             $conditions = array_values($conditions);
             return array_merge($values, $conditions);
+
         }, $measurementsGrouped);
 
         return view('patient.dashboard.index', ['summary' => $days, 'parameters' => $parameters]);

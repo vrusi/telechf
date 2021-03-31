@@ -50,7 +50,7 @@
                     <input type="hidden" name="parameter_id" value="{{ $parameter->id }}">
                     <div class="form-group">
                         <label for="value">{{ $parameter->name }} ({{ $parameter->unit }})</label>
-                        <input required type="number" class="form-control" name="value" id="value" placeholder="Enter your measurement">
+                        <input required type="number" step="0.01" class="form-control" name="value" id="value" placeholder="Enter your measurement">
                     </div>
 
                     <div class="form-group">
