@@ -22,8 +22,10 @@ class CreateMeasurementsTable extends Migration
             $table->integer('swellings')->default(1);
             $table->integer('exercise_tolerance')->default(1);
             $table->integer('dyspnoea')->default(1);
-            $table->boolean('triggered_safety_alarm')->default(false);
-            $table->boolean('triggered_therapeutic_alarm')->default(false);
+            $table->boolean('triggered_safety_alarm_min')->default(false);
+            $table->boolean('triggered_safety_alarm_max')->default(false);
+            $table->boolean('triggered_therapeutic_alarm_min')->default(false);
+            $table->boolean('triggered_therapeutic_alarm_max')->default(false);
             $table->boolean('checked')->default(false);
             $table->timestamps();
         });

@@ -28,7 +28,7 @@ class MeasurementSeeder extends Seeder
             'swellings' => 5,
             'exercise_tolerance' => 5,
             'dyspnoea' => 5,
-            'triggered_safety_alarm' => true,
+            'triggered_safety_alarm_max' => true,
             'created_at' => Carbon::now()->subMinutes(15),
         ]);
 
@@ -51,7 +51,7 @@ class MeasurementSeeder extends Seeder
             'swellings' => 5,
             'exercise_tolerance' => 5,
             'dyspnoea' => 5,
-            'triggered_therapeutic_alarm' => true,
+            'triggered_therapeutic_alarm_max' => true,
             'created_at' => Carbon::now()->subMinutes(5),
         ]);
 
@@ -163,7 +163,7 @@ class MeasurementSeeder extends Seeder
             'value' => 76,
             'exercise_tolerance' => 5,
             'dyspnoea' => 5,
-            'triggered_therapeutic_alarm' => true,
+            'triggered_therapeutic_alarm_max' => true,
             'checked' => true,
             'created_at' => Carbon::now()->subDays(3),
         ]);
@@ -220,7 +220,7 @@ class MeasurementSeeder extends Seeder
             'value' => 73,
             'swellings' => 5,
             'dyspnoea' => 5,
-            'triggered_therapeutic_alarm' => true,
+            'triggered_therapeutic_alarm_max' => true,
             'checked' => true,
             'created_at' => Carbon::now()->subDays(10),
         ]);
@@ -232,7 +232,7 @@ class MeasurementSeeder extends Seeder
             'value' => 145,
             'swellings' => 5,
             'exercise_tolerance' => 5,
-            'triggered_therapeutic_alarm' => true,
+            'triggered_therapeutic_alarm_max' => true,
             'checked' => true,
             'created_at' => Carbon::now()->subDays(13),
         ]);
@@ -243,7 +243,7 @@ class MeasurementSeeder extends Seeder
             'value' => 95,
             'swellings' => 5,
             'exercise_tolerance' => 5,
-            'triggered_therapeutic_alarm' => true,
+            'triggered_therapeutic_alarm_max' => true,
             'checked' => true,
             'created_at' => Carbon::now()->subDays(13),
         ]);
@@ -254,7 +254,7 @@ class MeasurementSeeder extends Seeder
             'value' => 90,
             'swellings' => 5,
             'exercise_tolerance' => 5,
-            'triggered_therapeutic_alarm' => true,
+            'triggered_therapeutic_alarm_max' => true,
             'checked' => true,
             'created_at' => Carbon::now()->subDays(13),
         ]);
@@ -285,7 +285,7 @@ class MeasurementSeeder extends Seeder
             'swellings' => 4,
             'exercise_tolerance' => 4,
             'dyspnoea' => 5,
-            'triggered_therapeutic_alarm' => true,
+            'triggered_therapeutic_alarm_max' => true,
             'checked' => true,
             'created_at' => Carbon::now()->subDays(15),
         ]);
@@ -297,7 +297,7 @@ class MeasurementSeeder extends Seeder
             'swellings' => 4,
             'exercise_tolerance' => 4,
             'dyspnoea' => 5,
-            'triggered_therapeutic_alarm' => true,
+            'triggered_therapeutic_alarm_max' => true,
             'checked' => true,
             'created_at' => Carbon::now()->subDays(15),
         ]);

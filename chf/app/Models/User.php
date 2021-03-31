@@ -56,7 +56,7 @@ class User extends Authenticatable
 
     public function parameters()
     {
-        return $this->belongsToMany(Parameter::class, 'user_parameters')->withPivot('threshold_safety_min', 'threshold_safety_max', 'threshold_therapeutic_min', 'threshold_therapeutic_max');
+        return $this->belongsToMany(Parameter::class, 'user_parameters', 'user_id', 'parameter_id')->withPivot('threshold_safety_min', 'threshold_safety_max', 'threshold_therapeutic_min', 'threshold_therapeutic_max');
     }
 
     public function contacts()

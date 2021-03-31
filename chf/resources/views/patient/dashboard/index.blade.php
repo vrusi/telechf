@@ -3,18 +3,10 @@
 @section('content')
 
 <style>
-    .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-        border-radius: 16px;
-        border: none;
-        background: #585858;
-    }
-
-    .dataTables_wrapper .dataTables_paginate .paginate_button.current,
-    .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
-        color: #333333 !important;
-        background: #b5b5b540;
-        border-radius: 16px;
-        border: none;
+    .alarm {
+        background: #ff000020;
+        color: firebrick;
+        font-weight: 900;
     }
 
 </style>
@@ -74,9 +66,15 @@
                                 {{$date}}
                             </td>
                             @foreach($day as $parameter)
+                            @if($parameter['alarm'])
+                            <td class="alarm">
+                                {{$parameter['value'] ?? '--' }}
+                            </td>
+                            @else
                             <td>
                                 {{$parameter['value'] ?? '--' }}
                             </td>
+                            @endif
                             @endforeach
                         </tr>
                         @endforeach
@@ -95,7 +93,20 @@
 <script>
     $(document).ready(function() {
         $.noConflict();
-        $('#summary-table').DataTable();
+        $('#summary-table').DataTable({
+            fixedColumns: {
+                leftColumns: 1
+            }
+            , responsive: true,
+              "order": [[ 0, 'dsc' ]]
+
+        });
+
+        new $.fn.dataTable.Buttons(table, {
+            buttons: [
+                'copy', 'excel', 'pdf'
+            ]
+        });
     });
 
 </script>

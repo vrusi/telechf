@@ -11,6 +11,27 @@ use Minwork\Helper\Arr;
 
 class DashboardController extends Controller
 {
+    private function mapConditions(int $value) {
+        if ($value == 5) {
+            return 'Very bad';
+        }
+        else if ($value == 4) {
+            return 'Bad';
+        }
+        else if ($value == 3) {
+            return 'Neutral';
+        }
+        else if ($value == 2) {
+            return 'Good';
+        }
+        else if ($value == 1) {
+            return 'Very good';
+        }
+
+        return null;
+    }
+
+
     function index(Request $request)
     {
         $user = Auth::user();
@@ -23,22 +44,22 @@ class DashboardController extends Controller
         $days = array_map(function ($measurementsPerDay) use ($parameters) {
             $values = array_map(function ($parameter) use ($measurementsPerDay) {
                 $value = null;
-                $safety_alarm = false;
-                $therapeutic_alarm = false;
-
+                $alarm = false;
 
                 foreach ($measurementsPerDay as $measurement) {
                     if ($measurement['parameter_id'] == $parameter['id']) {
                         $value = $measurement['value'];
-                        $therapeutic_alarm = $measurement['triggered_therapeutic_alarm'];
-                        $safety_alarm = $measurement['triggered_safety_alarm'];
+                        $alarm = $measurement['triggered_therapeutic_alarm_min'] || $measurement['triggered_therapeutic_alarm_max'] ||  $measurement['triggered_safety_alarm_min'] || $measurement['triggered_safety_alarm_max'];
                     }
                 }
-                return ['parameter' => $parameter['name'], 'value' => $value, 'unit' => $parameter['unit'], 'triggered_safety_alarm' => $safety_alarm, 'triggered_therapeutic_alarm' => $therapeutic_alarm];
+                return ['parameter' => $parameter['name'], 'value' => $value, 'unit' => $parameter['unit'], 'alarm' => $alarm];
             }, $parameters);
 
             $conditions = Arr::map(['swellings' => 'Swellings', 'exercise_tolerance' => 'Exercise Tolerance', 'dyspnoea' => 'Nocturnal Dyspnoea'], function ($key, $name) use ($measurementsPerDay) {
                 $avg = null;
+                $avg_mapped = '';
+                // TODO
+                $alarm = false; 
 
                 if (count($measurementsPerDay) > 0) {
                     $avg = 0;
@@ -46,9 +67,11 @@ class DashboardController extends Controller
                         $avg = $avg + $measurement[$key] ?? 0;
                     }
                     $avg = $avg / count($measurementsPerDay);
+                    
+                    $avg_mapped = $this->mapConditions(ceil($avg));
                 }
 
-                return ['name' => $name, 'value' => $avg];
+                return ['name' => $name, 'value' => $avg_mapped, 'alarm' => $alarm];
             });
             $conditions = array_values($conditions);
             return array_merge($values, $conditions);

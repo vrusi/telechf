@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Patient;
 use App\Http\Controllers\Controller;
 use App\Models\Measurement;
 use App\Models\Parameter;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -120,10 +121,6 @@ class MeasurementController extends Controller
         return view('patient.measurements.create', $results);
     }
 
-    private function isAlarming(Integer $value, Integer $threshold, String $type)
-    {
-        return ($type == 'min') ? $value < $threshold : $value > $threshold;
-    }
     /**
      * Store a newly created resource in storage.
      *
@@ -142,6 +139,23 @@ class MeasurementController extends Controller
             'dyspnoea' => 'required|integer|between:1,5'
         ]);
 
+        $user = User::where('id', Auth::user()->id)->first();
+        $user_parameters = $user->parameters;
+
+        $threshold_safety_min = null;
+        $threshold_safety_max = null;
+        $threshold_therapeutic_min = null;
+        $threshold_therapeutic_max = null;
+
+        foreach ($user_parameters as $parameter) {
+            if ($parameter->id == $request->parameter_id) {
+                $threshold_safety_min = $parameter->pivot->threshold_safety_min;
+                $threshold_safety_max = $parameter->pivot->threshold_safety_max;
+                $threshold_therapeutic_min = $parameter->pivot->threshold_threshold_min;
+                $threshold_therapeutic_max = $parameter->pivot->threshold_threshold_max;
+            }
+        }
+
         Measurement::create([
             'user_id' => Auth::user()->id,
             'parameter_id' => $validated['parameter_id'],
@@ -149,9 +163,10 @@ class MeasurementController extends Controller
             'swellings' => $validated['swellings'],
             'exercise_tolerance' => $validated['exercise_tolerance'],
             'dyspnoea' => $validated['dyspnoea'],
-            // TODO
-            'triggered_safety_alarm' => false,
-            'triggered_therapeutic_alarm' => false,
+            'triggered_safety_alarm_min' => $validated['value'] <= $threshold_safety_min,
+            'triggered_safety_alarm_max' => $validated['value'] >= $threshold_safety_max,
+            'triggered_therapeutic_alarm_min' => $validated['value'] <= $threshold_therapeutic_min,
+            'triggered_therapeutic_alarm_max' => $validated['value'] <= $threshold_therapeutic_max,
         ]);
 
         return redirect('/measurements');
