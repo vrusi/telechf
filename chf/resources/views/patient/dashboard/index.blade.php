@@ -62,15 +62,9 @@
                     <tbody>
                         @foreach($summary as $date => $day)
                         <tr>
-                            @if($alarm)
-                            <td class="alarm">
-                                {{ $date }}
-                            </td>
-                            @else
                             <td>
                                 {{ $date }}
                             </td>
-                            @endif
                             @foreach($day as $parameter)
                             @if($parameter['alarm'])
                             <td class="alarm">
