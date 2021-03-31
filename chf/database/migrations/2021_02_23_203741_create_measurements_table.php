@@ -19,9 +19,9 @@ class CreateMeasurementsTable extends Migration
             $table->foreignId('user_id')->constrained();
             $table->foreignId('parameter_id')->constrained();
             $table->float('value');
-            $table->integer('swellings')->default(1);
-            $table->integer('exercise_tolerance')->default(1);
-            $table->integer('dyspnoea')->default(1);
+            $table->integer('swellings')->nullable();
+            $table->integer('exercise_tolerance')->nullable();
+            $table->integer('dyspnoea')->nullable();
             $table->boolean('triggered_safety_alarm_min')->default(false);
             $table->boolean('triggered_safety_alarm_max')->default(false);
             $table->boolean('triggered_therapeutic_alarm_min')->default(false);

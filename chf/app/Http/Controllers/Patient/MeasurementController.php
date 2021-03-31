@@ -52,10 +52,17 @@ class MeasurementController extends Controller
 
             if (count($measurements) > 0) {
                 $avg = 0;
+
+                // some measurements will be null so we have to exclude them 
+                // i.e. if the user measures weight, internally weight change is also saved
+                // but the conditions will be null to prevent giving weight measurement stronger weight
+                // when canculating the average value
+                $count = 0;
                 foreach ($measurements as $measurement) {
                     $avg = $avg + $measurement[$key] ?? 0;
+                    $count = $measurement[$key] ? $count + 1 : $count;
                 }
-                $avg = $avg / count($measurements);
+                $avg = $avg / $count;
             }
 
             return ['name' => $name, 'value' => $avg];
@@ -129,8 +136,6 @@ class MeasurementController extends Controller
      */
     public function store(Request $request)
     {
-        $now = Carbon::now();
-
         $validated = $request->validate([
             'parameter_id' => 'required|exists:parameters,id',
             'value' => 'required|numeric',
@@ -147,6 +152,58 @@ class MeasurementController extends Controller
         $threshold_therapeutic_min = null;
         $threshold_therapeutic_max = null;
 
+        // calculate weight change if weight was measured
+        $weight_param = Parameter::where('name', 'Weight')->first();
+        if ($validated['parameter_id'] == $weight_param->id) {
+
+            // get last weight measurement
+            $user_measurements = $user->measurements;
+            $weight_prev = null;
+            foreach($user_measurements as $measurement) {
+                if ($measurement->parameter_id == $weight_param->id){
+                    $weight_prev = $measurement->value;
+                }
+            }
+
+            // calculate weight change
+            $weight_change = null;
+            if ($weight_prev) {
+                $weight_change = $validated['value'] - $weight_prev;
+            }
+
+            // save weight change
+            if ($weight_change) {
+                $weight_change_param = Parameter::where('name', 'Weight Change')->first();
+
+                // check alarms
+                foreach ($user_parameters as $parameter) {
+                    if ($parameter->id == $weight_change_param->id) {
+                        $threshold_safety_min = $parameter->pivot->threshold_safety_min;
+                        $threshold_safety_max = $parameter->pivot->threshold_safety_max;
+                        $threshold_therapeutic_min = $parameter->pivot->threshold_threshold_min;
+                        $threshold_therapeutic_max = $parameter->pivot->threshold_threshold_max;
+                    }
+                }                
+
+                // insert measurement
+                Measurement::create([
+                    'user_id' => Auth::user()->id,
+                    'parameter_id' => $weight_change_param->id,
+                    'value' => $weight_change,
+                    'triggered_safety_alarm_min' => $weight_change <= $threshold_safety_min,
+                    'triggered_safety_alarm_max' => $weight_change >= $threshold_safety_max,
+                    'triggered_therapeutic_alarm_min' => $weight_change <= $threshold_therapeutic_min,
+                    'triggered_therapeutic_alarm_max' => $weight_change <= $threshold_therapeutic_max,
+                ]);
+            }
+
+            // save weight in user table
+            $user_model = User::where('id', Auth::user()->id)->first();
+            $user_model->weight = $validated['value'];
+            $user_model->save();
+        }
+
+        // check alarms for the measured parameter
         foreach ($user_parameters as $parameter) {
             if ($parameter->id == $request->parameter_id) {
                 $threshold_safety_min = $parameter->pivot->threshold_safety_min;
@@ -156,6 +213,7 @@ class MeasurementController extends Controller
             }
         }
 
+        // insert measurement
         Measurement::create([
             'user_id' => Auth::user()->id,
             'parameter_id' => $validated['parameter_id'],
