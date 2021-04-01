@@ -12,19 +12,19 @@
 </style>
 
 <div class="container">
-    <div class="py-12" x-data="{ tab: 'alarms' }">
+    <div x-data="tab()">
 
         <ul class="nav nav-tabs">
-            <div @click="tab='alarms'">
-                <li class="nav-item">
-                    <a :class="{'active': tab == 'alarms'}" class="nav-link active" href="#">Alarms</a>
-                </li>
-            </div>
-            <div @click="tab='summary'">
-                <li class="nav-item">
-                    <a :class="{'active': tab == 'summary'}" class="nav-link" href="#">Summary</a>
-                </li>
-            </div>
+
+            <li class="nav-item">
+                <a id="alarms-link" @click="tabSwitch()" :class="{'active': tab == 'alarms'}" class="nav-link active" href="">Alarms</a>
+            </li>
+
+
+            <li class="nav-item">
+                <a id="summary-link" @click="tabSwitch()" :class="{'active': tab == 'summary'}" class="nav-link" href="">Summary</a>
+            </li>
+
 
         </ul>
 
@@ -104,12 +104,41 @@
 
         });
 
-        new $.fn.dataTable.Buttons(table, {
+        new $.fn.dataTable.Buttons($('#summary-table')[0], {
             buttons: [
                 'copy', 'excel', 'pdf'
             ]
         });
+
+        $('#alarms-link').click(function() {
+            return false;
+        });
+
+        $('#summary-link').click(function() {
+            return false;
+        });
     });
+
+    function tab() {
+        var urlParams = new URLSearchParams(window.location.search);
+        var url = new URL(window.location);
+
+        return {
+            tab: url.searchParams.get('tab'),
+
+            tabSwitch() {
+                console.log('here');
+                if (this.tab === 'summary') {
+                    this.tab = 'alarms';
+                    history.pushState(null, '', 'dashboard?tab=alarms');
+                } else if (this.tab === 'alarms') {
+                    this.tab = 'summary';
+                    history.pushState(null, '', 'dashboard?tab=summary');
+                }
+
+            }
+        , }
+    }
 
 </script>
 @endsection
