@@ -2,19 +2,35 @@
      <a class="navbar-brand" href="{{ url('/') }}">
          {{ config('app.name', 'Laravel') }}
      </a>
+
      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
          <span class="navbar-toggler-icon"></span>
      </button>
+
      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
          <!-- Left Side Of Navbar -->
-         <div class="navbar-nav">
-             <a class="nav-item nav-link active" href="{{ route('dashboard') }}">{{ __('Dashboard') }} <span class="sr-only">(current)</span></a>
-             <a class="nav-item nav-link" href="/profile">{{ __('Profile') }}</a>
-             <a class="nav-item nav-link" href="/therapy">{{ __('Therapy') }}</a>
-             <a class="nav-item nav-link" href="{{ route('measurements.create') }}">{{ __('New measurement') }}</a>
-             <a class="nav-item nav-link" href="{{ route('contacts.index') }}">{{ __('Contacts') }}</a>
+         <ul class="navbar-nav">
 
-         </div>
+             <li class="{{ Request::is('dashboard*') ? 'nav-item active' : 'nav-item' }}">
+                 <a class="nav-link" href="{{ route('dashboard') }}">{{ __('Dashboard') }}</a>
+             </li>
+
+             <li class="{{ Request::is('profile*') ? 'nav-item active' : 'nav-item' }}">
+                 <a class="nav-link" href="{{ route('profile') }}">{{ __('Profile') }}</a>
+             </li>
+
+             <li class="{{ Request::is('therapy*') ? 'nav-item active' : 'nav-item' }}">
+                 <a class="nav-link" href="{{ route('therapy') }}">{{ __('Therapy') }}</a>
+             </li>
+
+             <li class="{{ Request::is('measurements*') ? 'nav-item active' : 'nav-item' }}">
+                 <a class="nav-link" href="{{ route('measurements.create') }}">{{ __('Measurements') }}</a>
+             </li>
+
+             <li class="{{ Request::is('contacts*') ? 'nav-item active' : 'nav-item' }}">
+                 <a class="nav-link" href="{{ route('contacts.index') }}">{{ __('Contacts') }}</a>
+             </li>
+         </ul>
 
          <!-- Right Side Of Navbar -->
          <ul class="navbar-nav ml-auto">

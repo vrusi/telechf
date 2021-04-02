@@ -26,8 +26,8 @@ Route::get('/measurements/create/{parameterId}', 'App\Http\Controllers\Patient\M
 
 Route::resource('/contacts', 'App\Http\Controllers\Patient\ContactController')->middleware(['auth']);
 
-Route::get('/profile', 'App\Http\Controllers\Patient\ProfileController@index')->middleware(['auth']);
-Route::get('/therapy', 'App\Http\Controllers\Patient\ProfileController@therapy')->middleware(['auth']);
+Route::get('/profile', 'App\Http\Controllers\Patient\ProfileController@index')->middleware(['auth'])->name('profile');
+Route::get('/therapy', 'App\Http\Controllers\Patient\ProfileController@therapy')->middleware(['auth'])->name('therapy');
 
 
 require __DIR__ . '/auth.php';
