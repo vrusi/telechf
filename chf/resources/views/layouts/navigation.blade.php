@@ -11,7 +11,7 @@
              <a class="nav-item nav-link active" href="{{ route('dashboard') }}">{{ __('Dashboard') }} <span class="sr-only">(current)</span></a>
              <a class="nav-item nav-link" href="/profile">{{ __('Profile') }}</a>
              <a class="nav-item nav-link" href="/therapy">{{ __('Therapy') }}</a>
-             <a class="nav-item nav-link" href="{{ route('measurements.index') }}">{{ __('Measurements') }}</a>
+             <a class="nav-item nav-link" href="{{ route('measurements.create') }}">{{ __('New measurement') }}</a>
              <a class="nav-item nav-link" href="{{ route('contacts.index') }}">{{ __('Contacts') }}</a>
 
          </div>

@@ -35,10 +35,14 @@
 
         <div class="mt-5">
             <div x-show="tab=='alarms'">
-                These measurements you took have triggered alarms
+                <h3 class="pb-5">
+                    These measurements you took have triggered alarms
+                </h3>
             </div>
             <div x-show="tab=='summary'">
-                These are your latest measurements
+                <h3 class="pb-5">
+                    These are your latest measurements
+                </h3>
 
                 <table id="summary-table">
                     <thead>
