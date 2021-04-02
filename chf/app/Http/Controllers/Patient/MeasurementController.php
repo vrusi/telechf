@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Patient;
 use App\Http\Controllers\Controller;
 use App\Models\Measurement;
 use App\Models\Parameter;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -35,15 +36,15 @@ class MeasurementController extends Controller
 
         $values = array_map(function ($parameter) use ($measurements) {
             $value = null;
-            $date = null;
+            $measurement_date = null;
             foreach ($measurements as $measurement) {
                 if ($measurement['parameter_id'] == $parameter['id']) {
                     $value = $measurement['value'];
-                    $date = $measurement['created_at'];
+                    $measurement_date = $measurement['created_at'];
                 }
             }
 
-            return ['parameter' => $parameter['name'], 'value' => $value, 'unit' => $parameter['unit'], 'date' => $date];
+            return ['parameter' => $parameter['name'], 'value' => $value, 'unit' => $parameter['unit'], 'date' => $measurement_date];
         }, $parameters);
 
         $conditions = Arr::map(['swellings' => 'Swellings', 'exercise_tolerance' => 'Exercise Tolerance', 'dyspnoea' => 'Nocturnal Dyspnoea'], function ($key, $name) use ($measurements) {
@@ -51,10 +52,12 @@ class MeasurementController extends Controller
 
             if (count($measurements) > 0) {
                 $avg = 0;
+                $count = 0;
                 foreach ($measurements as $measurement) {
                     $avg = $avg + $measurement[$key] ?? 0;
+                    $count = $measurement[$key] ? $count + 1 : $count;
                 }
-                $avg = $avg / count($measurements);
+                $avg = $avg / $count;
             }
 
             return ['name' => $name, 'value' => $avg];
@@ -80,8 +83,9 @@ class MeasurementController extends Controller
     public function create()
     {
         $today = Carbon::now();
-        $startOfWeek = $today->startOfWeek();
-        $endOfWeek = $today->endOfWeek();
+
+        $startOfWeek = $today->copy()->startOfWeek();
+        $endOfWeek = $today->copy()->endOfWeek();
 
         $user = Auth::user();
         $parameters = $user->parameters;
@@ -93,14 +97,14 @@ class MeasurementController extends Controller
             if ($parameter['measurement_span'] == 'week') {
                 $count = Measurement::where('user_id', $user->id)
                     ->where('parameter_id', $parameter->id)
-                    ->whereBetween('created_at', [$startOfWeek, $endOfWeek])->get()->count();
+                    ->whereBetween('created_at', [$startOfWeek->copy(), $endOfWeek->copy()])->get()->count();
                 if ($count < $parameter->measurement_times) {
                     array_push($takeThisWeek, $parameter);
                 }
             } else if ($parameter['measurement_span'] == 'day') {
                 $count = Measurement::where('user_id', $user->id)
                     ->where('parameter_id', $parameter->id)
-                    ->whereDate('created_at', $today)->get()->count();
+                    ->whereDate('created_at', $today->copy())->get()->count();
 
                 if ($count < $parameter->measurement_times) {
                     array_push($takeToday, $parameter);
@@ -120,10 +124,6 @@ class MeasurementController extends Controller
         return view('patient.measurements.create', $results);
     }
 
-    private function isAlarming(Integer $value, Integer $threshold, String $type)
-    {
-        return ($type == 'min') ? $value < $threshold : $value > $threshold;
-    }
     /**
      * Store a newly created resource in storage.
      *
@@ -132,8 +132,6 @@ class MeasurementController extends Controller
      */
     public function store(Request $request)
     {
-        $now = Carbon::now();
-
         $validated = $request->validate([
             'parameter_id' => 'required|exists:parameters,id',
             'value' => 'required|numeric',
@@ -142,6 +140,89 @@ class MeasurementController extends Controller
             'dyspnoea' => 'required|integer|between:1,5'
         ]);
 
+        $user = User::where('id', Auth::user()->id)->first();
+        $user_parameters = $user->parameters;
+        $parameters = Parameter::all();
+
+        $threshold_safety_min = null;
+        $threshold_safety_max = null;
+        $threshold_therapeutic_min = null;
+        $threshold_therapeutic_max = null;
+
+        // calculate weight change if weight was measured
+        $weight_param = Parameter::where('name', 'Weight')->first();
+        $weight_change_param_id = null;
+        $weight_change = null;
+        $threshold_safety_min_wchange = null;
+        $threshold_safety_max_wchange = null;
+        $threshold_therapeutic_min_wchange = null;
+        $threshold_therapeutic_max_wchange = null;
+
+        if ($validated['parameter_id'] == $weight_param->id) {
+
+            // get last weight measurement
+            $user_measurements = $user->measurements;
+            $weight_prev = null;
+            foreach ($user_measurements as $measurement) {
+                if ($measurement->parameter_id == $weight_param->id) {
+                    $weight_prev = $measurement->value;
+                }
+            }
+
+            // calculate weight change
+            if ($weight_prev) {
+                $weight_change = $validated['value'] - $weight_prev;
+            }
+
+            // save weight change
+            if ($weight_change) {
+                $weight_change_param = Parameter::where('name', 'Weight Change')->first();
+                $weight_change_param_id = $weight_change_param->id;
+
+                // check personal threshold alarms
+                foreach ($user_parameters as $parameter) {
+                    if ($parameter->id == $weight_change_param_id) {
+                        $threshold_safety_min_wchange = $parameter->pivot->threshold_safety_min;
+                        $threshold_safety_max_wchange = $parameter->pivot->threshold_safety_max;
+                        $threshold_therapeutic_min_wchange = $parameter->pivot->threshold_threshold_min;
+                        $threshold_therapeutic_max_wchange = $parameter->pivot->threshold_threshold_max;
+                    }
+                }
+
+                // check global threshold alarms
+                foreach ($parameters as $parameter) {
+                    if ($parameter->id == $weight_change_param_id) {
+                        $threshold_safety_min_wchange = $threshold_safety_min_wchange ? $threshold_safety_min_wchange : $parameter->threshold_min;
+                        $threshold_safety_max_wchange = $threshold_safety_max_wchange ? $threshold_safety_max_wchange : $parameter->threshold_max;
+                    }
+                }
+            }
+
+            // save weight in user table
+            $user_model = User::where('id', Auth::user()->id)->first();
+            $user_model->weight = $validated['value'];
+            $user_model->save();
+        }
+
+        // check personal threshold alarms for the measured parameter
+        foreach ($user_parameters as $parameter) {
+            if ($parameter->id == $request->parameter_id) {
+                $threshold_safety_min = $parameter->pivot->threshold_safety_min;
+                $threshold_safety_max = $parameter->pivot->threshold_safety_max;
+                $threshold_therapeutic_min = $parameter->pivot->threshold_threshold_min;
+                $threshold_therapeutic_max = $parameter->pivot->threshold_threshold_max;
+            }
+        }
+
+        // check global threshold alarms
+        foreach ($parameters as $parameter) {
+            if ($parameter->id == $request->parameter_id) {
+                $threshold_safety_min =  $threshold_safety_min ?  $threshold_safety_min : $parameter->threshold_min;
+                $threshold_safety_max = $threshold_safety_max ? $threshold_safety_max : $parameter->threshold_max;
+            }
+        }
+
+        // insert measurement
         Measurement::create([
             'user_id' => Auth::user()->id,
             'parameter_id' => $validated['parameter_id'],
@@ -149,10 +230,25 @@ class MeasurementController extends Controller
             'swellings' => $validated['swellings'],
             'exercise_tolerance' => $validated['exercise_tolerance'],
             'dyspnoea' => $validated['dyspnoea'],
-            // TODO
-            'triggered_safety_alarm' => false,
-            'triggered_therapeutic_alarm' => false,
+            'triggered_safety_alarm_min' => $validated['value'] <= $threshold_safety_min,
+            'triggered_safety_alarm_max' => $validated['value'] >= $threshold_safety_max,
+            'triggered_therapeutic_alarm_min' => $validated['value'] <= $threshold_therapeutic_min,
+            'triggered_therapeutic_alarm_max' => $validated['value'] >= $threshold_therapeutic_max,
         ]);
+
+
+        // if measurement is weight, save weight change too
+        if ($validated['parameter_id'] == $weight_param->id && $weight_change) {
+            Measurement::create([
+                'user_id' => Auth::user()->id,
+                'parameter_id' => $weight_change_param_id,
+                'value' => $weight_change,
+                'triggered_safety_alarm_min' => abs($weight_change) <= abs($threshold_safety_min_wchange),
+                'triggered_safety_alarm_max' => abs($weight_change) >= abs($threshold_safety_max_wchange),
+                'triggered_therapeutic_alarm_min' => abs($weight_change) <= abs($threshold_therapeutic_min_wchange),
+                'triggered_therapeutic_alarm_max' => abs($weight_change) >= abs($threshold_therapeutic_max_wchange),
+            ]);
+        }
 
         return redirect('/measurements');
     }

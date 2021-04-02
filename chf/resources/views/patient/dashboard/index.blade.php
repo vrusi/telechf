@@ -9,6 +9,16 @@
         font-weight: 900;
     }
 
+    th,
+    td {
+        min-width: 70px;
+        padding: 1rem;
+    }
+
+    table {
+        width: 100%;
+    }
+
 </style>
 
 <div class="container">
@@ -33,13 +43,15 @@
                 <table id="summary-table">
                     <thead>
                         <tr>
-                            <th>
+                            <th class="pr-4">
                                 Date
                             </th>
                             @foreach($parameters as $parameter)
+                            @if(!(strtolower($parameter['name']) == 'ecg'))
                             <th>
                                 {{ $parameter['name'] }} ({{ $parameter['unit'] }})
                             </th>
+                            @endif
                             @endforeach
                             <th>
                                 Swellings
@@ -58,14 +70,16 @@
                             <td>
                                 {{ $date }}
                             </td>
-                            @foreach($day as $parameter)
-                            @if($parameter['alarm'])
+                            @foreach($day as $measurement)
+
+
+                            @if(!array_key_exists('parameter', $measurement) || (array_key_exists('parameter', $measurement) && !(strtolower($measurement['parameter']) == 'ecg')) )
+                            @if($measurement['alarm'])
                             <td class="alarm">
-                                {{$parameter['value'] ?? '--' }}
-                            </td>
-                            @else
+                                @else
                             <td>
-                                {{$parameter['value'] ?? '--' }}
+                                @endif
+                                {{$measurement['value'] ?? '--' }}
                             </td>
                             @endif
                             @endforeach
@@ -87,17 +101,8 @@
                 leftColumns: 1
             }
             , responsive: true
-            , "order": [
-                [0, 'dsc']
-            ]
-
-        });
-
-        new $.fn.dataTable.Buttons($('#summary-table')[0], {
-            buttons: [
-                'copy', 'excel', 'pdf'
-            ]
-        });
+            , "ordering": false
+        , });
 
         $('#alarms-link').click(function() {
             return false;
@@ -114,7 +119,7 @@
         if (!url.searchParams.get('tab')) {
             history.pushState(null, '', 'dashboard?tab=alarms');
         }
-        
+
         return {
             tab: url.searchParams.get('tab') || 'alarms'
             , tabSwitch() {
