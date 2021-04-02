@@ -36,15 +36,15 @@ class MeasurementController extends Controller
 
         $values = array_map(function ($parameter) use ($measurements) {
             $value = null;
-            $measurement_date = null;
+            $measurementDate = null;
             foreach ($measurements as $measurement) {
                 if ($measurement['parameter_id'] == $parameter['id']) {
                     $value = $measurement['value'];
-                    $measurement_date = $measurement['created_at'];
+                    $measurementDate = $measurement['created_at'];
                 }
             }
 
-            return ['parameter' => $parameter['name'], 'value' => $value, 'unit' => $parameter['unit'], 'date' => $measurement_date];
+            return ['parameter' => $parameter['name'], 'value' => $value, 'unit' => $parameter['unit'], 'date' => $measurementDate];
         }, $parameters);
 
         $conditions = Arr::map(['swellings' => 'Swellings', 'exercise_tolerance' => 'Exercise Tolerance', 'dyspnoea' => 'Nocturnal Dyspnoea'], function ($key, $name) use ($measurements) {
@@ -141,59 +141,59 @@ class MeasurementController extends Controller
         ]);
 
         $user = User::where('id', Auth::user()->id)->first();
-        $user_parameters = $user->parameters;
+        $userParameters = $user->parameters;
         $parameters = Parameter::all();
 
-        $threshold_safety_min = null;
-        $threshold_safety_max = null;
-        $threshold_therapeutic_min = null;
-        $threshold_therapeutic_max = null;
+        $thresholdSafetyMin = null;
+        $thresholdSafetyMax = null;
+        $thresholdTherapeuticMin = null;
+        $thresholdTherapeuticMax = null;
 
         // calculate weight change if weight was measured
-        $weight_param = Parameter::where('name', 'Weight')->first();
-        $weight_change_param_id = null;
-        $weight_change = null;
-        $threshold_safety_min_wchange = null;
-        $threshold_safety_max_wchange = null;
-        $threshold_therapeutic_min_wchange = null;
-        $threshold_therapeutic_max_wchange = null;
+        $weightParam = Parameter::where('name', 'Weight')->first();
+        $weightChangeParamId = null;
+        $weightChange = null;
+        $thresholdSafetyMinWeightChange = null;
+        $thresholdSafetyMaxWeightChange = null;
+        $thresholdTherapeuticMinWeightChange = null;
+        $thresholdTherapeuticMaxWeightChange = null;
 
-        if ($validated['parameter_id'] == $weight_param->id) {
+        if ($validated['parameter_id'] == $weightParam->id) {
 
             // get last weight measurement
-            $user_measurements = $user->measurements;
-            $weight_prev = null;
-            foreach ($user_measurements as $measurement) {
-                if ($measurement->parameter_id == $weight_param->id) {
-                    $weight_prev = $measurement->value;
+            $userMeasurements = $user->measurements;
+            $weightPrevious = null;
+            foreach ($userMeasurements as $measurement) {
+                if ($measurement->parameter_id == $weightParam->id) {
+                    $weightPrevious = $measurement->value;
                 }
             }
 
             // calculate weight change
-            if ($weight_prev) {
-                $weight_change = $validated['value'] - $weight_prev;
+            if ($weightPrevious) {
+                $weightChange = $validated['value'] - $weightPrevious;
             }
 
             // save weight change
-            if ($weight_change) {
-                $weight_change_param = Parameter::where('name', 'Weight Change')->first();
-                $weight_change_param_id = $weight_change_param->id;
+            if ($weightChange) {
+                $weightChangeParame = Parameter::where('name', 'Weight Change')->first();
+                $weightChangeParamId = $weightChangeParame->id;
 
                 // check personal threshold alarms
-                foreach ($user_parameters as $parameter) {
-                    if ($parameter->id == $weight_change_param_id) {
-                        $threshold_safety_min_wchange = $parameter->pivot->threshold_safety_min;
-                        $threshold_safety_max_wchange = $parameter->pivot->threshold_safety_max;
-                        $threshold_therapeutic_min_wchange = $parameter->pivot->threshold_threshold_min;
-                        $threshold_therapeutic_max_wchange = $parameter->pivot->threshold_threshold_max;
+                foreach ($userParameters as $parameter) {
+                    if ($parameter->id == $weightChangeParamId) {
+                        $thresholdSafetyMinWeightChange = $parameter->pivot->threshold_safety_min;
+                        $thresholdSafetyMaxWeightChange = $parameter->pivot->threshold_safety_max;
+                        $thresholdTherapeuticMinWeightChange = $parameter->pivot->threshold_therapeutic_min;
+                        $thresholdTherapeuticMaxWeightChange = $parameter->pivot->threshold_therapeutic_max;
                     }
                 }
 
                 // check global threshold alarms
                 foreach ($parameters as $parameter) {
-                    if ($parameter->id == $weight_change_param_id) {
-                        $threshold_safety_min_wchange = $threshold_safety_min_wchange ? $threshold_safety_min_wchange : $parameter->threshold_min;
-                        $threshold_safety_max_wchange = $threshold_safety_max_wchange ? $threshold_safety_max_wchange : $parameter->threshold_max;
+                    if ($parameter->id == $weightChangeParamId) {
+                        $thresholdSafetyMinWeightChange = $thresholdSafetyMinWeightChange ? $thresholdSafetyMinWeightChange : $parameter->threshold_min;
+                        $thresholdSafetyMaxWeightChange = $thresholdSafetyMaxWeightChange ? $thresholdSafetyMaxWeightChange : $parameter->threshold_max;
                     }
                 }
             }
@@ -205,20 +205,20 @@ class MeasurementController extends Controller
         }
 
         // check personal threshold alarms for the measured parameter
-        foreach ($user_parameters as $parameter) {
+        foreach ($userParameters as $parameter) {
             if ($parameter->id == $request->parameter_id) {
-                $threshold_safety_min = $parameter->pivot->threshold_safety_min;
-                $threshold_safety_max = $parameter->pivot->threshold_safety_max;
-                $threshold_therapeutic_min = $parameter->pivot->threshold_threshold_min;
-                $threshold_therapeutic_max = $parameter->pivot->threshold_threshold_max;
+                $thresholdSafetyMin = $parameter->pivot->threshold_safety_min;
+                $thresholdSafetyMax = $parameter->pivot->threshold_safety_max;
+                $thresholdTherapeuticMin = $parameter->pivot->threshold_therapeutic_min;
+                $thresholdTherapeuticMax = $parameter->pivot->threshold_therapeutic_max;
             }
         }
 
         // check global threshold alarms
         foreach ($parameters as $parameter) {
             if ($parameter->id == $request->parameter_id) {
-                $threshold_safety_min =  $threshold_safety_min ?  $threshold_safety_min : $parameter->threshold_min;
-                $threshold_safety_max = $threshold_safety_max ? $threshold_safety_max : $parameter->threshold_max;
+                $thresholdSafetyMin =  $thresholdSafetyMin ?  $thresholdSafetyMin : $parameter->threshold_min;
+                $thresholdSafetyMax = $thresholdSafetyMax ? $thresholdSafetyMax : $parameter->threshold_max;
             }
         }
 
@@ -230,23 +230,23 @@ class MeasurementController extends Controller
             'swellings' => $validated['swellings'],
             'exercise_tolerance' => $validated['exercise_tolerance'],
             'dyspnoea' => $validated['dyspnoea'],
-            'triggered_safety_alarm_min' => $validated['value'] <= $threshold_safety_min,
-            'triggered_safety_alarm_max' => $validated['value'] >= $threshold_safety_max,
-            'triggered_therapeutic_alarm_min' => $validated['value'] <= $threshold_therapeutic_min,
-            'triggered_therapeutic_alarm_max' => $validated['value'] >= $threshold_therapeutic_max,
+            'triggered_safety_alarm_min' => $validated['value'] <= $thresholdSafetyMin,
+            'triggered_safety_alarm_max' => $validated['value'] >= $thresholdSafetyMax,
+            'triggered_therapeutic_alarm_min' => $validated['value'] <= $thresholdTherapeuticMin,
+            'triggered_therapeutic_alarm_max' => $validated['value'] >= $thresholdTherapeuticMax,
         ]);
 
 
         // if measurement is weight, save weight change too
-        if ($validated['parameter_id'] == $weight_param->id && $weight_change) {
+        if ($validated['parameter_id'] == $weightParam->id && $weightChange) {
             Measurement::create([
                 'user_id' => Auth::user()->id,
-                'parameter_id' => $weight_change_param_id,
-                'value' => $weight_change,
-                'triggered_safety_alarm_min' => abs($weight_change) <= abs($threshold_safety_min_wchange),
-                'triggered_safety_alarm_max' => abs($weight_change) >= abs($threshold_safety_max_wchange),
-                'triggered_therapeutic_alarm_min' => abs($weight_change) <= abs($threshold_therapeutic_min_wchange),
-                'triggered_therapeutic_alarm_max' => abs($weight_change) >= abs($threshold_therapeutic_max_wchange),
+                'parameter_id' => $weightChangeParamId,
+                'value' => $weightChange,
+                'triggered_safety_alarm_min' => abs($weightChange) <= abs($thresholdSafetyMinWeightChange),
+                'triggered_safety_alarm_max' => abs($weightChange) >= abs($thresholdSafetyMaxWeightChange),
+                'triggered_therapeutic_alarm_min' => abs($weightChange) <= abs($thresholdTherapeuticMinWeightChange),
+                'triggered_therapeutic_alarm_max' => abs($weightChange) >= abs($thresholdTherapeuticMaxWeightChange),
             ]);
         }
 

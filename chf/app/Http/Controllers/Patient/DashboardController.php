@@ -43,9 +43,9 @@ class DashboardController extends Controller
         })->toArray();
 
         // TODO
-        $alarm_general = false;
+        $alarmGeneral = false;
 
-        $days = array_map (function ($measurementsPerDay) use ($parameters) {
+        $daysSummary = array_map (function ($measurementsPerDay) use ($parameters) {
             $values = array_map(function ($parameter) use ($measurementsPerDay) {
                 $value = null;
                 $alarm = false;
@@ -56,7 +56,7 @@ class DashboardController extends Controller
                         $alarm = $measurement['triggered_therapeutic_alarm_min'] || $measurement['triggered_therapeutic_alarm_max'] ||  $measurement['triggered_safety_alarm_min'] || $measurement['triggered_safety_alarm_max'];
                         
                         if ($alarm) {
-                            $alarm_general = true;
+                            $alarmGeneral = true;
                         }
                     }
                 }
@@ -66,7 +66,7 @@ class DashboardController extends Controller
 
             $conditions = Arr::map(['swellings' => 'Swellings', 'exercise_tolerance' => 'Exercise Tolerance', 'dyspnoea' => 'Nocturnal Dyspnoea'], function ($key, $name) use ($measurementsPerDay) {
                 $avg = null;
-                $avg_mapped = '';
+                $avgMapped = '';
                 // TODO
                 $alarm = false; 
 
@@ -77,10 +77,10 @@ class DashboardController extends Controller
                     }
                     $avg = $avg / count($measurementsPerDay);
                     
-                    $avg_mapped = $this->mapConditions(ceil($avg));
+                    $avgMapped = $this->mapConditions(ceil($avg));
                 }
 
-                return ['name' => $name, 'value' => $avg_mapped, 'alarm' => $alarm];
+                return ['name' => $name, 'value' => $avgMapped, 'alarm' => $alarm];
             });
 
             $conditions = array_values($conditions);
@@ -88,6 +88,10 @@ class DashboardController extends Controller
 
         }, $measurementsGrouped);
 
-        return view('patient.dashboard.index', ['summary' => $days, 'parameters' => $parameters]);
+        $daysAlarms = array_map ( function ($measurementsPerDay) use ($parameters) {
+          
+        }, $measurementsGrouped);
+
+        return view('patient.dashboard.index', ['summary' => $daysSummary, 'parameters' => $parameters]);
     }
 }
