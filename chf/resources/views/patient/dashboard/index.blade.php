@@ -83,7 +83,15 @@
                                 @else
                             <td>
                                 @endif
-                                {{$measurement['value'] ?? '--' }}
+                                {{
+                                    !$measurement['value']
+                                    ? '--'
+                                    : (
+                                       is_numeric($measurement['value'])
+                                       ? round($measurement['value'], 2)
+                                       : $measurement['value']
+                                       ) 
+                                       }}
                             </td>
                             @endif
                             @endforeach
@@ -141,7 +149,15 @@
                                 @else
                             <td>
                                 @endif
-                                {{$measurement['value'] ?? '--' }}
+                                {{
+                                    !$measurement['value']
+                                    ? '--'
+                                    : (
+                                       is_numeric($measurement['value'])
+                                       ? round($measurement['value'], 2)
+                                       : $measurement['value']
+                                       ) 
+                                       }}
                             </td>
                             @endif
                             @endforeach

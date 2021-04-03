@@ -50,6 +50,7 @@ class DashboardController extends Controller
                 foreach ($measurementsPerDay as $measurement) {
                     if ($measurement['parameter_id'] == $parameter['id']) {
                         $value = $measurement['value'];
+
                         $alarm = $measurement['triggered_therapeutic_alarm_min'] || $measurement['triggered_therapeutic_alarm_max'] ||  $measurement['triggered_safety_alarm_min'] || $measurement['triggered_safety_alarm_max'];
 
                         if ($alarm) {
@@ -75,6 +76,7 @@ class DashboardController extends Controller
                     $avg = $avg / count($measurementsPerDay);
 
                     $avgMapped = $this->mapConditions(ceil($avg));
+
                 }
 
                 return ['name' => $name, 'value' => $avgMapped, 'alarm' => $alarm];
