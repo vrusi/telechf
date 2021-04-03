@@ -36,12 +36,70 @@
         <div class="mt-5">
             <div x-show="tab=='alarms'">
                 <h3 class="pb-5">
+                    @if(empty($alarms))
+                    None of your measurements have triggered any alarms
+                    @else
                     These measurements you took have triggered alarms
+                    @endif
                 </h3>
+
+                <table id="alarms-table">
+                    <thead>
+                        <tr>
+                            <th class="pr-4">
+                                Date
+                            </th>
+                            @foreach($parameters as $parameter)
+                            @if(!(strtolower($parameter['name']) == 'ecg'))
+                            <th>
+                                {{ $parameter['name'] }} ({{ $parameter['unit'] }})
+                            </th>
+                            @endif
+                            @endforeach
+                            <th>
+                                Swellings
+                            </th>
+                            <th>
+                                Exercise Tolerance
+                            </th>
+                            <th>
+                                Nocturnal Dyspnoea
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach($alarms as $date => $day)
+                        <tr>
+                            <td>
+                                {{ $date }}
+                            </td>
+                            @foreach($day as $measurement)
+
+
+                            @if(!array_key_exists('parameter', $measurement) || (array_key_exists('parameter', $measurement) && !(strtolower($measurement['parameter']) == 'ecg')) )
+                            @if($measurement['alarm'])
+                            <td class="alarm">
+                                @else
+                            <td>
+                                @endif
+                                {{$measurement['value'] ?? '--' }}
+                            </td>
+                            @endif
+                            @endforeach
+                        </tr>
+                        @endforeach
+                    </tbody>
+
+                </table>
             </div>
             <div x-show="tab=='summary'">
                 <h3 class="pb-5">
+                    @if(empty($summary))
+                    You have not taken any measurements yet
+                    @else
                     These are your latest measurements
+                    @endif
                 </h3>
 
                 <table id="summary-table">
@@ -99,8 +157,18 @@
 
 <script>
     $(document).ready(function() {
+
         $.noConflict();
+
         $('#summary-table').DataTable({
+            fixedColumns: {
+                leftColumns: 1
+            }
+            , responsive: true
+            , "ordering": false
+        , });
+
+        $('#alarms-table').DataTable({
             fixedColumns: {
                 leftColumns: 1
             }

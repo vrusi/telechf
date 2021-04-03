@@ -12,20 +12,17 @@ use Minwork\Helper\Arr;
 
 class DashboardController extends Controller
 {
-    private function mapConditions(int $value) {
+    private function mapConditions(int $value)
+    {
         if ($value == 5) {
             return 'Very bad';
-        }
-        else if ($value == 4) {
+        } else if ($value == 4) {
             return 'Bad';
-        }
-        else if ($value == 3) {
+        } else if ($value == 3) {
             return 'Neutral';
-        }
-        else if ($value == 2) {
+        } else if ($value == 2) {
             return 'Good';
-        }
-        else if ($value == 1) {
+        } else if ($value == 1) {
             return 'Very good';
         }
 
@@ -45,7 +42,7 @@ class DashboardController extends Controller
         // TODO
         $alarmGeneral = false;
 
-        $daysSummary = array_map (function ($measurementsPerDay) use ($parameters) {
+        $daysSummary = array_map(function ($measurementsPerDay) use ($parameters) {
             $values = array_map(function ($parameter) use ($measurementsPerDay) {
                 $value = null;
                 $alarm = false;
@@ -54,7 +51,7 @@ class DashboardController extends Controller
                     if ($measurement['parameter_id'] == $parameter['id']) {
                         $value = $measurement['value'];
                         $alarm = $measurement['triggered_therapeutic_alarm_min'] || $measurement['triggered_therapeutic_alarm_max'] ||  $measurement['triggered_safety_alarm_min'] || $measurement['triggered_safety_alarm_max'];
-                        
+
                         if ($alarm) {
                             $alarmGeneral = true;
                         }
@@ -68,7 +65,7 @@ class DashboardController extends Controller
                 $avg = null;
                 $avgMapped = '';
                 // TODO
-                $alarm = false; 
+                $alarm = false;
 
                 if (count($measurementsPerDay) > 0) {
                     $avg = 0;
@@ -76,7 +73,7 @@ class DashboardController extends Controller
                         $avg = $avg + $measurement[$key] ?? 0;
                     }
                     $avg = $avg / count($measurementsPerDay);
-                    
+
                     $avgMapped = $this->mapConditions(ceil($avg));
                 }
 
@@ -84,14 +81,26 @@ class DashboardController extends Controller
             });
 
             $conditions = array_values($conditions);
+
             return array_merge($values, $conditions);
-
         }, $measurementsGrouped);
 
-        $daysAlarms = array_map ( function ($measurementsPerDay) use ($parameters) {
-          
-        }, $measurementsGrouped);
+        $daysAlarms = array();
+        foreach($daysSummary as $date => $day) {
+            foreach ($day as $measurement) {
 
-        return view('patient.dashboard.index', ['summary' => $daysSummary, 'parameters' => $parameters]);
+                if (!$measurement['alarm']) {
+                    continue;
+                }
+
+                if (in_array($day, $daysAlarms)) {
+                    continue;
+                }
+
+                $daysAlarms[$date] = $day;
+            }
+        }
+
+        return view('patient.dashboard.index', ['summary' => $daysSummary, 'alarms' => $daysAlarms, 'parameters' => $parameters]);
     }
 }
