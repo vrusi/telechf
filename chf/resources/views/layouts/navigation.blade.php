@@ -1,3 +1,5 @@
+ @if (Auth::check())
+
  <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
      <a class="navbar-brand" href="{{ url('/') }}">
          {{ config('app.name', 'Laravel') }}
@@ -9,8 +11,9 @@
 
      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
          <!-- Left Side Of Navbar -->
-         <ul class="navbar-nav">
 
+         @if (!Auth::user()->is_coordinator)
+         <ul class="navbar-nav">
              <li class="{{ Request::is('dashboard*') ? 'nav-item active' : 'nav-item' }}">
                  <a class="nav-link" href="{{ route('dashboard') }}">{{ __('Dashboard') }}</a>
              </li>
@@ -35,6 +38,15 @@
                  <a class="nav-link" href="{{ route('charts') }}">{{ __('Charts') }}</a>
              </li>
          </ul>
+         @else
+         <ul class="navbar-nav">
+
+             <li class="{{ Request::is('coordinator/dashboard*') ? 'nav-item active' : 'nav-item' }}">
+                 <a class="nav-link" href="{{ route('coordinator.dashboard') }}">{{ __('Dashboard') }}</a>
+             </li>
+         </ul>
+
+         @endif
 
          <!-- Right Side Of Navbar -->
          <ul class="navbar-nav ml-auto">
@@ -77,3 +89,4 @@
          </ul>
      </div>
  </nav>
+ @endif

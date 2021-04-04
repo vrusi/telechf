@@ -4,32 +4,28 @@ use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', 'App\Http\Controllers\Patient\DashboardController@index')->middleware(['auth'])->name('dashboard');
+/*
+|--------------------------------------------------------------------------
+| Patient Routes
+|--------------------------------------------------------------------------
+*/
 
-Route::resource('/measurements', 'App\Http\Controllers\Patient\MeasurementController')->middleware(['auth']);
-Route::get('/measurements/create/{parameterId}', 'App\Http\Controllers\Patient\MeasurementController@measurementForm')->middleware(['auth']);
 
-Route::resource('/contacts', 'App\Http\Controllers\Patient\ContactController')->middleware(['auth']);
+Route::get('/dashboard', 'App\Http\Controllers\Patient\DashboardController@index')->middleware(['auth', 'patient'])->name('dashboard');
 
-Route::get('/profile', 'App\Http\Controllers\Patient\ProfileController@index')->middleware(['auth'])->name('profile');
-Route::get('/therapy', 'App\Http\Controllers\Patient\ProfileController@therapy')->middleware(['auth'])->name('therapy');
+Route::resource('/measurements', 'App\Http\Controllers\Patient\MeasurementController')->middleware(['auth', 'patient']);
+Route::get('/measurements/create/{parameterId}', 'App\Http\Controllers\Patient\MeasurementController@measurementForm')->middleware(['auth', 'patient']);
 
-Route::get('/charts', 'App\Http\Controllers\Patient\ChartsController@index')->middleware(['auth'])->name('charts');
+Route::resource('/contacts', 'App\Http\Controllers\Patient\ContactController')->middleware(['auth', 'patient']);
+
+Route::get('/profile', 'App\Http\Controllers\Patient\ProfileController@index')->middleware(['auth', 'patient'])->name('profile');
+Route::get('/therapy', 'App\Http\Controllers\Patient\ProfileController@therapy')->middleware(['auth', 'patient'])->name('therapy');
+
+Route::get('/charts', 'App\Http\Controllers\Patient\ChartsController@index')->middleware(['auth', 'patient'])->name('charts');
 
 
 
@@ -37,4 +33,11 @@ require __DIR__ . '/auth.php';
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+/*
+|--------------------------------------------------------------------------
+| Coordinator Routes
+|--------------------------------------------------------------------------
+*/
+
+Route::get('coordinator/dashboard', 'App\Http\Controllers\Coordinator\DashboardController@index')->middleware(['auth', 'coordinator'])->name('coordinator.dashboard');

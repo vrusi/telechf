@@ -25,7 +25,12 @@
             @if (Route::has('login'))
                 <div class="hidden fixed top-0 right-0 px-6 py-4 sm:block">
                     @auth
+                        @if(!Auth::user()->is_coordinator)
                         <a href="{{ url('/dashboard') }}" class="text-sm text-gray-700 underline">Dashboard</a>
+                        @else
+                        <a href="{{ url('/coordinator/dashboard') }}" class="text-sm text-gray-700 underline">Dashboard</a>
+                        @endif
+
                     @else
                         <a href="{{ route('login') }}" class="text-sm text-gray-700 underline">Log in</a>
 
