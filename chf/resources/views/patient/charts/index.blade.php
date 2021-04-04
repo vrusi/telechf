@@ -76,12 +76,11 @@
 
         traces = [plot]
         if (lower_threshold) {
-
             traces.push(lower_threshold);
         }
-        if (upper_threshold) {
 
-        traces.push(upper_threshold);
+        if (upper_threshold) {
+            traces.push(upper_threshold);
         }
 
         Plotly.newPlot('chart-' + name, traces, layout);
