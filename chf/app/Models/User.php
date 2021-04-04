@@ -73,4 +73,37 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Drug::class, 'user_drugs');
     }
+
+    public function thresholds()
+    {
+        $parametersGlobal =  Parameter::all();
+        $parametersPersonal =  $this->parameters;
+        
+        $thresholds = array();
+        
+        foreach ($parametersPersonal as $personal) {
+            $safetyMax = $personal->pivot->threshold_safety_max ?? null;
+            $safetyMin = $personal->pivot->threshold_safety_min ?? null;
+            
+            $therapeuticMax = $personal->pivot->threshold_therapeutic_max ?? null;
+            $therapeuticMin = $personal->pivot->threshold_therapeutic_min ?? null;
+
+            if (!$safetyMax || !$safetyMin) {
+                foreach ($parametersGlobal as $global) {
+                    if ($global->id == $personal->id) {
+                        $safetyMax = $safetyMax ?? $global->threshold_max;
+                        $safetyMin = $safetyMin ?? $global->threshold_min;
+                    }
+                }
+            }
+
+            $thresholds[$personal->id] = [
+                'safetyMax' => $safetyMax,
+                'safetyMin' => $safetyMin,
+                'therapeuticMax' => $therapeuticMax,
+                'therapeuticMin' => $therapeuticMin];
+        }
+        
+        return $thresholds;
+    }
 }

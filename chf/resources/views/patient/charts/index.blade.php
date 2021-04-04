@@ -24,12 +24,36 @@
         unit = chart['unit'];
         values = chart['values'];
         dates = chart['dates'];
+        max = chart['max'];
+        min = chart['min'];
 
         var plot = {
             x: dates, 
             y: values,
             type: 'scatter',
+            name: name,
+            showlegend: true,
         };
+
+        var lower_threshold = min ? {
+            x: dates,
+            y: Array(dates.length).fill(min),
+            line: {
+                dash: 'dot',
+            },
+            name: 'Lower threshold',
+            showlegend: true,
+        } : null;
+
+        var upper_threshold = max ? {
+            x: dates,
+            y: Array(dates.length).fill(max),
+            line: {
+                dash: 'dot',
+            },
+            name: 'Upper threshold',
+            showlegend: true,
+        } : null;
 
         var layout = {
             title: {
@@ -50,7 +74,17 @@
             },
         }
 
-        Plotly.newPlot('chart-' + name, [plot], layout);
+        traces = [plot]
+        if (lower_threshold) {
+
+            traces.push(lower_threshold);
+        }
+        if (upper_threshold) {
+
+        traces.push(upper_threshold);
+        }
+
+        Plotly.newPlot('chart-' + name, traces, layout);
     }
 
 </script>

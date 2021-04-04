@@ -12,6 +12,7 @@ class ChartsController extends Controller
     function index(Request $request)
     {
         $user = Auth::user();
+        $thresholds = $user->thresholds();
 
         $measurements = $user->measurements;
         $parameters = $user->parameters;
@@ -32,12 +33,22 @@ class ChartsController extends Controller
                 }
             }
 
-            array_push($charts, ['name' => $name, 'unit' => $unit, 'values' => $values, 'dates' => $dates]);
+            array_push(
+                $charts,
+                [
+                'name' => $name,
+                'unit' => $unit,
+                'values' => $values,
+                'dates' => $dates,
+                'max' => $thresholds[$parameter->id]['therapeuticMax'],
+                'min' => $thresholds[$parameter->id]['therapeuticMin']]
+            );
 
             unset($values);
             unset($dates);
         }
-
+        
+        dump($thresholds);
         return view('patient.charts.index', ['charts' => $charts, 'charts_encoded' => json_encode($charts, JSON_HEX_QUOT | JSON_HEX_APOS | JSON_NUMERIC_CHECK)]);
     }
 }
