@@ -23,7 +23,7 @@ class UserParameterSeeder extends Seeder
                 'measurement_times' => '3',
                 'measurement_span' => 'week',
                 'threshold_safety_max' => 110,
-                'threshold_therapeutic_max' => 90,
+                'threshold_therapeutic_max' => 110,
             ]);
 
             // diastolic blood pressure
@@ -32,8 +32,8 @@ class UserParameterSeeder extends Seeder
                 'parameter_id' => 2,
                 'measurement_times' => '3',
                 'measurement_span' => 'week',
-                'threshold_safety_max' => 70,
-                'threshold_therapeutic_max' => 50,
+                'threshold_safety_max' => 80,
+                'threshold_therapeutic_max' => 70,
             ]);
 
             // heart rate

@@ -48,7 +48,6 @@ class ChartsController extends Controller
             unset($dates);
         }
         
-        dump($thresholds);
         return view('patient.charts.index', ['charts' => $charts, 'charts_encoded' => json_encode($charts, JSON_HEX_QUOT | JSON_HEX_APOS | JSON_NUMERIC_CHECK)]);
     }
 }

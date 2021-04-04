@@ -93,7 +93,7 @@ class MeasurementSeeder extends Seeder
                 DB::table('measurements')->insert([
                     'user_id' => $patientId,
                     'parameter_id' => 3,
-                    'value' => rand(60, 100),
+                    'value' => rand(60, 85),
                     'swellings' => rand(2, 4),
                     'exercise_tolerance' => rand(2, 4),
                     'dyspnoea' => rand(2, 4),
