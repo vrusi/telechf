@@ -29,6 +29,9 @@ Route::resource('/contacts', 'App\Http\Controllers\Patient\ContactController')->
 Route::get('/profile', 'App\Http\Controllers\Patient\ProfileController@index')->middleware(['auth'])->name('profile');
 Route::get('/therapy', 'App\Http\Controllers\Patient\ProfileController@therapy')->middleware(['auth'])->name('therapy');
 
+Route::get('/charts', 'App\Http\Controllers\Patient\ChartsController@index')->middleware(['auth'])->name('charts');
+
+
 
 require __DIR__ . '/auth.php';
 

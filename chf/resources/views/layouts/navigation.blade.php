@@ -30,6 +30,10 @@
              <li class="{{ Request::is('contacts*') ? 'nav-item active' : 'nav-item' }}">
                  <a class="nav-link" href="{{ route('contacts.index') }}">{{ __('Contacts') }}</a>
              </li>
+
+             <li class="{{ Request::is('charts*') ? 'nav-item active' : 'nav-item' }}">
+                 <a class="nav-link" href="{{ route('charts') }}">{{ __('Charts') }}</a>
+             </li>
          </ul>
 
          <!-- Right Side Of Navbar -->
