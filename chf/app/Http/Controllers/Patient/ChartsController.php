@@ -20,6 +20,8 @@ class ChartsController extends Controller
 
         foreach ($parameters as $parameter) {
             $name = $parameter->name;
+            $unit = $parameter->unit;
+
             $values = array();
             $dates = array();
 
@@ -30,7 +32,7 @@ class ChartsController extends Controller
                 }
             }
 
-            array_push($charts, ['name' => $name, 'values' => $values, 'dates' => $dates]);
+            array_push($charts, ['name' => $name, 'unit' => $unit, 'values' => $values, 'dates' => $dates]);
 
             unset($values);
             unset($dates);

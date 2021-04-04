@@ -8,8 +8,7 @@
     </h1>
 
     @foreach($charts as $chart)
-    <h2> {{ $chart['name'] }}</h2>
-    <div id="{{ 'chart-'.$chart['name'] }}">
+    <div id="{{ 'chart-'.$chart['name'] }}" class="mb-5">
     </div>
 
     @endforeach
@@ -18,20 +17,40 @@
 
 <script>
     charts = {!! $charts_encoded !!};
-    
+
     for (chart of charts) {
 
         name = chart['name'];
+        unit = chart['unit'];
         values = chart['values'];
         dates = chart['dates'];
 
-        var chartObj = {
-            x: dates
-            , y: values
-            , type: 'scatter'
+        var plot = {
+            x: dates, 
+            y: values,
+            type: 'scatter',
         };
 
-        Plotly.newPlot('chart-' + name, [chartObj]);
+        var layout = {
+            title: {
+                text: name,
+                
+            },
+
+            xaxis: {
+                title: {
+                    text: 'Date'
+                }
+            },
+
+            yaxis: {
+                title: {
+                    text: 'Value (' + unit + ')',
+                }
+            },
+        }
+
+        Plotly.newPlot('chart-' + name, [plot], layout);
     }
 
 </script>
