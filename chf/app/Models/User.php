@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -85,23 +86,38 @@ class User extends Authenticatable
         $measurementsGrouped = $this->measurementsByDay();
 
         return array_map(function ($measurementsPerDay) use ($parameters) {
+
             $values = array_map(function ($parameter) use ($measurementsPerDay) {
+
                 $value = null;
-                $alarm = false;
+                $alarmAny = false;
+                $alarmSafetyMax = false;
+                $alarmSafetyMin = false;
+                $alarmTherapeuticMax = false;
+                $alarmTherapeuticMin = false;
 
                 foreach ($measurementsPerDay as $measurement) {
                     if ($measurement['parameter_id'] == $parameter['id']) {
                         $value = $measurement['value'];
-
-                        $alarm = $measurement['triggered_therapeutic_alarm_min'] || $measurement['triggered_therapeutic_alarm_max'] ||  $measurement['triggered_safety_alarm_min'] || $measurement['triggered_safety_alarm_max'];
-
-                        if ($alarm) {
-                            $alarmGeneral = true;
-                        }
+                        $alarmAny = $measurement['triggered_safety_alarm_max'] || $measurement['triggered_safety_alarm_min'] || $measurement['triggered_therapeutic_alarm_max'] || $measurement['triggered_therapeutic_alarm_min'];
+                        $alarmSafetyMax = $measurement['triggered_safety_alarm_max'];
+                        $alarmSafetyMin = $measurement['triggered_safety_alarm_min'];
+                        $alarmTherapeuticMax = $measurement['triggered_therapeutic_alarm_max'];
+                        $alarmTherapeuticMin = $measurement['triggered_therapeutic_alarm_min'];
                     }
                 }
 
-                return ['parameter' => $parameter['name'], 'value' => $value, 'unit' => $parameter['unit'], 'alarm' => $alarm, 'date' => $measurement['created_at']];
+                return [
+                    'parameter' => $parameter['name'],
+                    'value' => $value,
+                    'unit' => $parameter['unit'],
+                    'alarm' => $alarmAny,
+                    'alarmSafetyMax' => $alarmSafetyMax,
+                    'alarmSafetyMin' => $alarmSafetyMin,
+                    'alarmTherapeuticMax' => $alarmTherapeuticMax,
+                    'alarmTherapeuticMin' => $alarmTherapeuticMin,
+                    'date' => $measurement['created_at']
+                ];
             }, $parameters);
 
             $conditions = Arr::map(['swellings' => 'Swellings', 'exercise_tolerance' => 'Exercise Tolerance', 'dyspnoea' => 'Nocturnal Dyspnoea'], function ($key, $name) use ($measurementsPerDay) {
@@ -120,7 +136,11 @@ class User extends Authenticatable
                     $avgMapped = $this->mapConditions(ceil($avg));
                 }
 
-                return ['name' => $name, 'value' => $avgMapped, 'alarm' => $alarm];
+                return [
+                    'name' => $name,
+                    'value' => $avgMapped,
+                    'alarm' => $alarm
+                ];
             });
 
             $conditions = array_values($conditions);
@@ -208,5 +228,48 @@ class User extends Authenticatable
     public function patients()
     {
         return $this->hasMany(User::class, 'coordinator_id');
+    }
+
+    public function measurementsInDay(object $createdAt)
+    {
+        $measurements = $this->measurements()->get();
+        $measurementsInDay = array();
+
+        foreach ($measurements as $measurement) {
+            if ($measurement->created_at == $createdAt) {
+                array_push($measurementsInDay, $measurement);
+            }
+        }
+
+        $conditions = Arr::map(['swellings' => 'Swellings', 'exercise_tolerance' => 'Exercise Tolerance', 'dyspnoea' => 'Nocturnal Dyspnoea'], function ($key, $name) use ($measurementsInDay) {
+            $avg = null;
+            $avgMapped = '';
+            // TODO
+            $alarm = false;
+
+            if (count($measurementsInDay) > 0) {
+                $avg = 0;
+                foreach ($measurementsInDay as $measurement) {
+                    $avg = $avg + $measurement[$key] ?? 0;
+                }
+                $avg = $avg / count($measurementsInDay);
+
+                $avgMapped = $this->mapConditions(ceil($avg));
+            }
+
+            return [
+                'name' => $name,
+                'value' => $avgMapped,
+                'triggered_safety_alarm_max' => false,
+                'triggered_safety_alarm_min' => false,
+                'triggered_therapeutic_alarm_max' => false,
+                'triggered_therapeutic_alarm_min' => false,
+
+            ];
+        });
+
+        $conditions = array_values($conditions);
+
+        return array_merge($measurementsInDay, $conditions);
     }
 }

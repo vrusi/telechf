@@ -46,6 +46,13 @@ class MeasurementSeeder extends Seeder
                     'exercise_tolerance' => rand(2, 4),
                     'dyspnoea' => rand(2, 4),
                     'created_at' => $createdAt,
+
+                    // 5 % chance at any alarm
+                    'triggered_safety_alarm_min' => rand(0, 100) <= 5 ? true : false,
+                    'triggered_safety_alarm_max' => rand(0, 100) <= 5 ? true : false,
+                    'triggered_therapeutic_alarm_min' => rand(0, 100) <= 5 ? true : false,
+                    'triggered_therapeutic_alarm_max' => rand(0, 100) <= 5 ? true : false,
+
                 ]);
 
                 // weight change
@@ -58,6 +65,12 @@ class MeasurementSeeder extends Seeder
                         'exercise_tolerance' => rand(2, 4),
                         'dyspnoea' => rand(2, 4),
                         'created_at' => $createdAt,
+
+                        // 5 % chance at any alarm
+                        'triggered_safety_alarm_min' => rand(0, 100) <= 5 ? true : false,
+                        'triggered_safety_alarm_max' => rand(0, 100) <= 5 ? true : false,
+                        'triggered_therapeutic_alarm_min' => rand(0, 100) <= 5 ? true : false,
+                        'triggered_therapeutic_alarm_max' => rand(0, 100) <= 5 ? true : false,
                     ]);
                 }
             }
@@ -76,6 +89,12 @@ class MeasurementSeeder extends Seeder
                     'exercise_tolerance' => rand(2, 4),
                     'dyspnoea' => rand(2, 4),
                     'created_at' =>  $day->copy()->subMinutes(rand(30, 0)),
+
+                    // 5 % chance at any alarm
+                    'triggered_safety_alarm_min' => rand(0, 100) <= 5 ? true : false,
+                    'triggered_safety_alarm_max' => rand(0, 100) <= 5 ? true : false,
+                    'triggered_therapeutic_alarm_min' => rand(0, 100) <= 5 ? true : false,
+                    'triggered_therapeutic_alarm_max' => rand(0, 100) <= 5 ? true : false,
                 ]);
 
                 // diastolic pressure
@@ -87,6 +106,12 @@ class MeasurementSeeder extends Seeder
                     'exercise_tolerance' => rand(2, 4),
                     'dyspnoea' => rand(2, 4),
                     'created_at' =>  $day->copy()->subMinutes(rand(30, 0)),
+
+                    // 5 % chance at any alarm
+                    'triggered_safety_alarm_min' => rand(0, 100) <= 5 ? true : false,
+                    'triggered_safety_alarm_max' => rand(0, 100) <= 5 ? true : false,
+                    'triggered_therapeutic_alarm_min' => rand(0, 100) <= 5 ? true : false,
+                    'triggered_therapeutic_alarm_max' => rand(0, 100) <= 5 ? true : false,
                 ]);
 
                 // heart rate
@@ -98,6 +123,12 @@ class MeasurementSeeder extends Seeder
                     'exercise_tolerance' => rand(2, 4),
                     'dyspnoea' => rand(2, 4),
                     'created_at' => $day->copy()->subMinutes(rand(30, 0)),
+
+                    // 5 % chance at any alarm
+                    'triggered_safety_alarm_min' => rand(0, 100) <= 5 ? true : false,
+                    'triggered_safety_alarm_max' => rand(0, 100) <= 5 ? true : false,
+                    'triggered_therapeutic_alarm_min' => rand(0, 100) <= 5 ? true : false,
+                    'triggered_therapeutic_alarm_max' => rand(0, 100) <= 5 ? true : false,
                 ]);
 
                 // SpO2
@@ -109,6 +140,12 @@ class MeasurementSeeder extends Seeder
                     'exercise_tolerance' => rand(2, 4),
                     'dyspnoea' => rand(2, 4),
                     'created_at' => $day->copy()->subMinutes(rand(30, 0)),
+
+                    // 5 % chance at any alarm
+                    'triggered_safety_alarm_min' => rand(0, 100) <= 5 ? true : false,
+                    'triggered_safety_alarm_max' => rand(0, 100) <= 5 ? true : false,
+                    'triggered_therapeutic_alarm_min' => rand(0, 100) <= 5 ? true : false,
+                    'triggered_therapeutic_alarm_max' => rand(0, 100) <= 5 ? true : false,
                 ]);
             }
         }
