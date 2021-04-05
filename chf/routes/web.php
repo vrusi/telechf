@@ -41,3 +41,8 @@ Auth::routes();
 */
 
 Route::get('coordinator/dashboard', 'App\Http\Controllers\Coordinator\DashboardController@index')->middleware(['auth', 'coordinator'])->name('coordinator.dashboard');
+
+Route::resource('coordinator/patients', 'App\Http\Controllers\Coordinator\PatientController')->middleware(['auth', 'coordinator']);
+
+Route::get('coordinator/patients/{patient}/measurements', 'App\Http\Controllers\Coordinator\MeasurementController@index')->middleware(['auth', 'coordinator'])->name('coordinator.patients.measurements');
+

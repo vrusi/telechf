@@ -12,6 +12,7 @@
      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
          <!-- Left Side Of Navbar -->
 
+         <!-- Patient Navigation -->
          @if (!Auth::user()->is_coordinator)
          <ul class="navbar-nav">
              <li class="{{ Request::is('dashboard*') ? 'nav-item active' : 'nav-item' }}">
@@ -39,10 +40,15 @@
              </li>
          </ul>
          @else
-         <ul class="navbar-nav">
 
+         <!-- Coordinator Navigation-->
+         <ul class="navbar-nav">
              <li class="{{ Request::is('coordinator/dashboard*') ? 'nav-item active' : 'nav-item' }}">
                  <a class="nav-link" href="{{ route('coordinator.dashboard') }}">{{ __('Dashboard') }}</a>
+             </li>
+
+             <li class="{{ Request::is('coordinator/patients*') ? 'nav-item active' : 'nav-item' }}">
+                 <a class="nav-link" href="{{ route('patients.index') }}">{{ __('Patients') }}</a>
              </li>
          </ul>
 

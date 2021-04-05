@@ -30,17 +30,24 @@
     th,
     td {
         min-width: 70px;
-        padding: 1rem;
+        padding: 0.5rem;
+        border-width: 0 0 1px 0;
+        border-style: solid;
+        border-color: #00000020;
     }
 
     table {
         width: 100%;
     }
 
+    .container {
+        max-width: 70vw;
+    }
+
 </style>
 
 
-<div class="container">
+<div class="container pb-5">
     <h1>Dashboard</h1>
 
     {{-- todo nav --}}
@@ -137,21 +144,26 @@
                     @else
                     <a href="{{'patients/'.$day['patient']->id.'/measurements'}}">Checked <i class="fas fa-check"></i></a>
                     @endif
-
                 </td>
             </tr>
-
             @endforeach
-
-
         </tbody>
-
     </table>
-
-
 </div>
 
 <script>
+    $(document).ready(function() {
+
+        $.noConflict();
+
+        $('#alarms-table').DataTable({
+            fixedColumns: {
+                leftColumns: 1
+            }
+            , responsive: true
+            , "ordering": false
+        , });
+    });
 
 </script>
 @endsection
