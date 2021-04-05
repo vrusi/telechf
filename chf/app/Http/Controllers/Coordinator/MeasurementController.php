@@ -13,8 +13,12 @@ class MeasurementController extends Controller
     {
         $user = Auth::user();
         $patient = User::where('id', $request->route('patient'))->first();
+        $summary = $patient->measurementsSummary();
+        $parameters = $patient->parameters;
         return view('coordinator.patients.measurements.index', [
             'patient' => $patient,
+            'summary' => $summary,
+            'parameters' => $parameters,
         ]);
     }
 }

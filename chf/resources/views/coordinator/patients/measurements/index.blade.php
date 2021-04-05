@@ -2,7 +2,7 @@
 
 @section('content')
 <style>
-    .alarm-safety {
+    .alarm, .alarm-safety {
         background: #ff000020;
         color: firebrick;
         font-weight: 900;
@@ -52,10 +52,75 @@
     <h3>
         Measurements
     </h3>
+    <table id="summary-table">
+        <thead>
+            <tr>
+                <th class="pr-4">
+                    Date
+                </th>
+                @foreach($parameters as $parameter)
+                @if(!(strtolower($parameter['name']) == 'ecg'))
+                <th>
+                    {{ $parameter['name'] }} ({{ $parameter['unit'] }})
+                </th>
+                @endif
+                @endforeach
+                <th>
+                    Swellings
+                </th>
+                <th>
+                    Exercise Tolerance
+                </th>
+                <th>
+                    Nocturnal Dyspnoea
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach($summary as $date => $day)
+            <tr>
+                <td>
+                    {{ $date }}
+                </td>
+                @foreach($day as $measurement)
+
+
+                @if(!array_key_exists('parameter', $measurement) || (array_key_exists('parameter', $measurement) && !(strtolower($measurement['parameter']) == 'ecg')) )
+                @if($measurement['alarm'])
+                <td class="alarm">
+                    @else
+                <td>
+                    @endif
+                    {{
+                        !$measurement['value']
+                        ? '--'
+                        : (
+                           is_numeric($measurement['value'])
+                           ? round($measurement['value'], 2)
+                           : $measurement['value']
+                           ) 
+                           }}
+                </td>
+                @endif
+                @endforeach
+            </tr>
+            @endforeach
+        </tbody>
+    </table>
 </div>
 
-<script>
 
+<script>
+    $(document).ready(function() {
+        $.noConflict();
+        $('#summary-table').DataTable({
+            fixedColumns: {
+                leftColumns: 1
+            }
+            , responsive: true
+            , "ordering": false
+        , });
+    });
 
 </script>
 @endsection
