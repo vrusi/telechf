@@ -24,7 +24,7 @@ class MeasurementSeeder extends Seeder
             $weightChange = 0;
 
             $day = $monthAgo->copy();
-            for ($dayIndex = 0; $dayIndex <= 30; $dayIndex++) {
+            for ($dayIndex = 0; $dayIndex < 30; $dayIndex++) {
                 $day->addDay();
 
                 $weightCurrent = rand(7000, 8000) / 100;
@@ -77,7 +77,7 @@ class MeasurementSeeder extends Seeder
 
             // three times weekly measurements
             $day = $monthAgo->copy();
-            for ($dayIndex = 0; $dayIndex <= 30; $dayIndex += 2) {
+            for ($dayIndex = 0; $dayIndex < 30; $dayIndex += 2) {
                 $day->addDays(2);
 
                 // systolic pressure
