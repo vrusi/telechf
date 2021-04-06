@@ -40,8 +40,11 @@ class ChartController extends Controller
                 'unit' => $unit,
                 'values' => $values,
                 'dates' => $dates,
-                'max' => $thresholds[$parameter->id]['therapeuticMax'],
-                'min' => $thresholds[$parameter->id]['therapeuticMin']]
+                'max_therapeutic' => $thresholds[$parameter->id]['therapeuticMax'],
+                'min_therapeutic' => $thresholds[$parameter->id]['therapeuticMin'],
+                'max_safety' => $thresholds[$parameter->id]['safetyMax'],
+                'min_safety' => $thresholds[$parameter->id]['safetyMin']]
+
             );
 
             unset($values);

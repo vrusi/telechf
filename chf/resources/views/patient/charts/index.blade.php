@@ -7,6 +7,10 @@
         Charts
     </h1>
 
+    <p>
+        Here you can see your measurement data in charts. Upper and lower thresholds define the bounds of your goal values.
+    </p>
+
     @foreach($charts as $chart)
     <div id="{{ 'chart-'.$chart['name'] }}" class="mb-5">
     </div>
@@ -16,7 +20,7 @@
 
 
 <script>
-    charts = {!! $charts_encoded !!};
+    charts = {!!$charts_encoded!!};
 
     for (chart of charts) {
 
@@ -28,37 +32,37 @@
         min = chart['min'];
 
         var plot = {
-            x: dates, 
-            y: values,
-            type: 'scatter',
-            name: name,
-            showlegend: true,
-        };
+            x: dates
+            , y: values
+            , type: 'scatter'
+            , name: name
+            , showlegend: true
+        , };
 
         var lower_threshold = min ? {
-            x: dates,
-            y: Array(dates.length).fill(min),
-            line: {
-                dash: 'dot',
-            },
-            name: 'Lower threshold',
-            showlegend: true,
-        } : null;
+            x: dates
+            , y: Array(dates.length).fill(min)
+            , line: {
+                dash: 'dot'
+            , }
+            , name: 'Lower threshold'
+            , showlegend: true
+        , } : null;
 
         var upper_threshold = max ? {
-            x: dates,
-            y: Array(dates.length).fill(max),
-            line: {
-                dash: 'dot',
-            },
-            name: 'Upper threshold',
-            showlegend: true,
-        } : null;
+            x: dates
+            , y: Array(dates.length).fill(max)
+            , line: {
+                dash: 'dot'
+            , }
+            , name: 'Upper threshold'
+            , showlegend: true
+        , } : null;
 
         var layout = {
             title: {
                 text: name,
-                
+
             },
 
             xaxis: {
@@ -69,10 +73,10 @@
 
             yaxis: {
                 title: {
-                    text: 'Value (' + unit + ')',
-                }
-            },
-        }
+                    text: 'Value (' + unit + ')'
+                , }
+            }
+        , }
 
         traces = [plot]
         if (lower_threshold) {

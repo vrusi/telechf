@@ -23,6 +23,7 @@ class UserParameterSeeder extends Seeder
                 'measurement_times' => '3',
                 'measurement_span' => 'week',
                 'threshold_safety_max' => 110,
+                'threshold_safety_min' => 70,
                 'threshold_therapeutic_max' => 110,
             ]);
 
@@ -33,6 +34,7 @@ class UserParameterSeeder extends Seeder
                 'measurement_times' => '3',
                 'measurement_span' => 'week',
                 'threshold_safety_max' => 80,
+                'threshold_safety_min' => 40,
                 'threshold_therapeutic_max' => 70,
             ]);
 
