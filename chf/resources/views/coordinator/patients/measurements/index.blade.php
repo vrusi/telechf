@@ -2,7 +2,8 @@
 
 @section('content')
 <style>
-    .alarm, .alarm-safety {
+    .alarm,
+    .alarm-safety {
         background: #ff000020;
         color: firebrick;
         font-weight: 900;
@@ -48,6 +49,15 @@
     <h2>
         {{ $patient['name'].' '.$patient['surname'] }}
     </h2>
+
+    <ul class="nav nav-tabs my-4">
+        <li class="nav-item">
+            <a class="{{ Request::is('*/measurements') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/measurements'}}">Measurements</a>
+        </li>
+        <li class="nav-item">
+            <a class="{{ Request::is('*/charts') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/charts'}}">Charts</a>
+        </li>
+    </ul>
 
     <h3>
         An alarm was triggered on <div class="alarm">TODO</div>
@@ -123,6 +133,7 @@
             , "ordering": false
         , });
     });
+
 </script>
 
 @endsection

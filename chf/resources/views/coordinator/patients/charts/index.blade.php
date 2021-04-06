@@ -10,6 +10,15 @@
         {{ $patient['name'].' '.$patient['surname'] }}
     </h2>
 
+    <ul class="nav nav-tabs my-4">
+        <li class="nav-item">
+            <a class="{{ Request::is('*/measurements') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/measurements'}}">Measurements</a>
+        </li>
+        <li class="nav-item">
+            <a class="{{ Request::is('*/charts') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/charts'}}">Charts</a>
+        </li>
+    </ul>
+
     <h3>
         Charts
     </h3>
@@ -21,7 +30,7 @@
 </div>
 
 <script>
-    charts = {!! $charts_encoded !!};
+    charts = {!!$charts_encoded!!};
 
     for (chart of charts) {
 
@@ -90,6 +99,7 @@
 
         Plotly.newPlot('chart-' + name, traces, layout);
     }
+
 </script>
 
 @endsection
