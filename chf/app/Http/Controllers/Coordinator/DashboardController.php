@@ -5,9 +5,7 @@ namespace App\Http\Controllers\Coordinator;
 use App\Http\Controllers\Controller;
 use App\Models\Measurement;
 use App\Models\Parameter;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
