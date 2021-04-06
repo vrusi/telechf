@@ -96,6 +96,12 @@
 
                 @foreach($day['measurements'] as $measurement)
 
+                @if(!$measurement)
+                @php
+                dd($measurement)
+                @endphp
+                @endif
+                
                 @if($measurement['triggered_safety_alarm_max'] || $measurement['triggered_safety_alarm_min'])
                 <td class="alarm-safety">
                     @elseif($measurement['triggered_therapeutic_alarm_max'] || $measurement['triggered_therapeutic_alarm_min'])
@@ -129,12 +135,6 @@
                             too low
                             @endif
                         </div>
-                        @endif
-                        
-                        @if(!$measurement)
-                        @php
-                            dd($measurement)
-                        @endphp
                         @endif
 
                         @if( $measurement && array_key_exists('created_at', $measurement) )
