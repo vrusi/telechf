@@ -50,6 +50,10 @@
     </h2>
 
     <h3>
+        An alarm was triggered on <div class="alarm">TODO</div>
+    </h3>
+
+    <h3>
         Measurements
     </h3>
     <table id="summary-table">
@@ -84,7 +88,6 @@
                 </td>
                 @foreach($day as $measurement)
 
-
                 @if(!array_key_exists('parameter', $measurement) || (array_key_exists('parameter', $measurement) && !(strtolower($measurement['parameter']) == 'ecg')) )
                 @if($measurement['alarm'])
                 <td class="alarm">
@@ -109,7 +112,6 @@
     </table>
 </div>
 
-
 <script>
     $(document).ready(function() {
         $.noConflict();
@@ -121,6 +123,6 @@
             , "ordering": false
         , });
     });
-
 </script>
+
 @endsection

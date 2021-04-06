@@ -1,21 +1,21 @@
 <?php
 
-namespace App\Http\Controllers\Patient;
+namespace App\Http\Controllers\Coordinator;
 
 use App\Http\Controllers\Controller;
-use App\Models\Measurement;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class ChartsController extends Controller
+class ChartController extends Controller
 {
     function index(Request $request)
     {
-        $user = Auth::user();
-        $thresholds = $user->thresholds();
+        $patient = User::where('id', $request->route('patient'))->first();
 
-        $measurements = $user->measurements;
-        $parameters = $user->parameters;
+        $thresholds = $patient->thresholds();
+
+        $measurements = $patient->measurements;
+        $parameters = $patient->parameters;
 
         $charts = array();
 
@@ -47,7 +47,7 @@ class ChartsController extends Controller
             unset($values);
             unset($dates);
         }
-        
-        return view('patient.charts.index', ['charts' => $charts, 'charts_encoded' => json_encode($charts, JSON_HEX_QUOT | JSON_HEX_APOS | JSON_NUMERIC_CHECK)]);
+
+        return view('coordinator.patients.charts.index', ['patient' => $patient, 'charts' => $charts, 'charts_encoded' => json_encode($charts, JSON_HEX_QUOT | JSON_HEX_APOS | JSON_NUMERIC_CHECK)]);
     }
 }

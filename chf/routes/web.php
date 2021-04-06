@@ -25,7 +25,7 @@ Route::resource('/contacts', 'App\Http\Controllers\Patient\ContactController')->
 Route::get('/profile', 'App\Http\Controllers\Patient\ProfileController@index')->middleware(['auth', 'patient'])->name('profile');
 Route::get('/therapy', 'App\Http\Controllers\Patient\ProfileController@therapy')->middleware(['auth', 'patient'])->name('therapy');
 
-Route::get('/charts', 'App\Http\Controllers\Patient\ChartsController@index')->middleware(['auth', 'patient'])->name('charts');
+Route::get('/charts', 'App\Http\Controllers\Patient\ChartController@index')->middleware(['auth', 'patient'])->name('charts');
 
 
 
@@ -45,4 +45,6 @@ Route::get('coordinator/dashboard', 'App\Http\Controllers\Coordinator\DashboardC
 Route::resource('coordinator/patients', 'App\Http\Controllers\Coordinator\PatientController')->middleware(['auth', 'coordinator']);
 
 Route::get('coordinator/patients/{patient}/measurements', 'App\Http\Controllers\Coordinator\MeasurementController@index')->middleware(['auth', 'coordinator'])->name('coordinator.patients.measurements');
+Route::get('coordinator/patients/{patient}/charts', 'App\Http\Controllers\Coordinator\ChartController@index')->middleware(['auth', 'coordinator'])->name('coordinator.patients.charts');
+
 
