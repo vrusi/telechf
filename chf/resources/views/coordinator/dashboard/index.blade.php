@@ -96,12 +96,9 @@
 
                 @foreach($day['measurements'] as $measurement)
 
-                @if(!$measurement)
-                @php
-                dd($measurement)
-                @endphp
-                @endif
-                
+                @if($measurement)
+
+
                 @if($measurement['triggered_safety_alarm_max'] || $measurement['triggered_safety_alarm_min'])
                 <td class="alarm-safety">
                     @elseif($measurement['triggered_therapeutic_alarm_max'] || $measurement['triggered_therapeutic_alarm_min'])
@@ -143,6 +140,8 @@
                         </div>
                         @endif
                 </td>
+                @endif
+
                 @endforeach
                 <td>
                     @if($day['anyUnchecked'])
