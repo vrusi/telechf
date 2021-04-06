@@ -130,6 +130,12 @@
                             @endif
                         </div>
                         @endif
+                        
+                        @if(!$measurement)
+                        @php
+                            dd($measurement)
+                        @endphp
+                        @endif
 
                         @if( $measurement && array_key_exists('created_at', $measurement) )
                         <div class="col-12 faint">
