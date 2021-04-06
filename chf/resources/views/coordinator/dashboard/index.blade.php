@@ -95,8 +95,16 @@
                 </td>
 
                 @foreach($day['measurements'] as $measurement)
+                @if(!$measurement)
+                <td>
+                    --
+                </td>
 
-                @if($measurement)
+                @else
+
+
+
+
 
 
                 @if($measurement['triggered_safety_alarm_max'] || $measurement['triggered_safety_alarm_min'])
@@ -104,6 +112,7 @@
                     @elseif($measurement['triggered_therapeutic_alarm_max'] || $measurement['triggered_therapeutic_alarm_min'])
                 <td class="alarm-therapeutic">
                     @else
+
                 <td>
 
                     @endif
@@ -140,7 +149,10 @@
                         </div>
                         @endif
                 </td>
+
                 @endif
+
+
 
                 @endforeach
                 <td>
