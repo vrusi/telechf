@@ -11,7 +11,6 @@
                 {{ $patient['name'].' '.$patient['surname'] }}
             </a>
         </p>
-
         @endforeach
 
     </div>

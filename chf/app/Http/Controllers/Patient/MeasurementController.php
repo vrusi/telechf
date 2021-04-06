@@ -250,7 +250,7 @@ class MeasurementController extends Controller
             ]);
         }
 
-        return redirect('/measurements');
+        return redirect('/dashboard');
     }
 
     /**

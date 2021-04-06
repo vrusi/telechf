@@ -1,6 +1,6 @@
  @if (Auth::check())
 
- <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+ <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
      <a class="navbar-brand" href="{{ url('/') }}">
          {{ config('app.name', 'Laravel') }}
      </a>
@@ -28,7 +28,7 @@
              </li>
 
              <li class="{{ Request::is('measurements*') ? 'nav-item active' : 'nav-item' }}">
-                 <a class="nav-link" href="{{ route('measurements.create') }}">{{ __('Measurements') }}</a>
+                 <a class="nav-link" href="{{ route('measurements.create') }}">{{ __('New measurement') }}</a>
              </li>
 
              <li class="{{ Request::is('contacts*') ? 'nav-item active' : 'nav-item' }}">
