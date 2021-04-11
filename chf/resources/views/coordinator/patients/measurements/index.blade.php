@@ -78,6 +78,11 @@
         </li>
     </ul>
 
+
+    <h3 class="my-3">
+        Unchecked Alarms
+    </h3>
+
     @php
     $anyUnchecked = $patient->isAnyMeasurementUnchecked();
     @endphp
@@ -296,7 +301,7 @@
     <p>This patient has no unchecked alarms.</p>
     @endif
 
-    <h3>
+    <h3 class="my-3">
         Measurements
     </h3>
     <table id="summary-table">
