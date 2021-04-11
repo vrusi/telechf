@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Minwork\Helper\Arr;
+use phpDocumentor\Reflection\Types\Boolean;
+use Ramsey\Uuid\Type\Integer;
 
 class User extends Authenticatable
 {
@@ -95,6 +97,7 @@ class User extends Authenticatable
                 $alarmSafetyMin = false;
                 $alarmTherapeuticMax = false;
                 $alarmTherapeuticMin = false;
+                $checked = false;
 
                 foreach ($measurementsPerDay as $measurement) {
                     if ($measurement['parameter_id'] == $parameter['id']) {
@@ -104,6 +107,7 @@ class User extends Authenticatable
                         $alarmSafetyMin = $measurement['triggered_safety_alarm_min'];
                         $alarmTherapeuticMax = $measurement['triggered_therapeutic_alarm_max'];
                         $alarmTherapeuticMin = $measurement['triggered_therapeutic_alarm_min'];
+                        $checked = $measurement['checked'];
                     }
                 }
 
@@ -116,7 +120,8 @@ class User extends Authenticatable
                     'alarmSafetyMin' => $alarmSafetyMin,
                     'alarmTherapeuticMax' => $alarmTherapeuticMax,
                     'alarmTherapeuticMin' => $alarmTherapeuticMin,
-                    'date' => $measurement['created_at']
+                    'date' => $measurement['created_at'],
+                    'checked' => $measurement['checked'],
                 ];
             }, $parameters);
 
@@ -124,7 +129,13 @@ class User extends Authenticatable
                 $avg = null;
                 $avgMapped = '';
                 // TODO
-                $alarm = false;
+                $alarmAny = false;
+                $alarmSafetyMax = false;
+                $alarmSafetyMin = false;
+                $alarmTherapeuticMax = false;
+                $alarmTherapeuticMin = false;
+                $checked = true;
+
 
                 if (count($measurementsPerDay) > 0) {
                     $avg = 0;
@@ -139,7 +150,12 @@ class User extends Authenticatable
                 return [
                     'name' => $name,
                     'value' => $avgMapped,
-                    'alarm' => $alarm
+                    'alarm' => $alarmAny,
+                    'alarmSafetyMax' => $alarmSafetyMax,
+                    'alarmSafetyMin' => $alarmSafetyMin,
+                    'alarmTherapeuticMax' => $alarmTherapeuticMax,
+                    'alarmTherapeuticMin' => $alarmTherapeuticMin,
+                    'checked' => $checked,
                 ];
             });
 
@@ -232,11 +248,11 @@ class User extends Authenticatable
 
     public function measurementsInDay(object $createdAt)
     {
-        $measurements = $this->measurements()->get();
+        $measurements = $this->measurements;
         $measurementsInDay = array();
 
         foreach ($measurements as $measurement) {
-            if ($measurement->created_at == $createdAt) {
+            if ($measurement->created_at->isSameDay($createdAt)) {
                 array_push($measurementsInDay, $measurement);
             }
         }
@@ -246,6 +262,7 @@ class User extends Authenticatable
             $avgMapped = '';
             // TODO
             $alarm = false;
+            $checked = true;
 
             if (count($measurementsInDay) > 0) {
                 $avg = 0;
@@ -264,12 +281,52 @@ class User extends Authenticatable
                 'triggered_safety_alarm_min' => false,
                 'triggered_therapeutic_alarm_max' => false,
                 'triggered_therapeutic_alarm_min' => false,
-
+                'checked' => $checked,
             ];
         });
 
         $conditions = array_values($conditions);
 
         return array_merge($measurementsInDay, $conditions);
+    }
+
+    public function isAnyMeasurementUncheckedInDay($createdAt)
+    {
+        if (is_string($createdAt)) {
+            $createdAt = Carbon::parse($createdAt);
+        }
+
+        $measurementsInDay = $this->measurementsInDay($createdAt);
+
+        $anyUnchecked = false;
+        foreach ($measurementsInDay as $measurement) {
+            if ($measurement['checked'] == false) {
+                $anyUnchecked = true;
+            }
+        }
+        return $anyUnchecked;
+    }
+
+    public function setMeasurementChecked(int $measurementId, bool $checked)
+    {
+        $measurement = Measurement::where('id', $measurementId)->first();
+        $measurement->checked = $checked;
+        $measurement->save();
+    }
+
+    public function setMeasurementsInDayChecked(object $createdAt, bool $checked)
+    {
+
+
+        $measurementsInDay = $this->measurementsInDay($createdAt);
+        foreach ($measurementsInDay as $measurement) {
+            if (!is_array($measurement)) {
+                $this->setMeasurementChecked($measurement->id, $checked);
+            } else {
+                if (array_key_exists('id', $measurement)) {
+                    $this->setMeasurementChecked($measurement['id'], $checked);
+                }
+            }
+        }
     }
 }
