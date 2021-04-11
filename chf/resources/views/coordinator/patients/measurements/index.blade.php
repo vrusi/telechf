@@ -9,7 +9,7 @@
     .alarm,
     .alarm-safety {
         background: #ff000020;
-        color: firebrick;
+        color: rgb(178 34 34 / 87%);
         font-weight: 900;
     }
 
@@ -24,17 +24,17 @@
     }
 
     .alarm-safety .faint {
-        color: #b2222280;
+        color: rgb(178 34 34 / 60%);
     }
 
     .alarm-therapeutic {
         background: #FEF3E5;
-        color: rgba(245, 154, 35, 0.87);
+        color: rgb(189 43 0 / 87%);
         font-weight: 900;
     }
 
     .alarm-therapeutic .faint {
-        color: rgba(245, 154, 35, 0.50);
+        color: rgb(189 43 0 / 60%);
     }
 
     .alarm-therapeutic-icon {
@@ -45,7 +45,10 @@
     th,
     td {
         min-width: 70px;
-        padding: 1rem;
+        padding: 0.5rem;
+        border-width: 0 0 1px 0;
+        border-style: solid;
+        border-color: #00000020;
     }
 
     table {
@@ -55,6 +58,10 @@
     table.contact-info td {
         min-width: initial;
         padding: initial;
+    }
+
+    .container {
+        max-width: 80vw;
     }
 
 </style>
@@ -326,6 +333,9 @@
                 <th>
                     Nocturnal Dyspnoea
                 </th>
+                <th>
+                    Notes
+                </th>
             </tr>
         </thead>
         <tbody>
@@ -346,8 +356,8 @@
                     @endif
                     <div class="row">
                         <div class="col-12">
-                            <p>
-                                {{
+
+                            {{
                                 !$measurement['value']
                                 ? '--'
                                 : (
@@ -356,7 +366,7 @@
                                  : $measurement['value']
                                  ) 
                             }}
-                            </p>
+
                         </div>
                         @if($measurement['triggered_safety_alarm_max'] || $measurement['triggered_safety_alarm_min'] || $measurement['triggered_therapeutic_alarm_max'] || $measurement['triggered_therapeutic_alarm_min'])
                         <div class="col-12 faint">
@@ -376,7 +386,12 @@
                     </div>
                 </td>
                 @endif
+
                 @endforeach
+
+                <td>
+                    Add note
+                </td>
             </tr>
             @endforeach
         </tbody>

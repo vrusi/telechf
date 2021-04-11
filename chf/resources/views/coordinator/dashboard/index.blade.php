@@ -4,27 +4,26 @@
 <style>
     .alarm-safety {
         background: #ff000020;
-        color: firebrick;
+        color: rgb(178 34 34 / 87%);
         font-weight: 900;
     }
 
     .faint {
         color: #00000080;
-
     }
 
     .alarm-safety .faint {
-        color: #b2222280;
+        color: rgb(178 34 34 / 60%);
     }
 
     .alarm-therapeutic {
         background: #FEF3E5;
-        color: rgba(245, 154, 35, 0.87);
+        color: rgb(189 43 0 / 87%);
         font-weight: 900;
     }
 
     .alarm-therapeutic .faint {
-        color: rgba(245, 154, 35, 0.50);
+        color: rgb(189 43 0 / 60%);
     }
 
     th,
@@ -44,6 +43,23 @@
         max-width: 80vw;
     }
 
+    .swatch {
+        width: 20px;
+        height: 20px;
+    }
+
+    .swatch.safety {
+        background: #ff000020;
+        border: 2px solid rgb(178 34 34 / 87%);
+        border-radius: 100%;
+    }
+
+    .swatch.therapeutic {
+        background: #FEF3E5;
+        border: 2px solid rgb(189 43 0 / 87%);
+        border-radius: 100%;
+    }
+
 </style>
 
 
@@ -53,6 +69,27 @@
     {{-- todo nav --}}
 
     <h2>New Alarms</h2>
+
+
+    <div class="my-4">
+
+        <div class="d-flex align-content-center">
+            <div class="swatch safety mr-1">
+            </div>
+            <div>
+                Alarm triggered by crossing safety thresholds.
+            </div>
+        </div>
+
+        <div class="d-flex align-content-center">
+            <div class="swatch therapeutic mr-1">
+            </div>
+            <div>
+                Alarm triggered by crossing therapeutic thresholds.
+            </div>
+        </div>
+
+    </div>
 
     <table id="alarms-table">
         <thead>
@@ -114,8 +151,7 @@
                     @endif
                     <div class="row">
                         <div class="col-12">
-                            <p>
-                                {{
+                            {{
                                 !$measurement['value']
                                 ? '--'
                                 : (
@@ -124,7 +160,6 @@
                                  : $measurement['value']
                                  ) 
                             }}
-                            </p>
                         </div>
 
                         @if($measurement['triggered_safety_alarm_max'] || $measurement['triggered_safety_alarm_min'] || $measurement['triggered_therapeutic_alarm_max'] || $measurement['triggered_therapeutic_alarm_min'])
