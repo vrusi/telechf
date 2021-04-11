@@ -1,19 +1,37 @@
 @extends('layouts.app')
 
-@section('title', 'Profile')
-
 @section('content')
-
-<div class="container patient">
-
-    <h1 class="mb-3">
-        Your therapy
+<div class="container">
+    <h1>
+        Patients
     </h1>
 
+    <h3>
+        {{ $patient['name'].' '.$patient['surname'] }}
+    </h3>
+
+    <ul class="nav nav-tabs my-4">
+        <li class="nav-item">
+            <a class="{{ Request::is('*/profile') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/profile'}}">Profile</a>
+        </li>
+        <li class="nav-item">
+            <a class="{{ Request::is('*/therapy') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/therapy'}}">Therapy</a>
+        </li>
+        <li class="nav-item">
+            <a class="{{ Request::is('*/measurements') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/measurements'}}">Measurements</a>
+        </li>
+        <li class="nav-item">
+            <a class="{{ Request::is('*/charts') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/charts'}}">Charts</a>
+        </li>
+        <li class="nav-item">
+            <a class="{{ Request::is('*/contacts') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/contacts'}}">Contact</a>
+        </li>
+    </ul>
+
     <div class="my-5">
-        <h2>
+        <h3>
             Monitored parameters
-        </h2>
+        </h3>
 
         <table>
             <thead>
@@ -21,8 +39,11 @@
                     <th>
                         Parameter
                     </th>
-                    <th>
-                        Goal values
+                    <th class="px-3">
+                        Safety threshold
+                    </th>
+                    <th class="pr-3">
+                        Therapeutic threshold
                     </th>
                     <th>
                         Measurement frequency
@@ -36,7 +57,29 @@
                         {{ $parameter->name }}
                     </td>
 
+                    {{-- safety --}}
                     <td class="px-3">
+                        {{-- both min and max --}}
+                        @if($parameter->pivot->threshold_safety_min && $parameter->pivot->threshold_safety_max)
+                        {{ $parameter->pivot->threshold_safety_min }} - {{ $parameter->pivot->threshold_safety_max }} {{ $parameter->unit }}
+
+                        {{-- only min --}}
+                        @elseif($parameter->pivot->threshold_safety_min && !$parameter->pivot->threshold_safety_max)
+                        ≥ {{ $parameter->pivot->threshold_safety_min }} {{ $parameter->unit }}
+
+                        {{-- only max --}}
+                        @elseif(!$parameter->pivot->threshold_safety_min && $parameter->pivot->threshold_safety_max)
+                        ≤ {{ $parameter->pivot->threshold_safety_max }} {{ $parameter->unit }}
+
+                        {{-- neither --}}
+                        @else
+                        --
+                        @endif
+                    </td>
+
+
+                    {{-- therapeutic --}}
+                    <td class="pr-3">
                         {{-- both min and max --}}
                         @if($parameter->pivot->threshold_therapeutic_min && $parameter->pivot->threshold_therapeutic_max)
                         {{ $parameter->pivot->threshold_therapeutic_min }} - {{ $parameter->pivot->threshold_therapeutic_max }} {{ $parameter->unit }}
@@ -78,22 +121,27 @@
         </table>
     </div>
 
-    @if($user->recommendations)
     <div class="my-5">
-        <h2>
+        <h3>
             Recommendations
-        </h2>
+        </h3>
+        @if($patient->recommendations)
         <div>
-            {!! $user->recommendations !!}
+            {!! $patient->recommendations !!}
         </div>
+        @else
+        <div>
+            There are no recommendations for {{ $patient['name'] }}.
+        </div>
+        @endif
     </div>
-    @endif
 
     <div class="my-5">
-        <h2>
-            You are being treated for
-        </h2>
+        <h3>
+            {{ $patient['name'] }} is being treated for
+        </h3>
 
+        @if(count($conditions))
         @foreach($conditions as $condition)
         <div x-data="{ descriptionOpen: false }">
 
@@ -114,12 +162,19 @@
             </div>
         </div>
         @endforeach
+        @else
+        <div>
+            {{ $patient['name'] }} has no conditions.
+        </div>
+        @endif
 
     </div>
     <div class="my-5">
-        <h2>
-            You are currently prescribed
-        </h2>
+        <h3>
+            {{ $patient['name'] }} is currently prescribed
+        </h3>
+
+        @if(count($drugs) > 0)
         <table>
             @foreach($drugs as $drug)
             <tr>
@@ -151,6 +206,11 @@
             </tr>
             @endforeach
         </table>
+        @else
+        <div>
+            {{$patient['name']}} has no prescriptions.
+        </div>
+        @endif
     </div>
 
 </div>
