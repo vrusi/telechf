@@ -41,7 +41,7 @@
     }
 
     .container {
-        max-width: 70vw;
+        max-width: 80vw;
     }
 
 </style>
@@ -88,7 +88,9 @@
             @foreach($alarms as $day)
             <tr>
                 <td>
-                    {{ $day['patient']['name'].' '.$day['patient']['surname'] }}
+                    <a href="{{'patients/'.$day['patient']->id.'/measurements'}}" class="d-flex justify-content-between align-items-center">
+                        {{ $day['patient']['name'].' '.$day['patient']['surname'] }}</a>
+
                 </td>
                 <td>
                     {{$day['date']}}
@@ -148,9 +150,16 @@
                 @endforeach
                 <td>
                     @if($day['anyUnchecked'])
-                    <a href="{{'patients/'.$day['patient']->id.'/measurements'}}">Check <i class="fas fa-caret-right"></i></a>
+                    <a href="{{'patients/'.$day['patient']->id.'/measurements'}}" class="d-flex align-items-center">
+                        <div class="mr-1">
+                            Check
+                        </div>
+                        <i class="fas fa-caret-right"></i>
+                    </a>
                     @else
-                    <a href="{{'patients/'.$day['patient']->id.'/measurements'}}">Checked <i class="fas fa-check"></i></a>
+                    <div class="w-100 h-100 d-flex align-items-center justify-content-center">
+                        <i class="fas fa-check"></i>
+                    </div>
                     @endif
                 </td>
             </tr>
