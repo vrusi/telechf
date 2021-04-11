@@ -28,7 +28,7 @@
         </li>
     </ul>
 
-    <div class="my-5">
+    <div class="my-3">
         <h3>
             Monitored parameters
         </h3>
@@ -121,7 +121,7 @@
         </table>
     </div>
 
-    <div class="my-5">
+    <div class="my-3">
         <h3>
             Recommendations
         </h3>
@@ -136,7 +136,7 @@
         @endif
     </div>
 
-    <div class="my-5">
+    <div class="my-3">
         <h3>
             {{ $patient['name'] }} is being treated for
         </h3>
@@ -169,7 +169,7 @@
         @endif
 
     </div>
-    <div class="my-5">
+    <div class="my-3">
         <h3>
             {{ $patient['name'] }} is currently prescribed
         </h3>

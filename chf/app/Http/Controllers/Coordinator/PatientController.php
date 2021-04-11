@@ -12,7 +12,7 @@ class PatientController extends Controller
     public function index(Request $request)
     {
         $coordinator = Auth::user();
-        $patients = $coordinator->patients; 
+        $patients = $coordinator->patients;
         return view('coordinator.patients.index', [
             'patients' => $patients,
         ]);
@@ -20,10 +20,12 @@ class PatientController extends Controller
 
     public function show(Request $request)
     {
-        $coordinator = Auth::user();
-        $patient =  User::where('id', $request->route('patient'))->first(); 
+        /* $coordinator = Auth::user();
         return view('coordinator.patients.show', [
             'patient' => $patient,
-        ]);
+            ]); */
+
+        $patient =  User::where('id', $request->route('patient'))->first();
+        return redirect()->action([ProfileController::class, 'index'], ['patient' => $patient->id]);
     }
 }
