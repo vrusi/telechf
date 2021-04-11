@@ -98,6 +98,7 @@ class User extends Authenticatable
                 $alarmTherapeuticMax = false;
                 $alarmTherapeuticMin = false;
                 $checked = false;
+                $measurementId = null;
 
                 foreach ($measurementsPerDay as $measurement) {
                     if ($measurement['parameter_id'] == $parameter['id']) {
@@ -108,6 +109,7 @@ class User extends Authenticatable
                         $alarmTherapeuticMax = $measurement['triggered_therapeutic_alarm_max'];
                         $alarmTherapeuticMin = $measurement['triggered_therapeutic_alarm_min'];
                         $checked = $measurement['checked'];
+                        $measurementId = $measurement['id'];
                     }
                 }
 
@@ -121,7 +123,8 @@ class User extends Authenticatable
                     'alarmTherapeuticMax' => $alarmTherapeuticMax,
                     'alarmTherapeuticMin' => $alarmTherapeuticMin,
                     'date' => $measurement['created_at'],
-                    'checked' => $measurement['checked'],
+                    'checked' => $checked,
+                    'measurementId' => $measurementId,
                 ];
             }, $parameters);
 
@@ -156,6 +159,7 @@ class User extends Authenticatable
                     'alarmTherapeuticMax' => $alarmTherapeuticMax,
                     'alarmTherapeuticMin' => $alarmTherapeuticMin,
                     'checked' => $checked,
+                    'measurementId' => $measurement['id'],
                 ];
             });
 
@@ -300,10 +304,18 @@ class User extends Authenticatable
 
         $anyUnchecked = false;
         foreach ($measurementsInDay as $measurement) {
-            if ($measurement['checked'] == false) {
-                $anyUnchecked = true;
+            if (
+                $measurement['triggered_safety_alarm_max']
+                || $measurement['triggered_safety_alarm_min']
+                || $measurement['triggered_therapeutic_alarm_max']
+                || $measurement['triggered_therapeutic_alarm_max']
+            ) {
+                if ($measurement['checked'] == false) {
+                    $anyUnchecked = true;
+                }
             }
         }
+
         return $anyUnchecked;
     }
 
@@ -312,21 +324,58 @@ class User extends Authenticatable
         $measurement = Measurement::where('id', $measurementId)->first();
         $measurement->checked = $checked;
         $measurement->save();
+
+        return Measurement::where('id', $measurementId)->first()->checked == $checked;
     }
 
     public function setMeasurementsInDayChecked(object $createdAt, bool $checked)
     {
-
+        $allChecked = true;
+        $checkedOne = false;
 
         $measurementsInDay = $this->measurementsInDay($createdAt);
         foreach ($measurementsInDay as $measurement) {
             if (!is_array($measurement)) {
-                $this->setMeasurementChecked($measurement->id, $checked);
+                $checkedOne = $this->setMeasurementChecked($measurement->id, $checked);
             } else {
                 if (array_key_exists('id', $measurement)) {
-                    $this->setMeasurementChecked($measurement['id'], $checked);
+                    $checkedOne = $this->setMeasurementChecked($measurement['id'], $checked);
                 }
             }
+
+            $allChecked = $checkedOne != false;
         }
+
+        return $allChecked;
+    }
+
+    public function setAllMeasurementsChecked(bool $checked)
+    {
+        $allChecked = true;
+        $checkedOne = false;
+
+        $alarms = $this->measurementsSummary();
+        foreach ($alarms as $day) {
+            foreach ($day as $measurement) {
+                if ($measurement['checked'] != $checked) {
+
+                    if (!is_array($measurement)) {
+                        if ($measurement->measurementId) {
+                            $checkedOne = $this->setMeasurementChecked($measurement->measurementId, $checked);
+                        }
+                    } else {
+                        if (array_key_exists('measurementId', $measurement)) {
+                            if ($measurement['measurementId']) {
+                                $checkedOne = $this->setMeasurementChecked($measurement['measurementId'], $checked);
+                            }
+                        }
+                    }
+                }
+            }
+
+            $allChecked = $checkedOne != false;
+        }
+
+        return $allChecked;
     }
 }

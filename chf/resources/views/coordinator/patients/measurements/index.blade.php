@@ -79,8 +79,16 @@
     </ul>
 
 
-
-
+    @if(count($alarms) > 1)
+    <form method="POST" action="measurements/check" class="my-3">
+        @csrf
+        <input type="hidden" name="date" value="null">
+        <button type="submit" class="btn btn-outline-primary">
+            <i class="fas fa-check"></i>
+            Mark all alarms as checked
+        </button>
+    </form>
+    @endif
 
     @foreach($alarms as $date => $alarm)
     @php
@@ -118,7 +126,7 @@
             || $measurement['alarmTherapeuticMin']
             ))
             <li>
-                {{ $measurement['parameter'] }}
+                {{ ucfirst(strtolower($measurement['parameter'])) }}
                 @if($measurement['alarmSafetyMax'])
                 over maximum safety threshold:
                 @elseif($measurement['alarmSafetyMin'])
