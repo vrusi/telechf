@@ -78,8 +78,11 @@
         </li>
     </ul>
 
+    @php
+    $anyUnchecked = $patient->isAnyMeasurementUnchecked();
+    @endphp
 
-    @if(count($alarms) > 1)
+    @if($anyUnchecked)
     <form method="POST" action="measurements/check" class="my-3">
         @csrf
         <input type="hidden" name="date" value="null">
@@ -88,15 +91,14 @@
             Mark all alarms as checked
         </button>
     </form>
-    @endif
 
     @foreach($alarms as $date => $alarm)
     @php
     $alarmDate = $alarm[0]['date'];
-    $anyUnchecked = $patient->isAnyMeasurementUncheckedInDay($alarmDate);
+    $anyUncheckedInDay = $patient->isAnyMeasurementUncheckedInDay($alarmDate);
     @endphp
 
-    @if($anyUnchecked)
+    @if($anyUncheckedInDay)
     <div class="alarm-summary p-4 mb-5">
         <div class="d-flex justify-content-between align-items-center">
             <div>
@@ -120,34 +122,34 @@
             @foreach($alarm as $measurement)
             @if( array_key_exists('parameter', $measurement)
             && (
-            $measurement['alarmSafetyMax']
-            || $measurement['alarmSafetyMin']
-            || $measurement['alarmTherapeuticMax']
-            || $measurement['alarmTherapeuticMin']
+            $measurement['triggered_safety_alarm_max']
+            || $measurement['triggered_safety_alarm_min']
+            || $measurement['triggered_therapeutic_alarm_max']
+            || $measurement['triggered_therapeutic_alarm_min']
             ))
             <li>
                 {{ ucfirst(strtolower($measurement['parameter'])) }}
-                @if($measurement['alarmSafetyMax'])
+                @if($measurement['triggered_safety_alarm_max'])
                 over maximum safety threshold:
-                @elseif($measurement['alarmSafetyMin'])
+                @elseif($measurement['triggered_safety_alarm_min'])
                 below minimum safety threshold:
-                @elseif($measurement['alarmTherapeuticMax'])
+                @elseif($measurement['triggered_therapeutic_alarm_max'])
                 over maximum therapeutic threshold:
-                @elseif($measurement['alarmTherapeuticMin'])
+                @elseif($measurement['triggered_therapeutic_alarm_min'])
                 below minimum therapeutic threshold:
                 @endif
                 {{ round($measurement['value'], 2).' '.$measurement['unit'] }}
 
-                @if($measurement['alarmSafetyMax'])
+                @if($measurement['triggered_safety_alarm_max'])
                 <i class="fas fa-chevron-up alarm-safety-icon"></i>
 
-                @elseif($measurement['alarmSafetyMin'])
+                @elseif($measurement['triggered_safety_alarm_min'])
                 <i class="fas fa-chevron-down alarm-safety-icon"></i>
 
-                @elseif($measurement['alarmTherapeuticMax'])
+                @elseif($measurement['triggered_therapeutic_alarm_max'])
                 <i class="fas fa-chevron-up alarm-therapeutic-icon"></i>
 
-                @elseif($measurement['alarmTherapeuticMin'])
+                @elseif($measurement['triggered_therapeutic_alarm_min'])
                 <i class="fas fa-chevron-down alarm-therapeutic-icon"></i>
                 @endif
 
@@ -290,7 +292,9 @@
     </div>
     @endforeach
 
-
+    @else
+    <p>This patient has no unchecked alarms.</p>
+    @endif
 
     <h3>
         Measurements
@@ -328,22 +332,43 @@
                 @foreach($day as $measurement)
 
                 @if(!array_key_exists('parameter', $measurement) || (array_key_exists('parameter', $measurement) && !(strtolower($measurement['parameter']) == 'ecg')) )
-                @if($measurement['alarmSafetyMax'] || $measurement['alarmSafetyMin'])
+                @if($measurement['triggered_safety_alarm_max'] || $measurement['triggered_safety_alarm_min'])
                 <td class="alarm-safety">
-                    @elseif($measurement['alarmTherapeuticMax'] || $measurement['alarmTherapeuticMin'])
+                    @elseif($measurement['triggered_therapeutic_alarm_max'] || $measurement['triggered_therapeutic_alarm_min'])
                 <td class="alarm-therapeutic">
                     @else
                 <td>
                     @endif
-                    {{
-                        !$measurement['value']
-                        ? '--'
-                        : (
-                           is_numeric($measurement['value'])
-                           ? round($measurement['value'], 2)
-                           : $measurement['value']
-                           ) 
-                           }}
+                    <div class="row">
+                        <div class="col-12">
+                            <p>
+                                {{
+                                !$measurement['value']
+                                ? '--'
+                                : (
+                                 is_numeric($measurement['value'])
+                                 ? round($measurement['value'], 2)
+                                 : $measurement['value']
+                                 ) 
+                            }}
+                            </p>
+                        </div>
+                        @if($measurement['triggered_safety_alarm_max'] || $measurement['triggered_safety_alarm_min'] || $measurement['triggered_therapeutic_alarm_max'] || $measurement['triggered_therapeutic_alarm_min'])
+                        <div class="col-12 faint">
+                            @if($measurement['triggered_safety_alarm_max'] || $measurement['triggered_therapeutic_alarm_max'])
+                            too high
+                            @elseif($measurement['triggered_safety_alarm_min'] || $measurement['triggered_therapeutic_alarm_min'])
+                            too low
+                            @endif
+                        </div>
+                        @endif
+
+                        @if( $measurement && $measurement['value'] && array_key_exists('date', $measurement) )
+                        <div class="col-12 faint">
+                            {{ date('H:i:s', strtotime($measurement['date'])) }}
+                        </div>
+                        @endif
+                    </div>
                 </td>
                 @endif
                 @endforeach

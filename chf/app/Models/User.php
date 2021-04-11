@@ -99,6 +99,7 @@ class User extends Authenticatable
                 $alarmTherapeuticMin = false;
                 $checked = false;
                 $measurementId = null;
+                $createdAt = null;
 
                 foreach ($measurementsPerDay as $measurement) {
                     if ($measurement['parameter_id'] == $parameter['id']) {
@@ -110,6 +111,8 @@ class User extends Authenticatable
                         $alarmTherapeuticMin = $measurement['triggered_therapeutic_alarm_min'];
                         $checked = $measurement['checked'];
                         $measurementId = $measurement['id'];
+                        $createdAt = $measurement['created_at'];
+
                     }
                 }
 
@@ -118,11 +121,11 @@ class User extends Authenticatable
                     'value' => $value,
                     'unit' => $parameter['unit'],
                     'alarm' => $alarmAny,
-                    'alarmSafetyMax' => $alarmSafetyMax,
-                    'alarmSafetyMin' => $alarmSafetyMin,
-                    'alarmTherapeuticMax' => $alarmTherapeuticMax,
-                    'alarmTherapeuticMin' => $alarmTherapeuticMin,
-                    'date' => $measurement['created_at'],
+                    'triggered_safety_alarm_max' => $alarmSafetyMax,
+                    'triggered_safety_alarm_min' => $alarmSafetyMin,
+                    'triggered_therapeutic_alarm_max' => $alarmTherapeuticMax,
+                    'triggered_therapeutic_alarm_min' => $alarmTherapeuticMin,
+                    'date' => $createdAt,
                     'checked' => $checked,
                     'measurementId' => $measurementId,
                 ];
@@ -154,10 +157,10 @@ class User extends Authenticatable
                     'name' => $name,
                     'value' => $avgMapped,
                     'alarm' => $alarmAny,
-                    'alarmSafetyMax' => $alarmSafetyMax,
-                    'alarmSafetyMin' => $alarmSafetyMin,
-                    'alarmTherapeuticMax' => $alarmTherapeuticMax,
-                    'alarmTherapeuticMin' => $alarmTherapeuticMin,
+                    'triggered_safety_alarm_max' => $alarmSafetyMax,
+                    'triggered_safety_alarm_min' => $alarmSafetyMin,
+                    'triggered_therapeutic_alarm_max' => $alarmTherapeuticMax,
+                    'triggered_therapeutic_alarm_min' => $alarmTherapeuticMin,
                     'checked' => $checked,
                     'measurementId' => $measurement['id'],
                 ];
@@ -296,6 +299,10 @@ class User extends Authenticatable
 
     public function isAnyMeasurementUncheckedInDay($createdAt)
     {
+        if (!$createdAt) {
+            return false;
+        }
+
         if (is_string($createdAt)) {
             $createdAt = Carbon::parse($createdAt);
         }
@@ -312,6 +319,30 @@ class User extends Authenticatable
             ) {
                 if ($measurement['checked'] == false) {
                     $anyUnchecked = true;
+                }
+            }
+        }
+
+        return $anyUnchecked;
+    }
+
+    public function isAnyMeasurementUnchecked()
+    {
+
+        $summary = $this->measurementsSummary();
+
+        $anyUnchecked = false;
+        foreach ($summary as $day) {
+            foreach ($day as $measurement) {
+                if (
+                    $measurement['triggered_safety_alarm_max']
+                    || $measurement['triggered_safety_alarm_min']
+                    || $measurement['triggered_therapeutic_alarm_max']
+                    || $measurement['triggered_therapeutic_alarm_max']
+                ) {
+                    if ($measurement['checked'] == false) {
+                        $anyUnchecked = true;
+                    }
                 }
             }
         }

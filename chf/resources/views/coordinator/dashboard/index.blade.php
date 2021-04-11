@@ -102,11 +102,6 @@
 
                 @else
 
-
-
-
-
-
                 @if($measurement['triggered_safety_alarm_max'] || $measurement['triggered_safety_alarm_min'])
                 <td class="alarm-safety">
                     @elseif($measurement['triggered_therapeutic_alarm_max'] || $measurement['triggered_therapeutic_alarm_min'])
@@ -114,11 +109,8 @@
                     @else
 
                 <td>
-
                     @endif
-
                     <div class="row">
-
                         <div class="col-12">
                             <p>
                                 {{
@@ -148,11 +140,10 @@
                             {{ date('H:i:s', strtotime($measurement['created_at'])) }}
                         </div>
                         @endif
+                    </div>
                 </td>
 
                 @endif
-
-
 
                 @endforeach
                 <td>
