@@ -56,32 +56,6 @@
         </tr>
         @endif
 
-        @if($patient['email'])
-        <tr>
-            <td class="font-weight-bold pr-3">
-                Email
-            </td>
-            <td>
-                <a href="mailto:{{ $patient['email'] }}">
-                    {{ $patient['email'] }}
-                </a>
-            </td>
-        </tr>
-        @endif
-
-        @if($patient['mobile'])
-        <tr>
-            <td class="font-weight-bold pr-3">
-                Mobile
-            </td>
-            <td>
-                <a href="tel:{{ $patient['mobile'] }}">
-                    {{ $patient['mobile'] }}
-                </a>
-            </td>
-        </tr>
-        @endif
-
         @if($patient['sex'])
         <tr>
             <td class="font-weight-bold pr-3">
@@ -122,6 +96,32 @@
             </td>
             <td>
                 {{ $patient['weight'].' kg' }}
+            </td>
+        </tr>
+        @endif
+
+        @if($patient['email'])
+        <tr>
+            <td class="font-weight-bold pr-3">
+                Email
+            </td>
+            <td>
+                <a href="mailto:{{ $patient['email'] }}">
+                    {{ $patient['email'] }}
+                </a>
+            </td>
+        </tr>
+        @endif
+
+        @if($patient['mobile'])
+        <tr>
+            <td class="font-weight-bold pr-3">
+                Mobile
+            </td>
+            <td>
+                <a href="tel:{{ $patient['mobile'] }}">
+                    {{ $patient['mobile'] }}
+                </a>
             </td>
         </tr>
         @endif
