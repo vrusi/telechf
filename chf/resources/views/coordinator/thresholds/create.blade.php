@@ -60,6 +60,25 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-6">
+                                @if($parameter->threshold_min)
+                                <div class="form-group form-check">
+                                    <input type="checkbox" class="form-check-input" id="{{ 'parameter'.$parameter->id.'minCheck' }}" name="{{ 'parameter'.$parameter->id.'minCheck' }}">
+                                    <label class="form-check-label" for="{{ 'parameter'.$parameter->id.'minCheck' }}"><i class="far fa-trash-alt"></i> Remove minimum threshold</label>
+                                </div>
+                                @endif
+                            </div>
+
+                            <div class="col-6">
+                                @if($parameter->threshold_max)
+                                <div class="form-group form-check">
+                                    <input type="checkbox" class="form-check-input" id="{{ 'parameter'.$parameter->id.'maxCheck' }}" name="{{ 'parameter'.$parameter->id.'maxCheck' }}">
+                                    <label class="form-check-label" for="{{ 'parameter'.$parameter->id.'maxCheck' }}"><i class="far fa-trash-alt"></i> Remove maximum threshold</label>
+                                </div>
+                                @endif
+                            </div>
+                        </div>
                         @endif
                     </td>
 
@@ -82,6 +101,16 @@
                                         <option value="month" {{ $parameter->measurement_span == 'month' ? 'selected' : '' }}>month</option>
                                     </select>
                                 </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                @if($parameter->measurement_times && $parameter->measurement_span)
+                                <div class="form-group form-check">
+                                    <input type="checkbox" class="form-check-input" id="{{ 'parameter'.$parameter->id.'freqCheck' }}" name="{{ 'parameter'.$parameter->id.'freqCheck' }}">
+                                    <label class="form-check-label" for="{{ 'parameter'.$parameter->id.'freqCheck' }}"><i class="far fa-trash-alt"></i> Remove measurement frequency</label>
+                                </div>
+                                @endif
                             </div>
                         </div>
                     </td>
