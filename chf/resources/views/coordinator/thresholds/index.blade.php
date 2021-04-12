@@ -48,6 +48,7 @@
                     </td>
 
                     <td class="px-5">
+                        @if(strtolower($parameter['name']) != 'ecg')
                         {{-- both min and max --}}
                         @if($parameter->threshold_min && $parameter->threshold_max)
                         {{ $parameter->threshold_min }} - {{ $parameter->threshold_max }} {{ $parameter->unit }}
@@ -63,6 +64,7 @@
                         {{-- neither --}}
                         @else
                         --
+                        @endif
                         @endif
                     </td>
 
