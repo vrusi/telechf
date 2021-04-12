@@ -20,11 +20,6 @@ class PatientController extends Controller
 
     public function show(Request $request)
     {
-        /* $coordinator = Auth::user();
-        return view('coordinator.patients.show', [
-            'patient' => $patient,
-            ]); */
-
         $patient =  User::where('id', $request->route('patient'))->first();
         return redirect()->action([ProfileController::class, 'index'], ['patient' => $patient->id]);
     }

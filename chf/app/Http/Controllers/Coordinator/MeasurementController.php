@@ -16,7 +16,7 @@ class MeasurementController extends Controller
         $patient = User::where('id', $request->route('patient'))->first();
         $summary = $patient->measurementsSummary();
         $alarms = $patient->measurementsAlarms();
-        $parameters = $patient->parameters;
+        $parameters = $patient->parameters()->orderBy('id', 'ASC')->get();
         $contacts = $patient->contacts;
         return view('coordinator.patients.measurements.index', [
             'patient' => $patient,

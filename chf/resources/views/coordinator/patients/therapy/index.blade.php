@@ -29,96 +29,116 @@
     </ul>
 
     <div class="my-3">
-        <h3>
-            Monitored parameters
-        </h3>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>
-                        Parameter
-                    </th>
-                    <th class="px-3">
-                        Safety threshold
-                    </th>
-                    <th class="pr-3">
-                        Therapeutic threshold
-                    </th>
-                    <th>
-                        Measurement frequency
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($parameters as $parameter)
-                <tr>
-                    <td>
-                        {{ $parameter->name }}
-                    </td>
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h3>
+                    Monitored parameters
+                </h3>
+            </div>
+            <div>
+                <a href="{{'/coordinator/patients/'.$patient['id'].'/therapy/thresholds/create'}}" class="btn btn-outline-secondary">
+                    <i class="fas fa-edit"></i>
+                    Edit personal thresholds
+                </a>
+            </div>
+        </div>
 
-                    {{-- safety --}}
-                    <td class="px-3">
-                        {{-- both min and max --}}
-                        @if($parameter->pivot->threshold_safety_min && $parameter->pivot->threshold_safety_max)
-                        {{ $parameter->pivot->threshold_safety_min }} - {{ $parameter->pivot->threshold_safety_max }} {{ $parameter->unit }}
+        <div class="d-flex justify-content-center">
+            <table class="w-75">
+                <thead>
+                    <tr>
+                        <th>
+                            Parameter
+                        </th>
+                        <th class="px-3">
+                            Safety threshold
+                        </th>
+                        <th class="pr-3">
+                            Therapeutic threshold
+                        </th>
+                        <th>
+                            Measurement frequency
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($parameters as $parameter)
+                    <tr>
+                        <td>
+                            {{ $parameter->name }}
+                        </td>
 
-                        {{-- only min --}}
-                        @elseif($parameter->pivot->threshold_safety_min && !$parameter->pivot->threshold_safety_max)
-                        ≥ {{ $parameter->pivot->threshold_safety_min }} {{ $parameter->unit }}
+                        {{-- safety --}}
+                        <td class="px-3">
+                            @if(strtolower($parameter['name']) != 'ecg')
 
-                        {{-- only max --}}
-                        @elseif(!$parameter->pivot->threshold_safety_min && $parameter->pivot->threshold_safety_max)
-                        ≤ {{ $parameter->pivot->threshold_safety_max }} {{ $parameter->unit }}
+                            {{-- both min and max --}}
+                            @if($parameter->pivot->threshold_safety_min && $parameter->pivot->threshold_safety_max)
+                            {{ $parameter->pivot->threshold_safety_min }} - {{ $parameter->pivot->threshold_safety_max }} {{ $parameter->unit }}
 
-                        {{-- neither --}}
-                        @else
-                        --
-                        @endif
-                    </td>
+                            {{-- only min --}}
+                            @elseif($parameter->pivot->threshold_safety_min && !$parameter->pivot->threshold_safety_max)
+                            ≥ {{ $parameter->pivot->threshold_safety_min }} {{ $parameter->unit }}
+
+                            {{-- only max --}}
+                            @elseif(!$parameter->pivot->threshold_safety_min && $parameter->pivot->threshold_safety_max)
+                            ≤ {{ $parameter->pivot->threshold_safety_max }} {{ $parameter->unit }}
+
+                            {{-- neither --}}
+                            @else
+                            --
+                            @endif
+                            @endif
+                        </td>
 
 
-                    {{-- therapeutic --}}
-                    <td class="pr-3">
-                        {{-- both min and max --}}
-                        @if($parameter->pivot->threshold_therapeutic_min && $parameter->pivot->threshold_therapeutic_max)
-                        {{ $parameter->pivot->threshold_therapeutic_min }} - {{ $parameter->pivot->threshold_therapeutic_max }} {{ $parameter->unit }}
+                        {{-- therapeutic --}}
+                        <td class="pr-3">
+                            @if(strtolower($parameter['name']) != 'ecg')
 
-                        {{-- only min --}}
-                        @elseif($parameter->pivot->threshold_therapeutic_min && !$parameter->pivot->threshold_therapeutic_max)
-                        ≥ {{ $parameter->pivot->threshold_therapeutic_min }} {{ $parameter->unit }}
+                            {{-- both min and max --}}
+                            @if($parameter->pivot->threshold_therapeutic_min && $parameter->pivot->threshold_therapeutic_max)
+                            {{ $parameter->pivot->threshold_therapeutic_min }} - {{ $parameter->pivot->threshold_therapeutic_max }} {{ $parameter->unit }}
 
-                        {{-- only max --}}
-                        @elseif(!$parameter->pivot->threshold_therapeutic_min && $parameter->pivot->threshold_therapeutic_max)
-                        ≤ {{ $parameter->pivot->threshold_therapeutic_max }} {{ $parameter->unit }}
+                            {{-- only min --}}
+                            @elseif($parameter->pivot->threshold_therapeutic_min && !$parameter->pivot->threshold_therapeutic_max)
+                            ≥ {{ $parameter->pivot->threshold_therapeutic_min }} {{ $parameter->unit }}
 
-                        {{-- neither --}}
-                        @else
-                        --
-                        @endif
-                    </td>
+                            {{-- only max --}}
+                            @elseif(!$parameter->pivot->threshold_therapeutic_min && $parameter->pivot->threshold_therapeutic_max)
+                            ≤ {{ $parameter->pivot->threshold_therapeutic_max }} {{ $parameter->unit }}
 
-                    <td>
-                        @if($parameter->measurement_times)
-                        @if($parameter->measurement_times == 1)
-                        {{ 'once per '.$parameter->measurement_span }}
-                        @endif
-                        @if($parameter->measurement_times == 2)
-                        {{ 'twice per '.$parameter->measurement_span }}
-                        @endif
-                        @if($parameter->measurement_times >= 3)
-                        {{ $parameter->measurement_times.' times per '.$parameter->measurement_span }}
-                        @endif
-                        @endif
+                            {{-- neither --}}
+                            @else
+                            --
+                            @endif
+                            @endif
+                        </td>
 
-                        @if(!$parameter->measurement_times)
-                        {{ '--' }}
-                        @endif
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+                        <td>
+                            @if($parameter->pivot->measurement_times)
+                            @if($parameter->pivot->measurement_times == 1)
+                            {{ 'once per '.$parameter->pivot->measurement_span }}
+                            @endif
+                            @if($parameter->pivot->measurement_times == 2)
+                            {{ 'twice per '.$parameter->pivot->measurement_span }}
+                            @endif
+                            @if($parameter->pivot->measurement_times >= 3)
+                            {{ $parameter->pivot->measurement_times.' times per '.$parameter->pivot->measurement_span }}
+                            @endif
+                            @endif
+
+                            @if(!$parameter->pivot->measurement_times)
+                            {{ '--' }}
+                            @endif
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+
     </div>
 
     <div class="my-3">

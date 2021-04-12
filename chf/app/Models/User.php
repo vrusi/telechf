@@ -112,7 +112,6 @@ class User extends Authenticatable
                         $checked = $measurement['checked'];
                         $measurementId = $measurement['id'];
                         $createdAt = $measurement['created_at'];
-
                     }
                 }
 
@@ -196,7 +195,20 @@ class User extends Authenticatable
 
     public function parameters()
     {
-        return $this->belongsToMany(Parameter::class, 'user_parameters', 'user_id', 'parameter_id')->withPivot('threshold_safety_min', 'threshold_safety_max', 'threshold_therapeutic_min', 'threshold_therapeutic_max');
+        return $this->belongsToMany(Parameter::class, 'user_parameters', 'user_id', 'parameter_id')->withPivot('threshold_safety_min', 'threshold_safety_max', 'threshold_therapeutic_min', 'threshold_therapeutic_max', 'measurement_times', 'measurement_span');
+    }
+
+    public function hasParameter(Parameter $parameterToCheck)
+    {
+        $parameters = $this->parameters;
+
+        foreach ($parameters as $parameter) {
+            if ($parameter->id == $parameterToCheck->id) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function contacts()

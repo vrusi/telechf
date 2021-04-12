@@ -19,7 +19,7 @@ class ChartController extends Controller
         $thresholds = $patient->thresholds();
 
         $measurements = $patient->measurements;
-        $parameters = $patient->parameters;
+        $parameters = $patient->parameters()->orderBy('id', 'ASC')->get();
 
         $charts = array();
 

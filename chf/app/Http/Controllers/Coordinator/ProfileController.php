@@ -21,7 +21,7 @@ class ProfileController extends Controller
         $user = Auth::user();
         $patient = User::where('id', $request->route('patient'))->first();
         $thresholds = $patient->thresholds();
-        $parameters = $patient->parameters;
+        $parameters = $patient->parameters()->orderBy('id', 'ASC')->get();
         $conditions = $patient->conditions;
         $drugs = $patient->drugs;
         return view('coordinator.patients.therapy.index', ['patient' => $patient, 'parameters' => $parameters, 'conditions' => $conditions, 'drugs' => $drugs, 'thresholds' => $thresholds]);
