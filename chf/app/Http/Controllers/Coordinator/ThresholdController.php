@@ -130,7 +130,6 @@ class ThresholdController extends Controller
 
 
         flash('The thresholds have been updated.')->success();
-        $parameters = Parameter::orderBy('id', 'ASC')->get();
-        return view('coordinator.thresholds.index', ['parameters' => $parameters]);
+        return redirect()->action([ThresholdController::class, 'index']);
     }
 }
