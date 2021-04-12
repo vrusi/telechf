@@ -13,7 +13,7 @@ class DashboardController extends Controller
     {
         $user = Auth::user();
         $patients = $user->patients;
-        $parameters = Parameter::all();
+        $parameters = Parameter::orderBy('id', 'ASC')->get();
 
         $alarms = array();
 

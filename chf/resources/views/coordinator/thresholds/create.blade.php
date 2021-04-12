@@ -2,17 +2,38 @@
 
 @section('content')
 
+<style>
+    th,
+    td {
+        padding: 1rem 0;
+        border-width: 0 0 1px 0;
+        border-style: solid;
+        border-color: #00000020;
+    }
+
+</style>
+
 <div class="container">
     <h1>
         Global thresholds
     </h1>
-    <p>
+    <p class="text-justify">
         These threshold settings apply to every patient by default unless personal thresholds have been set for a patient. You can set personal thresholds for specific patients by visiting the thresholds tab within their profile.
     </p>
 
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+
     <form method="POST" action="store">
         @csrf
-        <table>
+        <table class="mb-5">
             <thead>
                 <tr>
                     <th class="pr-3">
@@ -94,7 +115,7 @@
                                 <div class="form-group">
                                     <label for="{{ 'parameter'.$parameter->id.'per' }}">Per</label>
                                     <select class="form-control" id="{{ 'parameter'.$parameter->id.'per' }}" name="{{ 'parameter'.$parameter->id.'per' }}">
-                                        <option value="null" {{ $parameter->measurement_span == null ? 'selected' : '' }}>--</option>
+                                        <option value="" {{ $parameter->measurement_span == null ? 'selected' : '' }}>--</option>
                                         <option value="hour" {{ $parameter->measurement_span == 'hour' ? 'selected' : '' }}>hour</option>
                                         <option value="day" {{ $parameter->measurement_span == 'day' ? 'selected' : '' }}>day</option>
                                         <option value="week" {{ $parameter->measurement_span == 'week' ? 'selected' : '' }}>week</option>
@@ -119,9 +140,19 @@
             </tbody>
         </table>
 
-        <button type="submit" class="btn btn-primary">
-            Save global thresholds
-        </button>
+        <div class="d-flex mb-5 justify-content-center">
+            <div class="mr-3">
+                <a href="{{ route('coordinator.thresholds') }}" class="btn btn-secondary">Cancel</a>
+            </div>
+
+            <div class="ml-3">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save mr-1"></i>
+                    Save global thresholds
+                </button>
+            </div>
+
+        </div>
     </form>
 </div>
 @endsection

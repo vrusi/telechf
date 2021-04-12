@@ -142,7 +142,7 @@ class MeasurementController extends Controller
 
         $user = User::where('id', Auth::user()->id)->first();
         $userParameters = $user->parameters;
-        $parameters = Parameter::all();
+        $parameters = Parameter::orderBy('id', 'ASC')->get();
 
         $thresholdSafetyMin = null;
         $thresholdSafetyMax = null;

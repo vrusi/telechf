@@ -216,7 +216,7 @@ class User extends Authenticatable
 
     public function thresholds()
     {
-        $parametersGlobal =  Parameter::all();
+        $parametersGlobal =  Parameter::orderBy('id', 'ASC')->get();
         $parametersPersonal =  $this->parameters;
 
         $thresholds = array();
