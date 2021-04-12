@@ -1,6 +1,24 @@
 @extends('layouts.app')
 
 @section('content')
+<style>
+    .sticky {
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background: #f8fafc;
+        padding: 1rem 0;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    .filter {
+        width: 100vw;
+    }
+
+</style>
+
 <div class="container">
     <h1>
         Patients
@@ -28,79 +46,91 @@
         </li>
     </ul>
 
-    <h3>
-        Filter
-    </h3>
+    <div id="filter">
+        <div class="container">
+            <h3>
+                Filter
+            </h3>
 
-    <div x-data="selectFilter()">
-        <form method="POST" action="charts/filter">
-            @csrf
-            <div class="d-flex align-items-center">
-                <div class="mr-3">
-                    Plot data from last
-                </div>
+            <div x-data="selectFilter()">
+                <form method="POST" action="charts/filter">
+                    @csrf
+                    <div class="d-flex align-items-center">
+                        <div class="mr-3">
+                            Plot data from last
+                        </div>
 
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="filterOption" id="inlineRadio1" value="1" x-bind:checked="select1">
-                    <label class="form-check-label" for="inlineRadio1">week</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="filterOption" id="inlineRadio2" value="2" x-bind:checked="select2">
-                    <label class="form-check-label" for="inlineRadio2">month</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="filterOption" id="inlineRadio3" value="3" x-bind:checked="select3">
-                    <label class="form-check-label" for="inlineRadio3">three months</label>
-                </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="filterOption" id="inlineRadio1" value="1" x-bind:checked="select1">
+                            <label class="form-check-label" for="inlineRadio1">week</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="filterOption" id="inlineRadio2" value="2" x-bind:checked="select2">
+                            <label class="form-check-label" for="inlineRadio2">month</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="filterOption" id="inlineRadio3" value="3" x-bind:checked="select3">
+                            <label class="form-check-label" for="inlineRadio3">three months</label>
+                        </div>
 
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="filterOption" id="inlineRadio3" value="4" x-bind:checked="select4">
-                    <label class="form-check-label" for="inlineRadio3">six months</label>
-                </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="filterOption" id="inlineRadio3" value="4" x-bind:checked="select4">
+                            <label class="form-check-label" for="inlineRadio3">six months</label>
+                        </div>
 
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="filterOption" id="inlineRadio3" value="5" x-bind:checked="select5">
-                    <label class="form-check-label" for="inlineRadio3">all time data</label>
-                </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="filterOption" id="inlineRadio3" value="5" x-bind:checked="select5">
+                            <label class="form-check-label" for="inlineRadio3">all time data</label>
+                        </div>
 
-                <div>
-                    <button type="submit" class="btn btn-outline-secondary">Submit</button>
-                </div>
+                        <div>
+                            <button type="submit" class="btn btn-outline-secondary">Submit</button>
+                        </div>
+                    </div>
+                </form>
             </div>
-        </form>
-    </div>
+        </div>
 
+    </div>
 
     <h3>
         Charts
     </h3>
 
     @foreach($charts as $chart)
-
-
-
     <div id="{{ 'chart-'.$chart['name'] }}" class="mb-5">
     </div>
     @endforeach
 </div>
 
 <script>
+    // make filter sticky
+    var filter = $('#filter')[0];
+    var sticky = filter.offsetTop;
 
+    window.onscroll = () => {
+        if (window.pageYOffset > sticky) {
+            filter.classList.add("sticky");
+        } else {
+            filter.classList.remove("sticky");
+        }
+    };
+
+    // select default radio from filter options
     option = {!!$filterOption!!};
-    console.log(option);
 
     function selectFilter() {
         return {
-            select1: option == 1,
-            select2: option == 2,
-            select3: option == 3,
-            select4: option == 4,
-            select5: option == 5,
-        }
+            select1: option == 1
+            , select2: option == 2
+            , select3: option == 3
+            , select4: option == 4
+            , select5: option == 5
+        , }
     }
 
+    // set up charts
     charts = {!!$charts_encoded!!};
-
 
     for (chart of charts) {
 

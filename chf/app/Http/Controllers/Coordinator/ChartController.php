@@ -12,7 +12,7 @@ class ChartController extends Controller
 {
     function index(Request $request)
     {
-        $filterOption = $request->has('filter') ? $request->input('filter') : null;
+        $filterOption = $request->has('filter') ? $request->input('filter') : "5";
 
         $patient = User::where('id', $request->route('patient'))->first();
 
@@ -98,7 +98,7 @@ class ChartController extends Controller
             unset($values);
             unset($dates);
         }
-        
+
         return view('coordinator.patients.charts.index', [
             'patient' => $patient,
             'charts' => $charts,
