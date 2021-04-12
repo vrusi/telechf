@@ -29,17 +29,78 @@
     </ul>
 
     <h3>
+        Filter
+    </h3>
+
+    <div x-data="selectFilter()">
+        <form method="POST" action="charts/filter">
+            @csrf
+            <div class="d-flex align-items-center">
+                <div class="mr-3">
+                    Plot data from last
+                </div>
+
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="filterOption" id="inlineRadio1" value="1" x-bind:checked="select1">
+                    <label class="form-check-label" for="inlineRadio1">week</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="filterOption" id="inlineRadio2" value="2" x-bind:checked="select2">
+                    <label class="form-check-label" for="inlineRadio2">month</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="filterOption" id="inlineRadio3" value="3" x-bind:checked="select3">
+                    <label class="form-check-label" for="inlineRadio3">three months</label>
+                </div>
+
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="filterOption" id="inlineRadio3" value="4" x-bind:checked="select4">
+                    <label class="form-check-label" for="inlineRadio3">six months</label>
+                </div>
+
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="filterOption" id="inlineRadio3" value="5" x-bind:checked="select5">
+                    <label class="form-check-label" for="inlineRadio3">all time data</label>
+                </div>
+
+                <div>
+                    <button type="submit" class="btn btn-outline-secondary">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+
+    <h3>
         Charts
     </h3>
 
     @foreach($charts as $chart)
+
+
+
     <div id="{{ 'chart-'.$chart['name'] }}" class="mb-5">
     </div>
     @endforeach
 </div>
 
 <script>
+
+    option = {!!$filterOption!!};
+    console.log(option);
+
+    function selectFilter() {
+        return {
+            select1: option == 1,
+            select2: option == 2,
+            select3: option == 3,
+            select4: option == 4,
+            select5: option == 5,
+        }
+    }
+
     charts = {!!$charts_encoded!!};
+
 
     for (chart of charts) {
 
