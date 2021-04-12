@@ -50,6 +50,10 @@
              <li class="{{ Request::is('coordinator/patients*') ? 'nav-item active' : 'nav-item' }}">
                  <a class="nav-link" href="{{ route('patients.index') }}">{{ __('Patients') }}</a>
              </li>
+
+             <li class="{{ Request::is('coordinator/thresholds*') ? 'nav-item active' : 'nav-item' }}">
+                 <a class="nav-link" href="{{ route('coordinator.thresholds') }}">{{ __('Thresholds') }}</a>
+             </li>
          </ul>
 
          @endif

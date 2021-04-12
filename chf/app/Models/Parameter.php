@@ -8,4 +8,17 @@ use Illuminate\Database\Eloquent\Model;
 class Parameter extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'name',
+        'unit',
+        'measurement_times',
+        'measurement_span',
+        'threshold_min',
+        'threshold_max',
+        'instructions',
+    ];    
+
 }
+
+

@@ -54,3 +54,8 @@ Route::post('coordinator/patients/{patient}/charts/filter', 'App\Http\Controller
 Route::get('coordinator/patients/{patient}/profile', 'App\Http\Controllers\Coordinator\ProfileController@index')->middleware(['auth', 'coordinator'])->name('coordinator.patients.profile');
 Route::get('coordinator/patients/{patient}/therapy', 'App\Http\Controllers\Coordinator\ProfileController@therapy')->middleware(['auth', 'coordinator'])->name('coordinator.patients.therapy');
 Route::get('coordinator/patients/{patient}/contacts', 'App\Http\Controllers\Coordinator\ContactController@index')->middleware(['auth', 'coordinator'])->name('coordinator.patients.contact');
+
+Route::get('coordinator/thresholds', 'App\Http\Controllers\Coordinator\ThresholdController@index')->middleware(['auth', 'coordinator'])->name('coordinator.thresholds');
+Route::get('coordinator/thresholds/create', 'App\Http\Controllers\Coordinator\ThresholdController@create')->middleware(['auth', 'coordinator'])->name('coordinator.thresholds.create');
+Route::post('coordinator/thresholds/store', 'App\Http\Controllers\Coordinator\ThresholdController@store')->middleware(['auth', 'coordinator']);
+
