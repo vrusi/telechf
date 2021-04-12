@@ -9,12 +9,7 @@
         left: 0;
         width: 100%;
         background: #f8fafc;
-        padding: 1rem 0;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    }
-
-    .filter {
-        width: 100vw;
     }
 
 </style>
@@ -46,8 +41,8 @@
         </li>
     </ul>
 
-    <div id="filter">
-        <div class="container">
+    <div id="filter" class="py-3">
+        <div class="container px-0">
             <h3>
                 Filter
             </h3>

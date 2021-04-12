@@ -26,6 +26,7 @@ Route::get('/profile', 'App\Http\Controllers\Patient\ProfileController@index')->
 Route::get('/therapy', 'App\Http\Controllers\Patient\ProfileController@therapy')->middleware(['auth', 'patient'])->name('therapy');
 
 Route::get('/charts', 'App\Http\Controllers\Patient\ChartController@index')->middleware(['auth', 'patient'])->name('charts');
+Route::post('/charts/filter', 'App\Http\Controllers\Patient\ChartController@filter')->middleware(['auth', 'patient']);
 
 
 
