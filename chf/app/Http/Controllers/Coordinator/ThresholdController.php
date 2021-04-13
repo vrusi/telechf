@@ -55,10 +55,10 @@ class ThresholdController extends Controller
         Parameter::where('id', 1)
             ->update(
                 [
-                    'threshold_min' => $request->parameter1minCheck ? null : ($request->parameter1min ?? $parameter1->threshold_min),
-                    'threshold_max' => $request->parameter1maxCheck ? null : ($request->parameter1max ?? $parameter1->threshold_max),
-                    'measurement_times' => $request->parameter1freqCheck ? null : ($request->parameter1times ?? $parameter1->measurement_times),
-                    'measurement_span' => $request->parameter1freqCheck ? null : ($request->parameter1per ?? $parameter1->measurement_span),
+                    'threshold_min' => $request->parameter1minCheck ? null : ( $validated['parameter1min'] ?? $parameter1->threshold_min ),
+                    'threshold_max' => $request->parameter1maxCheck ? null : ( $validated['parameter1max'] ?? $parameter1->threshold_max ),
+                    'measurement_times' => $request->parameter1freqCheck ? null : ( $validated['parameter1times'] ?? $parameter1->measurement_times ),
+                    'measurement_span' => $request->parameter1freqCheck ? null : ( $validated['parameter1per'] ?? $parameter1->measurement_span ),
                 ]
             );
 
@@ -66,10 +66,10 @@ class ThresholdController extends Controller
         Parameter::where('id', 2)
             ->update(
                 [
-                    'threshold_min' => $request->parameter2minCheck ? null : ($request->parameter2min ?? $parameter2->threshold_min),
-                    'threshold_max' => $request->parameter2maxCheck ? null : ($request->parameter2max ?? $parameter2->threshold_max),
-                    'measurement_times' => $request->parameter2freqCheck ? null : ($request->parameter2times ?? $parameter2->measurement_times),
-                    'measurement_span' => $request->parameter2freqCheck ? null : ($request->parameter2per ?? $parameter2->measurement_span),
+                    'threshold_min' => $request->parameter2minCheck ? null : ( $validated['parameter2min'] ?? $parameter2->threshold_min ),
+                    'threshold_max' => $request->parameter2maxCheck ? null : ( $validated['parameter2max'] ?? $parameter2->threshold_max ),
+                    'measurement_times' => $request->parameter2freqCheck ? null : ( $validated['parameter2times'] ?? $parameter2->measurement_times ),
+                    'measurement_span' => $request->parameter2freqCheck ? null : ( $validated['parameter2per'] ?? $parameter2->measurement_span ),
                 ]
             );
 
@@ -77,10 +77,10 @@ class ThresholdController extends Controller
         Parameter::where('id', 3)
             ->update(
                 [
-                    'threshold_min' => $request->parameter3minCheck ? null : ($request->parameter3min ?? $parameter3->threshold_min),
-                    'threshold_max' => $request->parameter3maxCheck ? null : ($request->parameter3max ?? $parameter3->threshold_max),
-                    'measurement_times' => $request->parameter3freqCheck ? null : ($request->parameter3times ?? $parameter3->measurement_times),
-                    'measurement_span' => $request->parameter3freqCheck ? null : ($request->parameter3per ?? $parameter3->measurement_span),
+                    'threshold_min' => $request->parameter3minCheck ? null : ( $validated['parameter3min'] ?? $parameter3->threshold_min ),
+                    'threshold_max' => $request->parameter3maxCheck ? null : ( $validated['parameter3max'] ?? $parameter3->threshold_max ),
+                    'measurement_times' => $request->parameter3freqCheck ? null : ( $validated['parameter3times'] ?? $parameter3->measurement_times ),
+                    'measurement_span' => $request->parameter3freqCheck ? null : ( $validated['parameter3per'] ?? $parameter3->measurement_span ),
                 ]
             );
 
@@ -88,10 +88,10 @@ class ThresholdController extends Controller
         Parameter::where('id', 4)
             ->update(
                 [
-                    'threshold_min' => $request->parameter4minCheck ? null : ($request->parameter4min ?? $parameter4->threshold_min),
-                    'threshold_max' => $request->parameter4maxCheck ? null : ($request->parameter4max ?? $parameter4->threshold_max),
-                    'measurement_times' => $request->parameter4freqCheck ? null : ($request->parameter4times ?? $parameter4->measurement_times),
-                    'measurement_span' => $request->parameter4freqCheck ? null : ($request->parameter4per ?? $parameter4->measurement_span),
+                    'threshold_min' => $request->parameter4minCheck ? null : ( $validated['parameter4min'] ?? $parameter4->threshold_min ),
+                    'threshold_max' => $request->parameter4maxCheck ? null : ( $validated['parameter4max'] ?? $parameter4->threshold_max ),
+                    'measurement_times' => $request->parameter4freqCheck ? null : ( $validated['parameter4times'] ?? $parameter4->measurement_times ),
+                    'measurement_span' => $request->parameter4freqCheck ? null : ( $validated['parameter4per'] ?? $parameter4->measurement_span ),
                 ]
             );
 
@@ -99,10 +99,10 @@ class ThresholdController extends Controller
         Parameter::where('id', 5)
             ->update(
                 [
-                    'threshold_min' => $request->parameter5minCheck ? null : ($request->parameter5min ?? $parameter5->threshold_min),
-                    'threshold_max' => $request->parameter5maxCheck ? null : ($request->parameter5max ?? $parameter5->threshold_max),
-                    'measurement_times' => $request->parameter5freqCheck ? null : ($request->parameter5times ?? $parameter5->measurement_times),
-                    'measurement_span' => $request->parameter5freqCheck ? null : ($request->parameter5per ?? $parameter5->measurement_span),
+                    'threshold_min' => $request->parameter5minCheck ? null : ( $validated['parameter5min'] ?? $parameter5->threshold_min ),
+                    'threshold_max' => $request->parameter5maxCheck ? null : ( $validated['parameter5max'] ?? $parameter5->threshold_max ),
+                    'measurement_times' => $request->parameter5freqCheck ? null : ( $validated['parameter5times'] ?? $parameter5->measurement_times ),
+                    'measurement_span' => $request->parameter5freqCheck ? null : ( $validated['parameter5per'] ?? $parameter5->measurement_span ),
                 ]
             );
 
@@ -110,10 +110,10 @@ class ThresholdController extends Controller
         Parameter::where('id', 6)
             ->update(
                 [
-                    'threshold_min' => $request->parameter6minCheck ? null : ($request->parameter6min ?? $parameter6->threshold_min),
-                    'threshold_max' => $request->parameter6maxCheck ? null : ($request->parameter6max ?? $parameter6->threshold_max),
-                    'measurement_times' => $request->parameter6freqCheck ? null : ($request->parameter6times ?? $parameter6->measurement_times),
-                    'measurement_span' => $request->parameter6freqCheck ? null : ($request->parameter6per ?? $parameter6->measurement_span),
+                    'threshold_min' => $request->parameter6minCheck ? null : ( $validated['parameter6min'] ?? $parameter6->threshold_min ),
+                    'threshold_max' => $request->parameter6maxCheck ? null : ( $validated['parameter6max'] ?? $parameter6->threshold_max ),
+                    'measurement_times' => $request->parameter6freqCheck ? null : ( $validated['parameter6times'] ?? $parameter6->measurement_times ),
+                    'measurement_span' => $request->parameter6freqCheck ? null : ( $validated['parameter6per'] ?? $parameter6->measurement_span ),
                 ]
             );
 
@@ -121,10 +121,10 @@ class ThresholdController extends Controller
         Parameter::where('id', 7)
             ->update(
                 [
-                    'threshold_min' => $request->parameter7minCheck ? null : ($request->parameter7min ?? $parameter7->threshold_min),
-                    'threshold_max' => $request->parameter7maxCheck ? null : ($request->parameter7max ?? $parameter7->threshold_max),
-                    'measurement_times' => $request->parameter7freqCheck ? null : ($request->parameter7times ?? $parameter7->measurement_times),
-                    'measurement_span' => $request->parameter7freqCheck ? null : ($request->parameter7per ?? $parameter7->measurement_span),
+                    'threshold_min' => $request->parameter7minCheck ? null : ( $validated['parameter7min'] ?? $parameter7->threshold_min ),
+                    'threshold_max' => $request->parameter7maxCheck ? null : ( $validated['parameter7max'] ?? $parameter7->threshold_max ),
+                    'measurement_times' => $request->parameter7freqCheck ? null : ( $validated['parameter7times'] ?? $parameter7->measurement_times ),
+                    'measurement_span' => $request->parameter7freqCheck ? null : ( $validated['parameter7per'] ?? $parameter7->measurement_span ),
                 ]
             );
 
