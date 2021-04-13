@@ -143,7 +143,7 @@ class PatientController extends Controller
             'recommendations' => $validated['recommendations'],
             'coordinator_id' => $validated['coordinatorId'],
             'password' => Hash::make($validated['password']),
-            'is_coordinator' => 'false',
+            'is_coordinator' => false,
         ]);
 
         if ($request->parameter1check) {
