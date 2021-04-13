@@ -7,13 +7,27 @@
         width: 100%;
     }
 
-    th, td {
+    th,
+    td {
         padding: 0.5rem;
     }
 
 </style>
 <div class="container">
-    <h1>Patients</h1>
+
+    <div class="d-flex justify-content-between align-content-center">
+        <div>
+            <h1>Patients</h1>
+        </div>
+
+        <div>
+            <a href="{{ route('patients.create') }}" class="btn btn-outline-secondary">
+                <i class="fas fa-user-plus"></i>
+                Add new patient
+            </a>
+        </div>
+
+    </div>
 
     <p>
         These are all the patients that were assigned to you.
@@ -48,6 +62,9 @@
                 </th>
                 <th>
                     Detail
+                </th>
+                <th>
+                    Delete
                 </th>
             </tr>
         </thead>
@@ -92,6 +109,12 @@
                             <i class="fas fa-chevron-circle-right"></i>
                         </a>
                     </div>
+                </td>
+                <td>
+
+                    <a class="btn btn-outline-danger btn-sm" href="{{ '/coordinator/patients/'.$patient['id'].'/destroy' }}">
+                        <i class="fas fa-user-minus"></i>
+                    </a>
                 </td>
             </tr>
             @endforeach

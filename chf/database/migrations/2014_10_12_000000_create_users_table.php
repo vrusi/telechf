@@ -32,7 +32,7 @@ class CreateUsersTable extends Migration
         });
 
         Schema::table('users', function (Blueprint $table) {
-            $table->foreignId('coordinator_id')->nullable()->constrained('users');
+            $table->foreignId('coordinator_id')->nullable()->constrained('users')->onDelete('set null');
         });
     }
 

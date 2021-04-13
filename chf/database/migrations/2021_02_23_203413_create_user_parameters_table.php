@@ -15,8 +15,8 @@ class CreateUserParametersTable extends Migration
     {
         Schema::create('user_parameters', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('parameter_id')->constrained();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');;
+            $table->foreignId('parameter_id')->constrained()->onDelete('cascade');
             $table->integer('measurement_times')->nullable();
             $table->enum('measurement_span', ['hour', 'day', 'week', 'month'])->nullable();
             $table->float('threshold_safety_min')->nullable();

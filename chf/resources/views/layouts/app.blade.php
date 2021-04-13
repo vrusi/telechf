@@ -30,7 +30,6 @@
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
     {{-- For later use
-    
     <style>
          /* taken fromhttps://codepen.io/seme332/pen/reJOwo */
         button {
@@ -57,7 +56,6 @@
             transform: translateY(-7px);
         }
     </style>
-    
     --}}
 </head>
 <body>
@@ -74,6 +72,7 @@
 
     <script>
         $('#flash-overlay-modal').modal();
+
     </script>
 </body>
 </html>

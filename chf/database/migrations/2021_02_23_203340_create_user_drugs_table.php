@@ -15,8 +15,8 @@ class CreateUserDrugsTable extends Migration
     {
         Schema::create('user_drugs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('drug_id')->constrained();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('drug_id')->constrained()->onDelete('cascade');
             $table->float('dosage_volume')->nullable();
             $table->string('dosage_unit')->nullable();
             $table->integer('dosage_times')->nullable();

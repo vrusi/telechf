@@ -32,6 +32,7 @@ class User extends Authenticatable
         'weight',
         'is_coordinator',
         'coordinator_id',
+        'recommendations'
     ];
 
     private function mapConditions(int $value)

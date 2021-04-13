@@ -90,6 +90,8 @@
         @endforeach
     </div>
 
+    <a href="{{ '/coordinator/patients/'.$patient['id'].'/contacts/create' }}" class="btn btn-secondary">Add new</a>
+
 </div>
 
 

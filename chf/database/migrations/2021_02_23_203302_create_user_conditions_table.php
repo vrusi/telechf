@@ -15,8 +15,8 @@ class CreateUserConditionsTable extends Migration
     {
         Schema::create('user_conditions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('condition_id')->constrained();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('condition_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });
     }

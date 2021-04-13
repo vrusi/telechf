@@ -16,4 +16,10 @@ class ContactController extends Controller
         $contacts = $patient->contacts;
         return view('coordinator.patients.contact.index', ['patient' => $patient, 'contacts' => $contacts]);
     }
+
+    public function create(Request $request)
+    {
+        $patient = User::where('id', $request->route('patient'))->first();
+        return view('coordinator.patients.contact.create', ['patient' => $patient]);
+    }
 }
