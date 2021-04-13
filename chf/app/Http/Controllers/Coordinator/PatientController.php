@@ -13,12 +13,21 @@ use Illuminate\Support\Facades\Hash;
 
 class PatientController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $inactive = $request->query('inactive');
         $coordinator = Auth::user();
-        $patients = $coordinator->patients;
+
+        $patients = null;
+        if ($inactive) {
+            $patients = User::onlyTrashed()->where('coordinator_id', $coordinator->id)->get();
+        } else {
+            $patients = $coordinator->patients;
+        }
+
         return view('coordinator.patients.index', [
             'patients' => $patients,
+            'active' => !$inactive,
         ]);
     }
 
@@ -285,17 +294,18 @@ class PatientController extends Controller
         return redirect()->action([ProfileController::class, 'index'], ['patient' => $patient->id]);
     }
 
-    public function destroy(Request $request)
-    {
-        dd($request);
-        User::destroy($request->patientId);
-        return redirect()->action([ProfileController::class, 'index']);
-    }
 
-    public function delete(Request $request)
+    public function deactivate(Request $request)
     {
         User::destroy($request->route('patient'));
-        flash('The user was successfully deleted')->success();
+        flash('The user was successfully deactivated')->success();
+        return redirect()->action([PatientController::class, 'index']);
+    }
+
+    public function restore(Request $request)
+    {
+        $user = User::where('id', $request->route('patient'))->restore();
+        flash('The user was successfully restored')->success();
         return redirect()->action([PatientController::class, 'index']);
     }
 }

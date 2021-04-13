@@ -65,5 +65,7 @@ Route::post('coordinator/thresholds/store', 'App\Http\Controllers\Coordinator\Th
 Route::get('coordinator/patients/{patient}/therapy/thresholds/create', 'App\Http\Controllers\Coordinator\PatientThresholdController@create')->middleware(['auth', 'coordinator']);
 Route::post('coordinator/patients/{patient}/therapy/thresholds/store', 'App\Http\Controllers\Coordinator\PatientThresholdController@store')->middleware(['auth', 'coordinator']);
 
-Route::get('coordinator/patients/{patient}/destroy', 'App\Http\Controllers\Coordinator\PatientController@delete')->middleware(['auth', 'coordinator']);
+Route::get('coordinator/patients/{patient}/deactivate', 'App\Http\Controllers\Coordinator\PatientController@deactivate')->middleware(['auth', 'coordinator']);
+Route::get('coordinator/patients/{patient}/restore', 'App\Http\Controllers\Coordinator\PatientController@restore')->middleware(['auth', 'coordinator']);
+
 

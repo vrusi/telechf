@@ -29,8 +29,22 @@
 
     </div>
 
-    <p>
-        These are all the patients that were assigned to you.
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="{{ $active ? 'nav-link active' : 'nav-link' }}" href="{{ route('patients.index', ['inactive' => false] ) }}">Active</a>
+        </li>
+
+        <li class="nav-item">
+            <a class="{{ !$active ? 'nav-link active' : 'nav-link' }}" href="{{ route('patients.index', ['inactive' => true]) }}">Inactive</a>
+        </li>
+    </ul>
+
+    <p class="my-3">
+        @if($active)
+        These are all the patients with active accounts that were assigned to you.
+        @else
+        These are all the patients with deactivated accounts that had been assigned to you.
+        @endif
     </p>
 
     <table id="patients-table">
@@ -60,11 +74,18 @@
                 <th>
                     Mobile
                 </th>
+                @if($active)
                 <th>
                     Detail
                 </th>
+                @endif
                 <th>
-                    Delete
+                    @if($active)
+                    Deactivate
+                    @else
+                    Restore
+                    @endif
+
                 </th>
             </tr>
         </thead>
@@ -103,6 +124,7 @@
                         {{ $patient['mobile'] }}
                     </a>
                 </td>
+                @if($active)
                 <td>
                     <div class="d-flex justify-content-center align-items-center">
                         <a href="{{'/coordinator/patients/'.$patient['id'] }}">
@@ -110,11 +132,17 @@
                         </a>
                     </div>
                 </td>
+                @endif
                 <td>
-
-                    <a class="btn btn-outline-danger btn-sm" href="{{ '/coordinator/patients/'.$patient['id'].'/destroy' }}">
+                    @if($active)
+                    <a class="btn btn-outline-danger btn-sm" href="{{ url('/coordinator/patients/'.$patient['id'].'/deactivate') }}">
                         <i class="fas fa-user-minus"></i>
                     </a>
+                    @else
+                    <a class="btn btn-outline-success btn-sm" href="{{ url('/coordinator/patients/'.$patient['id'].'/restore') }}">
+                        <i class="fas fa-user-plus"></i>
+                    </a>
+                    @endif
                 </td>
             </tr>
             @endforeach
