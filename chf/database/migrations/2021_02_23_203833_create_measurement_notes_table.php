@@ -13,7 +13,7 @@ class CreateMeasurementNotesTable extends Migration
      */
     public function up()
     {
-        Schema::create('measurement_notes', function (Blueprint $table) {
+        Schema::create('notes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('measurement_id')->constrained();
             $table->foreignId('author_id')->constrained('users');
@@ -29,6 +29,6 @@ class CreateMeasurementNotesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('measurement_notes');
+        Schema::dropIfExists('notes');
     }
 }

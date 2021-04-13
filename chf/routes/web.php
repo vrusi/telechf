@@ -44,6 +44,7 @@ Auth::routes();
 Route::get('coordinator/dashboard', 'App\Http\Controllers\Coordinator\DashboardController@index')->middleware(['auth', 'coordinator'])->name('coordinator.dashboard');
 
 Route::resource('coordinator/patients', 'App\Http\Controllers\Coordinator\PatientController')->middleware(['auth', 'coordinator']);
+Route::resource('coordinator/patients/{patient}/measurements/notes', 'App\Http\Controllers\Coordinator\NotesController')->middleware(['auth', 'coordinator']);
 
 Route::get('coordinator/patients/{patient}/measurements', 'App\Http\Controllers\Coordinator\MeasurementController@index')->middleware(['auth', 'coordinator'])->name('coordinator.patients.measurements');
 Route::post('coordinator/patients/{patient}/measurements/check', 'App\Http\Controllers\Coordinator\MeasurementController@checkDayAlarms')->middleware(['auth', 'coordinator']);
@@ -65,3 +66,4 @@ Route::get('coordinator/patients/{patient}/therapy/thresholds/create', 'App\Http
 Route::post('coordinator/patients/{patient}/therapy/thresholds/store', 'App\Http\Controllers\Coordinator\PatientThresholdController@store')->middleware(['auth', 'coordinator']);
 
 Route::get('coordinator/patients/{patient}/destroy', 'App\Http\Controllers\Coordinator\PatientController@delete')->middleware(['auth', 'coordinator']);
+

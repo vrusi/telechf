@@ -28,7 +28,13 @@ class Measurement extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function parameter() {
+    public function parameter()
+    {
         return $this->hasOne(Parameter::class);
+    }
+
+    public function notes()
+    {
+        return $this->hasMany(Note::class);
     }
 }

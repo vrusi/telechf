@@ -174,7 +174,7 @@
 
                         @if( $measurement && array_key_exists('created_at', $measurement) )
                         <div class="col-12 faint">
-                            {{ date('H:i:s', strtotime($measurement['created_at'])) }}
+                            {{ date('H:i', strtotime($measurement['created_at'])) }}
                         </div>
                         @endif
                     </div>
