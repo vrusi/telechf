@@ -20,15 +20,15 @@
                 To take today
             </h2>
             @if(!empty($takeToday))
-                @foreach($takeToday as $parameter)
-                    @if($parameter->fillable)
-                    <div class="my-3">
-                        <a class="btn btn-outline-primary w-100 text-left" href="{{ url('/measurements/create/'.$parameter->id) }}">
-                            {{ $parameter->name }}
-                        </a>
-                    </div>
-                    @endif
-                @endforeach
+            @foreach($takeToday as $parameter)
+            @if($parameter->fillable)
+            <div class="my-3">
+                <a class="btn btn-outline-primary w-100 text-left" href="{{ url('/measurements/create/'.$parameter->id) }}">
+                    {{ $parameter->name }}
+                </a>
+            </div>
+            @endif
+            @endforeach
             @else
             <p>
                 You have taken all your daily measurements.
@@ -44,15 +44,15 @@
             </h2>
 
             @if(!empty($takeThisWeek))
-                @foreach($takeThisWeek as $parameter)
-                        @if($parameter->fillable)
-                        <div class="my-3">
-                            <a class="btn btn-outline-primary w-100 text-left" href="{{ url('/measurements/create/'.$parameter->id) }}">
-                                {{ $parameter->name }}
-                            </a>
-                        </div>
-                        @endif
-                @endforeach
+            @foreach($takeThisWeek as $parameter)
+            @if($parameter->fillable)
+            <div class="my-3">
+                <a class="btn btn-outline-primary w-100 text-left" href="{{ url('/measurements/create/'.$parameter->id) }}">
+                    {{ $parameter->name }}
+                </a>
+            </div>
+            @endif
+            @endforeach
             @else
             <p>
                 You have taken all your weekly measurements.
@@ -73,11 +73,14 @@
             </p>
             @if(!empty($extra))
             @foreach($extra as $parameter)
+            @if($parameter['fillable'])
+
             <div class="my-3">
-                <a class="btn btn-outline-primary w-100 text-left" href="{{ url('/measurements/create/'.$parameter['id']) }}">
+                <a class="btn btn-outline-primary w-100 text-left" href="{{ url('/measurements/create/'.$parameter['id'].'?extra=1') }}">
                     {{ $parameter['name'] }}
                 </a>
             </div>
+            @endif
             @endforeach
             @else
             <p>

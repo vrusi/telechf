@@ -105,6 +105,8 @@ class User extends Authenticatable
 
                 foreach ($measurementsPerDay as $measurement) {
                     if ($measurement['parameter_id'] == $parameter['id']) {
+                
+
                         $value = $measurement['value'];
                         $alarmAny = $measurement['triggered_safety_alarm_max'] || $measurement['triggered_safety_alarm_min'] || $measurement['triggered_therapeutic_alarm_max'] || $measurement['triggered_therapeutic_alarm_min'];
                         $alarmSafetyMax = $measurement['triggered_safety_alarm_max'];

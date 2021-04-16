@@ -54,7 +54,6 @@
 </div>
 
 
-
 <div class="container patient">
 
     <h1 class="pb-3">
@@ -84,87 +83,96 @@
         </div>
     </div>
 
-    <form method="POST" action="/measurements" class="m-5">
-        @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                <li class="text-red-500">{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-        @endif
-        @csrf
-        <div class="mb-5">
-            <input type="hidden" name="parameter_id" value="{{ $parameter->id }}">
-            <div class="form-group">
-                <label for="value">{{ $parameter->name }} ({{ $parameter->unit }})</label>
-                <input required type="number" step="0.01" class="form-control" name="value" id="value" placeholder="Enter your measurement">
+    @php
+    $extra = Request::query('extra');
+    @endphp
+
+    @if($extra)
+    <form method="POST" action="/measurements?extra=1" class="m-5">
+        @else
+        <form method="POST" action="/measurements" class="m-5">
+            @endif
+
+            @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                    <li class="text-red-500">{{ $error }}</li>
+                    @endforeach
+                </ul>
             </div>
-
-            <div class="form-group">
-                <label class="mt-3">
-                    Rate your swellings
-                </label>
-                <select required name="swellings" class="form-control">
-                    <option value="1">Very good</option>
-                    <option value="2">Good</option>
-                    <option value="3" selected>Neutral</option>
-                    <option value="4">Bad</option>
-                    <option value="5">Very bad</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label class="mt-3">
-                    Rate your physical exertion tolerance
-                </label>
-                <select required name="exercise_tolerance" class="form-control">
-                    <option value="1">Very good</option>
-                    <option value="2">Good</option>
-                    <option value="3" selected>Neutral</option>
-                    <option value="4">Bad</option>
-                    <option value="5">Very bad</option>
-                </select>
-            </div>
-
-
-            <div class="form-group">
-                <label class="mt-3">
-                    Rate your sleeping breathlessness
-                </label>
-                <select required name="dyspnoea" class="form-control">
-                    <option value="1">Very good</option>
-                    <option value="2">Good</option>
-                    <option value="3" selected>Neutral</option>
-                    <option value="4">Bad</option>
-                    <option value="5">Very bad</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="row pt-5">
-            <div class="col">
-                <div class="d-flex d-md-none flex-row fixed-bottom">
-                    <button class="btn btn-primary w-50 rounded-0" @click="instructionsRead = !instructionsRead">
-                        Back
-                    </button>
-                    <button type="submit" class="btn btn-primary w-50 rounded-0">
-                        Finish
-                    </button>
+            @endif
+            @csrf
+            <div class="mb-5">
+                <input type="hidden" name="parameter_id" value="{{ $parameter->id }}">
+                <div class="form-group">
+                    <label for="value">{{ $parameter->name }} ({{ $parameter->unit }})</label>
+                    <input required type="number" step="0.01" class="form-control" name="value" id="value" placeholder="Enter your measurement">
                 </div>
 
-                <div class="d-none d-md-flex justify-content-center">
-                    <button class="btn btn-secondary mr-3 w-50" @click="instructionsRead = !instructionsRead">
-                        Back
-                    </button>
-                    <button type="submit" class="btn btn-primary w-50">
-                        Finish
-                    </button>
+                <div class="form-group">
+                    <label class="mt-3">
+                        Rate your swellings
+                    </label>
+                    <select required name="swellings" class="form-control">
+                        <option value="1">Very good</option>
+                        <option value="2">Good</option>
+                        <option value="3" selected>Neutral</option>
+                        <option value="4">Bad</option>
+                        <option value="5">Very bad</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="mt-3">
+                        Rate your physical exertion tolerance
+                    </label>
+                    <select required name="exercise_tolerance" class="form-control">
+                        <option value="1">Very good</option>
+                        <option value="2">Good</option>
+                        <option value="3" selected>Neutral</option>
+                        <option value="4">Bad</option>
+                        <option value="5">Very bad</option>
+                    </select>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="mt-3">
+                        Rate your sleeping breathlessness
+                    </label>
+                    <select required name="dyspnoea" class="form-control">
+                        <option value="1">Very good</option>
+                        <option value="2">Good</option>
+                        <option value="3" selected>Neutral</option>
+                        <option value="4">Bad</option>
+                        <option value="5">Very bad</option>
+                    </select>
                 </div>
             </div>
-        </div>
-    </form>
+
+            <div class="row pt-5">
+                <div class="col">
+                    <div class="d-flex d-md-none flex-row fixed-bottom">
+                        <button class="btn btn-primary w-50 rounded-0" @click="instructionsRead = !instructionsRead">
+                            Back
+                        </button>
+                        <button type="submit" class="btn btn-primary w-50 rounded-0">
+                            Finish
+                        </button>
+                    </div>
+
+                    <div class="d-none d-md-flex justify-content-center">
+                        <button class="btn btn-secondary mr-3 w-50" @click="instructionsRead = !instructionsRead">
+                            Back
+                        </button>
+                        <button type="submit" class="btn btn-primary w-50">
+                            Finish
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
 
 
 

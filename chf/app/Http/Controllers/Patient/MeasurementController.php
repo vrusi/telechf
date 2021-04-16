@@ -94,19 +94,19 @@ class MeasurementController extends Controller
         $takeThisWeek = [];
 
         foreach ($parameters as $parameter) {
-            if ($parameter['measurement_span'] == 'week') {
+            if ($parameter->pivot->measurement_span == 'week') {
                 $count = Measurement::where('user_id', $user->id)
                     ->where('parameter_id', $parameter->id)
                     ->whereBetween('created_at', [$startOfWeek->copy(), $endOfWeek->copy()])->get()->count();
-                if ($count < $parameter->measurement_times) {
+                if ($count < $parameter->pivot->measurement_times) {
                     array_push($takeThisWeek, $parameter);
                 }
-            } else if ($parameter['measurement_span'] == 'day') {
+            } else if ($parameter->pivot->measurement_span == 'day') {
                 $count = Measurement::where('user_id', $user->id)
                     ->where('parameter_id', $parameter->id)
                     ->whereDate('created_at', $today->copy())->get()->count();
 
-                if ($count < $parameter->measurement_times) {
+                if ($count < $parameter->pivot->measurement_times) {
                     array_push($takeToday, $parameter);
                 }
             }
@@ -234,6 +234,7 @@ class MeasurementController extends Controller
             'triggered_safety_alarm_max' => $validated['value'] >= $thresholdSafetyMax,
             'triggered_therapeutic_alarm_min' => $validated['value'] <= $thresholdTherapeuticMin,
             'triggered_therapeutic_alarm_max' => $validated['value'] >= $thresholdTherapeuticMax,
+            'extra' => $extra ?? false,
         ]);
 
 
@@ -247,6 +248,7 @@ class MeasurementController extends Controller
                 'triggered_safety_alarm_max' => abs($weightChange) >= abs($thresholdSafetyMaxWeightChange),
                 'triggered_therapeutic_alarm_min' => abs($weightChange) <= abs($thresholdTherapeuticMinWeightChange),
                 'triggered_therapeutic_alarm_max' => abs($weightChange) >= abs($thresholdTherapeuticMaxWeightChange),
+                'extra' => $extra ?? false,
             ]);
         }
 
@@ -300,7 +302,8 @@ class MeasurementController extends Controller
 
     public function measurementForm(Request $request)
     {
+        $extra = $request->query('extra');
         $parameter = Parameter::find($request->route('parameterId'));
-        return view('patient.measurements.form', ['parameter' => $parameter]);
+        return view('patient.measurements.form', ['parameter' => $parameter, 'extra' => $extra]);
     }
 }
