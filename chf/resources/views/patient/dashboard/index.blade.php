@@ -9,6 +9,14 @@
         font-weight: 900;
     }
 
+    .faint {
+        color: #00000080;
+    }
+
+    .alarm .faint {
+        color: rgb(178 34 34 / 60%);
+    }
+
     th,
     td {
         min-width: 70px;
@@ -83,15 +91,39 @@
                                 @else
                             <td>
                                 @endif
-                                {{
-                                    !$measurement['value']
-                                    ? '--'
-                                    : (
-                                       is_numeric($measurement['value'])
-                                       ? round($measurement['value'], 2)
-                                       : $measurement['value']
-                                       ) 
-                                       }}
+
+                                <div class="row">
+                                    <!-- MEASUREMENT VALUE -->
+                                    <div class="col-12">
+                                        {{
+                                            !$measurement['value']
+                                            ? '--'
+                                            : (
+                                             is_numeric($measurement['value'])
+                                             ? round($measurement['value'], 2)
+                                             : $measurement['value']
+                                             ) 
+                                        }}
+                                    </div>
+
+                                    <!-- ALARM DESCRIPTION -->
+                                    @if($measurement['alarm'])
+                                    <div class="col-12 faint">
+                                        {{
+                                            ( $measurement['triggered_safety_alarm_max'] || $measurement['triggered_therapeutic_alarm_max'])
+                                            ? 'too high'
+                                            : 'too low'
+                                        }}
+                                    </div>
+                                    @endif
+
+                                    <!-- MEASUREMENT TIME -->
+                                    @if( $measurement['value'] && array_key_exists('date', $measurement) )
+                                    <div class="col-12 faint">
+                                        {{ date('H:i', strtotime($measurement['date'])) }}
+                                    </div>
+                                    @endif
+                                </div>
                             </td>
                             @endif
                             @endforeach
@@ -149,15 +181,39 @@
                                 @else
                             <td>
                                 @endif
-                                {{
-                                    !$measurement['value']
-                                    ? '--'
-                                    : (
-                                       is_numeric($measurement['value'])
-                                       ? round($measurement['value'], 2)
-                                       : $measurement['value']
-                                       ) 
-                                       }}
+
+                                <div class="row">
+                                    <!-- MEASUREMENT VALUE -->
+                                    <div class="col-12">
+                                        {{
+                                            !$measurement['value']
+                                            ? '--'
+                                            : (
+                                             is_numeric($measurement['value'])
+                                             ? round($measurement['value'], 2)
+                                             : $measurement['value']
+                                             ) 
+                                        }}
+                                    </div>
+
+                                    <!-- ALARM DESCRIPTION -->
+                                    @if($measurement['alarm'])
+                                    <div class="col-12 faint">
+                                        {{
+                                            ( $measurement['triggered_safety_alarm_max'] || $measurement['triggered_therapeutic_alarm_max'])
+                                            ? 'too high'
+                                            : 'too low'
+                                        }}
+                                    </div>
+                                    @endif
+
+                                    <!-- MEASUREMENT TIME -->
+                                    @if( $measurement['value'] && array_key_exists('date', $measurement) )
+                                    <div class="col-12 faint">
+                                        {{ date('H:i', strtotime($measurement['date'])) }}
+                                    </div>
+                                    @endif
+                                </div>
                             </td>
                             @endif
                             @endforeach
