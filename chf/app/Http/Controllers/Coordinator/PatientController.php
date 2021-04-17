@@ -7,9 +7,11 @@ use App\Models\Condition;
 use App\Models\Drug;
 use App\Models\Parameter;
 use App\Models\User;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class PatientController extends Controller
 {
@@ -57,7 +59,11 @@ class PatientController extends Controller
             'name' => 'required',
             'surname' => 'required',
             'sex' => 'required|in:male,female',
-            'age' => 'required|min:1',
+
+            'birthDay' => 'required|integer|between:1,31',
+            'birthMonth' => 'required|integer|between:1,12',
+            'birthYear' => 'required|integer|between:1900,2021',
+
             'height' => 'required|min:1',
             'weight' => 'required|min:1',
             'email' => 'required',
@@ -139,12 +145,35 @@ class PatientController extends Controller
             'drug4per' => 'nullable|in:hour,day,week,month',
         ]);
 
+        // validate date of birth
+        if (in_array($validated['birthMonth'], [4, 6, 9, 11])) {
+            if ($validated['birthDay'] >= 31) {
+                $dateObj = DateTime::createFromFormat('!m', $validated['birthMonth']);
+                $monthName = $dateObj->format('F');
+                throw ValidationException::withMessages([$monthName . ' has only 30 days.']);
+            }
+        }
 
+        if ($validated['birthMonth'] == 2) {
+            // leap year
+            if ($validated['birthYear'] % 4 != 0) {
+                if ($validated['birthDay'] >= 29) {
+                    throw ValidationException::withMessages(['February ' . strval($validated['birthYear']) . ' has only 28 days.']);
+                }
+                // non-leap year
+            } else {
+                if ($validated['birthDay'] >= 30) {
+                    throw ValidationException::withMessages(['February ' . strval($validated['birthYear']) . ' has only 29 days.']);
+                }
+            }
+        }
+
+        $dateOfBirth = strval($validated['birthYear']) . '-' . strval($validated['birthMonth']) . '-' . strval($validated['birthDay']);
         $patient = User::create([
             'name' => $validated['name'],
             'surname' =>  $validated['surname'],
             'sex' => $validated['sex'],
-            'age' =>  $validated['age'],
+            'dob' =>  $dateOfBirth,
             'height' =>  $validated['height'],
             'weight' =>  $validated['weight'],
             'email' =>  $validated['email'],
@@ -286,8 +315,10 @@ class PatientController extends Controller
             );
         }
 
-        foreach ($request->conditions as $conditionId) {
-            $patient->conditions()->attach($conditionId);
+        if ($request->conditions) {
+            foreach ($request->conditions as $conditionId) {
+                $patient->conditions()->attach($conditionId);
+            }
         }
 
         flash('Patient ' . $patient->name . ' ' . $patient->surname . ' was successfully added.')->success();

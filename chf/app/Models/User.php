@@ -28,7 +28,7 @@ class User extends Authenticatable
         'password',
         'mobile',
         'sex',
-        'age',
+        'dob',
         'height',
         'weight',
         'is_coordinator',
@@ -71,6 +71,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function age() {
+        return Carbon::parse($this->dob)->copy()->age;
+    }
 
     public function measurements()
     {

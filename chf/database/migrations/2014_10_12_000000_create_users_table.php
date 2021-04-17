@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->boolean('is_coordinator')->default(false);
             $table->string('password');
             $table->enum('sex', ['male', 'female'])->nullable();
-            $table->integer('age')->nullable();
+            $table->date('dob')->nullable();
             $table->float('height')->nullable();
             $table->float('weight')->nullable();
             $table->string('recommendations')->nullable();

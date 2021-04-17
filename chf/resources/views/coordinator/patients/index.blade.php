@@ -103,8 +103,9 @@
                     {{ $patient['sex'] ?? '--' }}
                 </td>
 
-                <td>
-                    {{ $patient['age'].' years' ?? '--' }}
+                <td> 
+
+                    {{ $patient->age().' years' ?? '--' }}
                 </td>
 
                 <td>
