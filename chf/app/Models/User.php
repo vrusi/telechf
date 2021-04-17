@@ -319,7 +319,7 @@ class User extends Authenticatable
             return false;
         }
 
-        if (is_string($createdAt)) {
+        if (is_string($createdAt) || is_numeric($createdAt)) {
             $createdAt = Carbon::parse($createdAt);
         }
 

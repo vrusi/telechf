@@ -122,34 +122,43 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($alarms as $day)
+            @foreach($alarms as $date => $patients)
+            @foreach($patients as $patientId => $patientRecord)
             <tr>
+                <!-- PATIENT NAME -->
                 <td>
-                    <a href="{{'patients/'.$day['patient']->id.'/measurements'}}" class="d-flex justify-content-between align-items-center">
-                        {{ $day['patient']['name'].' '.$day['patient']['surname'] }}</a>
-
-                </td>
-                <td>
-                    {{$day['date']}}
+                    <a href="{{'patients/'.$patientId.'/measurements'}}" class="d-flex justify-content-between align-items-center">
+                        {{ $patientRecord['patient']['name'].' '.$patientRecord['patient']['surname'] }}</a>
                 </td>
 
-                @foreach($day['measurements'] as $measurement)
-                @if(!$measurement)
-                <td>
-                    --
-                </td>
+                <!-- MEASUREMENT DATE -->
+                @php
+                    $dateFormatted = date('d M', strtotime($date));
+                @endphp
+                <td> {{ $dateFormatted }} </td>
 
-                @else
 
+                <!-- PARAMETERS MEASUREMENTS -->
+                @foreach($patientRecord['measurements'] as $measurement)
+
+                @php
+                $hasParameter = array_key_exists('parameter', $measurement);
+                $isECG = $hasParameter && strtolower($measurement['parameter']) == 'ecg';
+                @endphp
+
+                @if(!$isECG)
+                <!-- CHECK SAFETY ALARM -->
                 @if($measurement['triggered_safety_alarm_max'] || $measurement['triggered_safety_alarm_min'])
                 <td class="alarm-safety">
+                    <!-- CHECK THERAPEUTIC ALARM -->
                     @elseif($measurement['triggered_therapeutic_alarm_max'] || $measurement['triggered_therapeutic_alarm_min'])
                 <td class="alarm-therapeutic">
                     @else
-
                 <td>
                     @endif
+
                     <div class="row">
+                        <!-- MEASUREMENT VALUE -->
                         <div class="col-12">
                             {{
                                 !$measurement['value']
@@ -162,30 +171,35 @@
                             }}
                         </div>
 
-                        @if($measurement['triggered_safety_alarm_max'] || $measurement['triggered_safety_alarm_min'] || $measurement['triggered_therapeutic_alarm_max'] || $measurement['triggered_therapeutic_alarm_min'])
+                        <!-- ALARM DESCRIPTION -->
+                        @if($measurement['alarm'])
                         <div class="col-12 faint">
-                            @if($measurement['triggered_safety_alarm_max'] || $measurement['triggered_therapeutic_alarm_max'])
-                            too high
-                            @elseif($measurement['triggered_safety_alarm_min'] || $measurement['triggered_therapeutic_alarm_min'])
-                            too low
-                            @endif
+                            {{
+                            ( $measurement['triggered_safety_alarm_max'] || $measurement['triggered_therapeutic_alarm_max'])
+                            ? 'too high'
+                            : 'too low'
+                            }}
                         </div>
                         @endif
 
-                        @if( $measurement && array_key_exists('created_at', $measurement) )
+                        <!-- MEASUREMENT TIME -->
+                        @if( $measurement['value'] && array_key_exists('date', $measurement) )
                         <div class="col-12 faint">
-                            {{ date('H:i', strtotime($measurement['created_at'])) }}
+                            {{ date('H:i', strtotime($measurement['date'])) }}
                         </div>
                         @endif
                     </div>
                 </td>
-
                 @endif
-
                 @endforeach
+
+                <!-- WAS ALARM CHECKED -->
                 <td>
-                    @if($day['anyUnchecked'])
-                    <a href="{{'patients/'.$day['patient']->id.'/measurements'}}" class="d-flex align-items-center">
+                    @php
+                    $anyUnchecked = $patientRecord['patient']->isAnyMeasurementUncheckedInDay($date);
+                    @endphp
+                    @if($anyUnchecked)
+                    <a href="{{'patients/'.$patientId.'/measurements'}}" class="d-flex align-items-center">
                         <div class="mr-1">
                             Check
                         </div>
@@ -198,6 +212,7 @@
                     @endif
                 </td>
             </tr>
+            @endforeach
             @endforeach
         </tbody>
     </table>
