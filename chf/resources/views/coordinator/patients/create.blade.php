@@ -269,7 +269,7 @@
 
         <input type="hidden" name="coordinatorId" value="{{ $coordinator->id }}">
 
-        <div class="d-flex mb-5 justify-content-center">
+        <div class="d-flex my-5 justify-content-center">
             <div class="mr-3">
                 <a href="{{ route('patients.index') }}" class="btn btn-secondary">Cancel</a>
             </div>

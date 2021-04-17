@@ -195,8 +195,10 @@
     @endif
 
     <h4 class="my-3">New note</h4>
-
-    <form method="POST" action="{{ route('notes.store', ['patient' => $patient->id]) }}">
+    @php
+        $date = app('request')->input('date');
+    @endphp
+    <form method="POST" action="{{ route('notes.store', ['patient' => $patient->id, 'date' => $date ]) }}">
         @csrf
 
         <div class="form-group">

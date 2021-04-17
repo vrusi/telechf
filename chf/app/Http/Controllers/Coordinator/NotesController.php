@@ -89,6 +89,8 @@ class NotesController extends Controller
             flash('The note was not created.')->error();
         };
 
-        return redirect()->action([MeasurementController::class, 'index'], ['patient' => $request->patientId,]);
+        $date = $request->query('date');
+
+        return redirect()->action([NotesController::class, 'index'], ['patient' => $request->patientId, 'date' => $date]);
     }
 }
