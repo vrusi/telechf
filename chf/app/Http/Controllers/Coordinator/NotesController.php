@@ -18,16 +18,25 @@ class NotesController extends Controller
         $patient = User::where('id', $request->route('patient'))->first();
         $date = $request->query('date');
         $date = $date ? Carbon::createFromFormat('d M',  $date) : null;
+        $parameters = Parameter::orderBy('id', 'ASC')->get();
 
         // return all notes if no date was specified
         $measurements = null;
         if (!$date) {
             $measurements = $patient->measurements;
+
+            return view('coordinator.patients.measurements.notes.index', [
+                'patient' => $patient,
+                'notesAll' => null,
+                'date' => null,
+                'parameters' => $parameters,
+                'measurements' => null,
+            ]);
+            
         } else {
             $measurements = $patient->measurementsInDay($date);
         }
 
-        $parameters = Parameter::orderBy('id', 'ASC')->get();
 
         // fill the array with nulls for proper sorting in the table
         $measurementsPadded = array_fill(1, count($parameters) - 1, null);

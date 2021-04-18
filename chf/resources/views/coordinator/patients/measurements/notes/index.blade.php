@@ -150,14 +150,8 @@
 
     <h4 class="my-3">Notes</h4>
     @if(count($notesAll) > 0)
-
-
-
     @foreach($notesAll as $note)
-
     @if(count($note['notes']) > 0)
-
-
     @php
     $param = null;
     foreach($parameters as $parameter) {
@@ -173,6 +167,7 @@
     @php
     $author = $noteItem->author;
     @endphp
+
 
     <p>
         <strong>
@@ -196,7 +191,7 @@
 
     <h4 class="my-3">New note</h4>
     @php
-        $date = app('request')->input('date');
+    $date = app('request')->input('date');
     @endphp
     <form method="POST" action="{{ route('notes.store', ['patient' => $patient->id, 'date' => $date ]) }}">
         @csrf
@@ -228,13 +223,17 @@
             <label for="note">Note</label>
             <textarea class="form-control" id="note" name="note" rows="3"></textarea>
         </div>
-        <a href="{{ route('coordinator.patients.measurements', ['patient' => $patient->id]) }}" class="btn btn-secondary">Cancel</a>
+        <a href="{{ route('coordinator.patients.measurements', ['patient' => $patient->id]) }}" class="btn btn-secondary">Back</a>
         <input type="hidden" name="patientId" value="{{ $patient->id }}">
         <button type="submit" class="btn btn-primary">
             Add note
         </button>
     </form>
 
+    @else
+
+    <p class="text-danger"> No date was specified. Please pick a day to view the notes. </p>
+    <a href="{{ route('coordinator.patients.measurements', ['patient' => $patient->id]) }}" class="btn btn-secondary">Back</a>
 
     @endif
 
