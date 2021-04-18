@@ -1,11 +1,23 @@
 <?php
 
-use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return view('welcome');
+    $user = Auth::user();
+
+    if (!$user) {
+        return redirect('/login');
+    } else {
+
+        if ($user->is_coordinator) {
+            return redirect('/coordinator/dashboard');
+        } else {
+            return redirect('/dashboard');
+        }
+    }
+
+    return redirect('welcome');
 });
 
 /*
@@ -67,5 +79,3 @@ Route::post('coordinator/patients/{patient}/therapy/thresholds/store', 'App\Http
 
 Route::get('coordinator/patients/{patient}/deactivate', 'App\Http\Controllers\Coordinator\PatientController@deactivate')->middleware(['auth', 'coordinator']);
 Route::get('coordinator/patients/{patient}/restore', 'App\Http\Controllers\Coordinator\PatientController@restore')->middleware(['auth', 'coordinator']);
-
-

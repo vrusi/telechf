@@ -99,6 +99,7 @@ class ChartController extends Controller
             unset($dates);
         }
 
+
         return view('coordinator.patients.charts.index', [
             'patient' => $patient,
             'charts' => $charts,
