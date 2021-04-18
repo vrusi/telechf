@@ -23,97 +23,102 @@
                 @endif
                 @csrf
                 <div>
-                    @if($email)
+                    @if($user->email)
                     <div class="form-group">
                         <label for="email"> Email </label>
-                        <input type="email" class="form-control" name="email" id="email" placeholder="{{$email}}">
+                        <input type="email" class="form-control" name="email" id="email" placeholder="{{$user->email}}">
                     </div>
                     @endif
 
-                    @if($mobile)
+                    @if($user->mobile)
                     <div class="form-group">
                         <label for="mobile"> Mobile </label>
-                        <input type="tel" class="form-control" name="mobile" id="mobile" placeholder="{{$mobile}}">
+                        <input type="tel" class="form-control" name="mobile" id="mobile"
+                            placeholder="{{$user->mobile}}">
                     </div>
                     @endif
                 </div>
                 <table>
-                    @if($name)
+                    @if($user->name)
                     <tr>
                         <td class="font-weight-bold pr-3">
-                            Name
+                            First name
                         </td>
                         <td>
-                            {{ $name }}
+                            {{ $user->name }}
                         </td>
                     </tr>
                     @endif
 
-                    @if($surname)
+                    @if($user->surname)
                     <tr>
                         <td class="font-weight-bold pr-3">
-                            Surname
+                            Last name
                         </td>
                         <td>
-                            {{ $surname }}
+                            {{ $user->surname }}
                         </td>
                     </tr>
                     @endif
 
-                    @if($sex)
+                    @if($user->sex)
                     <tr>
                         <td class="font-weight-bold pr-3">
                             Sex
                         </td>
                         <td>
-                            {{ $sex }}
+                            {{ $user->sex }}
                         </td>
                     </tr>
                     @endif
 
-                    @if($patient->age())
+                    @if($user->age())
                     <tr>
                         <td class="font-weight-bold pr-3">
                             Age
                         </td>
                         <td>
-                            {{ $patient->age().' years' }}
+                            {{ $user->age().' years' }}
                         </td>
                     </tr>
                     @endif
 
-                    @if($height)
+                    @if($user->height)
                     <tr>
                         <td class="font-weight-bold pr-3">
                             Height
                         </td>
                         <td>
-                            {{ $height.' cm' }}
+                            {{ $user->height.' cm' }}
                         </td>
                     </tr>
                     @endif
 
-                    @if($weight)
+                    @if($user->weight)
                     <tr>
                         <td class="font-weight-bold pr-3">
                             Weight
                         </td>
                         <td>
-                            {{ $weight.' kg' }}
+                            {{ $user->weight.' kg' }}
                         </td>
                     </tr>
                     @endif
                 </table>
             </div>
-            <div class="col-4">
-                <button class="btn btn-outline-secondary" type="submit">
-                    <div class="d-flex align-items-center">
-                        <i class="fas fa-save pr-1"></i>
-                        <div>Save</div>
-                    </div>
-                </button>
-            </div>
         </div>
+
+
+        <div class="d-flex justify-content-center align-items-center py-3">
+            <a class="btn btn-outline-secondary mr-3" href="{{ route('profile') }}">Cancel</a>
+            <button class="btn btn-primary" type="submit">
+                <div class="d-flex align-items-center">
+                    <i class="fas fa-save pr-1"></i>
+                    <div>Save</div>
+                </div>
+            </button>
+        </div>
+
     </form>
 
 </div>

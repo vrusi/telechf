@@ -11,14 +11,16 @@ class ProfileController extends Controller
 {
     public function index(Request $request)
     {
-        $user = Auth::user();
-        return view('patient.profile.index', $user);
+        $auth = Auth::user();
+        $user = User::where('id', $auth->id)->first();
+        return view('patient.profile.index', ['user' => $user]);
     }
 
     public function create(Request $request)
     {
-        $user = Auth::user();
-        return view('patient.profile.create', $user);
+        $auth = Auth::user();
+        $user = User::where('id', $auth->id)->first();
+        return view('patient.profile.create', ['user' => $user]);
     }
 
     public function store(Request $request)
@@ -26,14 +28,21 @@ class ProfileController extends Controller
         $validated = $request->validate([
             'email' => 'nullable|string',
             'mobile' => 'nullable|string',
-            ]);
-            
-        $user = User::where('id', Auth::user()->id)->first();
-        $user->email = $request->email ?? $user->email;
-        $user->mobile = $request->mobile ?? $user->mobile;
-        $user->save();
+        ]);
 
-        return view('patient.profile.index', $user);
+        $auth = Auth::user();
+        $user = User::where('id', $auth->id)->first();
+        $user->email = $validated['email'] ?? $user->email;
+        $user->mobile = $validated['mobile'] ?? $user->mobile;
+        $response = $user->save();
+
+        if ($request) {
+            flash('Your personal information was successfully edited')->success();
+        } else {
+            flash('Something went wrong.')->error();
+        }
+
+        return view('patient.profile.index', ['user' => $user]);
     }
 
     public function therapy(Request $request)

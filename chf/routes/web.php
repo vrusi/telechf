@@ -35,6 +35,8 @@ Route::get('/measurements/create/{parameterId}', 'App\Http\Controllers\Patient\M
 Route::resource('/contacts', 'App\Http\Controllers\Patient\ContactController')->middleware(['auth', 'patient']);
 
 Route::get('/profile', 'App\Http\Controllers\Patient\ProfileController@index')->middleware(['auth', 'patient'])->name('profile');
+Route::get('/profile/create', 'App\Http\Controllers\Patient\ProfileController@create')->middleware(['auth', 'patient']);
+Route::post('/profile', 'App\Http\Controllers\Patient\ProfileController@store')->middleware(['auth', 'patient']);
 Route::get('/therapy', 'App\Http\Controllers\Patient\ProfileController@therapy')->middleware(['auth', 'patient'])->name('therapy');
 
 Route::get('/charts', 'App\Http\Controllers\Patient\ChartController@index')->middleware(['auth', 'patient'])->name('charts');

@@ -14,94 +14,94 @@
 
 
             <table>
-                @if($name)
+                @if($user->name)
                 <tr>
                     <td class="font-weight-bold pr-3">
-                        Name
+                        First name
                     </td>
                     <td>
-                        {{ $name }}
+                        {{ $user->name }}
                     </td>
                 </tr>
                 @endif
 
-                @if($surname)
+                @if($user->surname)
                 <tr>
                     <td class="font-weight-bold pr-3">
-                        Surname
+                        Last name
                     </td>
                     <td>
-                        {{ $surname }}
+                        {{ $user->surname }}
                     </td>
                 </tr>
                 @endif
 
-                @if($email)
+                @if($user->email)
                 <tr>
                     <td class="font-weight-bold pr-3">
                         Email
                     </td>
                     <td>
-                        <a href="mailto:{{ $email }}">
-                            {{ $email }}
+                        <a href="mailto:{{ $user->email }}">
+                            {{ $user->email }}
                         </a>
                     </td>
                 </tr>
                 @endif
 
-                @if($mobile)
+                @if($user->mobile)
                 <tr>
                     <td class="font-weight-bold pr-3">
                         Mobile
                     </td>
                     <td>
-                        <a href="tel:{{ $mobile }}">
-                            {{ $mobile }}
+                        <a href="tel:{{ $user->mobile }}">
+                            {{ $user->mobile }}
                         </a>
                     </td>
                 </tr>
                 @endif
 
-                @if($sex)
+                @if($user->sex)
                 <tr>
                     <td class="font-weight-bold pr-3">
                         Sex
                     </td>
                     <td>
-                        {{ $sex }}
+                        {{ $user->sex }}
                     </td>
                 </tr>
                 @endif
 
-                @if($patient->age())
+                @if($user->age())
                 <tr>
                     <td class="font-weight-bold pr-3">
                         Age
                     </td>
                     <td>
-                        {{ $patient->age().' years' }}
+                        {{ $user->age().' years' }}
                     </td>
                 </tr>
                 @endif
 
-                @if($height)
+                @if($user->height)
                 <tr>
                     <td class="font-weight-bold pr-3">
                         Height
                     </td>
                     <td>
-                        {{ $height.' cm' }}
+                        {{ $user->height.' cm' }}
                     </td>
                 </tr>
                 @endif
 
-                @if($weight)
+                @if($user->weight)
                 <tr>
                     <td class="font-weight-bold pr-3">
                         Weight
                     </td>
                     <td>
-                        {{ $weight.' kg' }}
+                        {{ $user->weight.' kg' }}
                     </td>
                 </tr>
                 @endif
