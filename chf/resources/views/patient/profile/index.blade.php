@@ -73,13 +73,13 @@
                 </tr>
                 @endif
 
-                @if($age)
+                @if($patient->age())
                 <tr>
                     <td class="font-weight-bold pr-3">
                         Age
                     </td>
                     <td>
-                        {{ $age.' years' }}
+                        {{ $patient->age().' years' }}
                     </td>
                 </tr>
                 @endif
