@@ -21,6 +21,8 @@ class Measurement extends Model
         'triggered_safety_alarm_max',
         'triggered_therapeutic_alarm_min',
         'triggered_therapeutic_alarm_max',
+        'extra',
+        'extra_description',
     ];
 
     public function user()

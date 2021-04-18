@@ -137,7 +137,8 @@ class MeasurementController extends Controller
             'value' => 'required|numeric',
             'swellings' => 'required|integer|between:1,5',
             'exercise_tolerance' => 'required|integer|between:1,5',
-            'dyspnoea' => 'required|integer|between:1,5'
+            'dyspnoea' => 'required|integer|between:1,5',
+            'extraDescription' => 'nullable|string',
         ]);
 
         $user = User::where('id', Auth::user()->id)->first();
@@ -222,6 +223,8 @@ class MeasurementController extends Controller
             }
         }
 
+        $extra = $request->query('extra');
+
         // insert measurement
         Measurement::create([
             'user_id' => Auth::user()->id,
@@ -234,7 +237,8 @@ class MeasurementController extends Controller
             'triggered_safety_alarm_max' => $validated['value'] >= $thresholdSafetyMax,
             'triggered_therapeutic_alarm_min' => $validated['value'] <= $thresholdTherapeuticMin,
             'triggered_therapeutic_alarm_max' => $validated['value'] >= $thresholdTherapeuticMax,
-            'extra' => $extra ?? false,
+            'extra' => $extra == "1" ? true : false,
+            'extra_description' => $validated['extraDescription'] ?? null,
         ]);
 
 
@@ -248,7 +252,8 @@ class MeasurementController extends Controller
                 'triggered_safety_alarm_max' => abs($weightChange) >= abs($thresholdSafetyMaxWeightChange),
                 'triggered_therapeutic_alarm_min' => abs($weightChange) <= abs($thresholdTherapeuticMinWeightChange),
                 'triggered_therapeutic_alarm_max' => abs($weightChange) >= abs($thresholdTherapeuticMaxWeightChange),
-                'extra' => $extra ?? false,
+                'extra' => $extra == "1" ? true : false,
+                'extra_description' => $validated['extraDescription'] ?? null,
             ]);
         }
 

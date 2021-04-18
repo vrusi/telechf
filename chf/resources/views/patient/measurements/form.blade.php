@@ -60,12 +60,22 @@
         Measurement form
     </h1>
 
+    @if($extra)
+    <h2>
+        {{$parameter->name}} - extra measurement
+    </h2>
+    @else
+    <h2>
+        {{$parameter->name}}
+    </h2>
+    @endif
+
     <div class="d-xl-none" x-data="{ instructionsOpen: false }">
-        <div @click="instructionsOpen=!instructionsOpen" class="d-flex justify-content-center" data-toggle="collapse" data-target="#instructions" aria-expanded="false" aria-controls="instructions">
+        <div @click="instructionsOpen=!instructionsOpen" class="d-flex" data-toggle="collapse" data-target="#instructions" aria-expanded="false" aria-controls="instructions">
             <button class="btn btn-outline-secondary">
                 <div class="d-flex align-items-center">
                     <div class="mr-3">
-                        Click to read instructions
+                        Tap to read instructions
                     </div>
 
                     <i x-show="!instructionsOpen" class="fas fa-caret-down"></i>
@@ -149,23 +159,30 @@
                         <option value="5">Very bad</option>
                     </select>
                 </div>
+
+                @if($extra)
+                <div class="form-group">
+                    <label for="extraDescription">Why did you take the extra measurement?</label>
+                    <textarea class="form-control" id="extraDescription" name="extraDescription" rows="3" placeholder="Describe how you're feeling"></textarea>
+                </div>
+                @endif
             </div>
 
             <div class="row pt-5">
                 <div class="col">
                     <div class="d-flex d-md-none flex-row fixed-bottom">
-                        <button class="btn btn-primary w-50 rounded-0" @click="instructionsRead = !instructionsRead">
+                        <a class="btn btn-secondary w-50 rounded-0" href="{{ route('measurements.create') }}">
                             Back
-                        </button>
+                        </a>
                         <button type="submit" class="btn btn-primary w-50 rounded-0">
                             Finish
                         </button>
                     </div>
 
                     <div class="d-none d-md-flex justify-content-center">
-                        <button class="btn btn-secondary mr-3 w-50" @click="instructionsRead = !instructionsRead">
+                        <a class="btn btn-secondary mr-3 w-50" href="{{ route('measurements.create') }}">
                             Back
-                        </button>
+                        </a>
                         <button type="submit" class="btn btn-primary w-50">
                             Finish
                         </button>

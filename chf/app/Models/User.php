@@ -72,7 +72,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function age() {
+    public function age()
+    {
         return Carbon::parse($this->dob)->copy()->age;
     }
 
@@ -88,15 +89,20 @@ class User extends Authenticatable
         })->toArray();
     }
 
+    public function extraMeasurementsByDay()
+    {
+        return Measurement::where('user_id', $this->id)->where('extra', true)->orderBy('created_at', 'desc')->get()->groupBy(function ($measurement) {
+            return $measurement->created_at->format('d M');
+        })->toArray();
+    }
+
     public function measurementsSummary()
     {
         $parameters = $this->parameters->toArray();
         $measurementsGrouped = $this->measurementsByDay();
 
         return array_map(function ($measurementsPerDay) use ($parameters) {
-
             $values = array_map(function ($parameter) use ($measurementsPerDay) {
-
                 $value = null;
                 $alarmAny = false;
                 $alarmSafetyMax = false;
@@ -106,11 +112,10 @@ class User extends Authenticatable
                 $checked = false;
                 $measurementId = null;
                 $createdAt = null;
+                $extra = null;
 
                 foreach ($measurementsPerDay as $measurement) {
                     if ($measurement['parameter_id'] == $parameter['id']) {
-                
-
                         $value = $measurement['value'];
                         $alarmAny = $measurement['triggered_safety_alarm_max'] || $measurement['triggered_safety_alarm_min'] || $measurement['triggered_therapeutic_alarm_max'] || $measurement['triggered_therapeutic_alarm_min'];
                         $alarmSafetyMax = $measurement['triggered_safety_alarm_max'];
@@ -120,6 +125,7 @@ class User extends Authenticatable
                         $checked = $measurement['checked'];
                         $measurementId = $measurement['id'];
                         $createdAt = $measurement['created_at'];
+                        $extra = $measurement['extra'];
                     }
                 }
 
@@ -134,6 +140,7 @@ class User extends Authenticatable
                     'triggered_therapeutic_alarm_min' => $alarmTherapeuticMin,
                     'date' => $createdAt,
                     'checked' => $checked,
+                    'extra' => $extra,
                     'measurementId' => $measurementId,
                 ];
             }, $parameters);
@@ -149,14 +156,12 @@ class User extends Authenticatable
                 $alarmTherapeuticMin = false;
                 $checked = true;
 
-
                 if (count($measurementsPerDay) > 0) {
                     $avg = 0;
                     foreach ($measurementsPerDay as $measurement) {
                         $avg = $avg + $measurement[$key] ?? 0;
                     }
                     $avg = $avg / count($measurementsPerDay);
-
                     $avgMapped = $this->mapConditions(ceil($avg));
                 }
 
@@ -199,6 +204,99 @@ class User extends Authenticatable
         }
 
         return $alarms;
+    }
+
+    public function measurementsExtra()
+    {
+        $parameters = $this->parameters->toArray();
+        $measurementsGrouped = $this->extraMeasurementsByDay();
+
+        return array_map(function ($measurementsPerDay) use ($parameters) {
+            $values = array_map(function ($parameter) use ($measurementsPerDay) {
+                $value = null;
+                $alarmAny = false;
+                $alarmSafetyMax = false;
+                $alarmSafetyMin = false;
+                $alarmTherapeuticMax = false;
+                $alarmTherapeuticMin = false;
+                $checked = false;
+                $measurementId = null;
+                $createdAt = null;
+                $extra = null;
+                $extraDescription = null;
+
+
+                foreach ($measurementsPerDay as $measurement) {
+                    if ($measurement['parameter_id'] == $parameter['id']) {
+                        $value = $measurement['value'];
+                        $alarmAny = $measurement['triggered_safety_alarm_max'] || $measurement['triggered_safety_alarm_min'] || $measurement['triggered_therapeutic_alarm_max'] || $measurement['triggered_therapeutic_alarm_min'];
+                        $alarmSafetyMax = $measurement['triggered_safety_alarm_max'];
+                        $alarmSafetyMin = $measurement['triggered_safety_alarm_min'];
+                        $alarmTherapeuticMax = $measurement['triggered_therapeutic_alarm_max'];
+                        $alarmTherapeuticMin = $measurement['triggered_therapeutic_alarm_min'];
+                        $checked = $measurement['checked'];
+                        $measurementId = $measurement['id'];
+                        $createdAt = $measurement['created_at'];
+                        $extra = $measurement['extra'];
+                        $extraDescription = $measurement['extra_description'];
+                    }
+                }
+
+                return [
+                    'parameter' => $parameter['name'],
+                    'value' => $value,
+                    'unit' => $parameter['unit'],
+                    'alarm' => $alarmAny,
+                    'triggered_safety_alarm_max' => $alarmSafetyMax,
+                    'triggered_safety_alarm_min' => $alarmSafetyMin,
+                    'triggered_therapeutic_alarm_max' => $alarmTherapeuticMax,
+                    'triggered_therapeutic_alarm_min' => $alarmTherapeuticMin,
+                    'date' => $createdAt,
+                    'checked' => $checked,
+                    'extra' => $extra,
+                    'measurementId' => $measurementId,
+                    'extra_description' => $extraDescription,
+                ];
+            }, $parameters);
+
+            $conditions = Arr::map(['swellings' => 'Swellings', 'exercise_tolerance' => 'Exercise Tolerance', 'dyspnoea' => 'Nocturnal Dyspnoea'], function ($key, $name) use ($measurementsPerDay) {
+                $avg = null;
+                $avgMapped = '';
+                // TODO
+                $alarmAny = false;
+                $alarmSafetyMax = false;
+                $alarmSafetyMin = false;
+                $alarmTherapeuticMax = false;
+                $alarmTherapeuticMin = false;
+                $checked = true;
+
+                if (count($measurementsPerDay) > 0) {
+                    $avg = 0;
+                    foreach ($measurementsPerDay as $measurement) {
+                        $avg = $avg + $measurement[$key] ?? 0;
+                    }
+                    $avg = $avg / count($measurementsPerDay);
+
+                    $avgMapped = $this->mapConditions(ceil($avg));
+                }
+
+                return [
+                    'name' => $name,
+                    'value' => $avgMapped,
+                    'alarm' => $alarmAny,
+                    'triggered_safety_alarm_max' => $alarmSafetyMax,
+                    'triggered_safety_alarm_min' => $alarmSafetyMin,
+                    'triggered_therapeutic_alarm_max' => $alarmTherapeuticMax,
+                    'triggered_therapeutic_alarm_min' => $alarmTherapeuticMin,
+                    'checked' => $checked,
+                    'measurementId' => $measurement['id'],
+                    'extra_description' => null,
+                ];
+            });
+
+            $conditions = array_values($conditions);
+            return array_merge($values, $conditions);
+        }, $measurementsGrouped);
     }
 
     public function parameters()
