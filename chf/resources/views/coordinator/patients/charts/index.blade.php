@@ -69,13 +69,13 @@
                         </div>
 
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="filterOption" id="inlineRadio3" value="4" x-bind:checked="select4">
-                            <label class="form-check-label" for="inlineRadio3">six months</label>
+                            <input class="form-check-input" type="radio" name="filterOption" id="inlineRadio4" value="4" x-bind:checked="select4">
+                            <label class="form-check-label" for="inlineRadio4">six months</label>
                         </div>
 
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="radio" name="filterOption" id="inlineRadio3" value="5" x-bind:checked="select5">
-                            <label class="form-check-label" for="inlineRadio3">all time data</label>
+                            <input class="form-check-input" type="radio" name="filterOption" id="inlineRadio5" value="5" x-bind:checked="select5">
+                            <label class="form-check-label" for="inlineRadio5">all time data</label>
                         </div>
 
                         <div>
@@ -85,16 +85,47 @@
                 </form>
             </div>
         </div>
-
     </div>
 
     <h3>
         Charts
-    </h3>
+    </h3>  
 
     @foreach($charts as $chart)
-    <div id="{{ 'chart-'.$chart['name'] }}" class="mb-5">
+    <div id="{{ 'chart-'.$chart['name'] }}" class="mt-5">
     </div>
+
+
+    @if ($chart['pauseEvent'] || $chart['bradycardia'] || $chart['tachycardia'] || $chart['atrialFibrillation'])
+    <div class="border border-danger p-3 mb-5">
+        This measurement signalled the presence of:
+        <ul>
+            @if ($chart['pauseEvent'])
+            <li>
+                Pause event
+            </li>
+            @endif
+            
+            @if ($chart['bradycardia'])
+            <li>
+                Bradycardia
+            </li>
+            @endif
+            
+            @if ($chart['tachycardia'])
+            <li>
+                Tachycardia
+            </li>
+            @endif
+            
+            @if ($chart['atrialFibrillation'])
+            <li>
+                Atrial fibrillation
+            </li>
+            @endif
+        </ul>
+    </div>  
+    @endif
     @endforeach
 </div>
 
@@ -197,8 +228,9 @@
         var layout = {
             title: {
                 text: name,
-
             },
+
+            height: 1000,
 
             xaxis: {
                 title: {

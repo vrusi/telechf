@@ -15,7 +15,7 @@ class CreateUserParametersTable extends Migration
     {
         Schema::create('user_parameters', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');;
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('parameter_id')->constrained()->onDelete('cascade');
             $table->integer('measurement_times')->nullable();
             $table->enum('measurement_span', ['hour', 'day', 'week', 'month'])->nullable();
@@ -24,6 +24,7 @@ class CreateUserParametersTable extends Migration
             $table->float('threshold_therapeutic_min')->nullable();
             $table->float('threshold_therapeutic_max')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

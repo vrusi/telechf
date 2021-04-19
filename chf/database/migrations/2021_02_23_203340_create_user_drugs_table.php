@@ -22,6 +22,7 @@ class CreateUserDrugsTable extends Migration
             $table->integer('dosage_times')->nullable();
             $table->enum('dosage_span', ['hour', 'day', 'week', 'month'])->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

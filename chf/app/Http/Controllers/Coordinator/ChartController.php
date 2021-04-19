@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Coordinator;
 
 use App\Http\Controllers\Controller;
+use App\Models\Parameter;
 use App\Models\User;
+use App\Utils\Parser;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
@@ -26,6 +28,10 @@ class ChartController extends Controller
 
         foreach ($parameters as $parameter) {
             $name = $parameter->name;
+            if (strtolower($name) == 'ecg') {
+                continue;
+            }
+
             $unit = $parameter->unit;
 
             $values = array();
@@ -91,7 +97,11 @@ class ChartController extends Controller
                     'max_therapeutic' => $thresholds[$parameter->id]['therapeuticMax'],
                     'min_therapeutic' => $thresholds[$parameter->id]['therapeuticMin'],
                     'max_safety' => $thresholds[$parameter->id]['safetyMax'],
-                    'min_safety' => $thresholds[$parameter->id]['safetyMin']
+                    'min_safety' => $thresholds[$parameter->id]['safetyMin'],
+                    'pauseEvent' => false,
+                    'bradycardia' =>  false,
+                    'tachycardia' => false,
+                    'atrialFibrillation' => false,
                 ]
 
             );
@@ -99,6 +109,36 @@ class ChartController extends Controller
             unset($values);
             unset($dates);
         }
+
+        // push ECG values to charts
+        $ecgParam = Parameter::where('name', 'ECG')->first();
+        $parser = new Parser();
+        $ecgParsed = $parser->parse();
+
+        $ecgValues = $ecgParsed['values'];
+        $ecgDates = array();
+        $startDate = $ecgParsed['date']->copy();
+        for ($i = 0; $i < count($ecgValues); $i++) {
+            array_push($ecgDates, $startDate->copy()->addMilliseconds($i));
+        }
+
+        array_push(
+            $charts,
+            [
+                'name' => $ecgParam->name,
+                'unit' => $ecgParam->unit,
+                'values' => $ecgValues,
+                'dates' => $ecgDates,
+                'max_therapeutic' => null,
+                'min_therapeutic' => null,
+                'max_safety' => null,
+                'min_safety' => null,
+                'pauseEvent' => $ecgParsed['pauseEvent'] > 0 ? true : false,
+                'bradycardia' => $ecgParsed['bradycardia'] > 0 ? true : false,
+                'tachycardia' => $ecgParsed['tachycardia'] > 0 ? true : false,
+                'atrialFibrillation' => $ecgParsed['atrialFibrillation'] > 0 ? true : false,
+            ]
+        );
 
         return view('coordinator.patients.charts.index', [
             'patient' => $patient,

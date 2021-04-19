@@ -18,6 +18,7 @@ class CreateUserContactsTable extends Migration
             $table->foreignId('user_id')->constrained();
             $table->foreignId('contact_id')->constrained();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
