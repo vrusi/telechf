@@ -7,6 +7,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ChartController extends Controller
 {
@@ -98,7 +99,6 @@ class ChartController extends Controller
             unset($values);
             unset($dates);
         }
-
 
         return view('coordinator.patients.charts.index', [
             'patient' => $patient,
