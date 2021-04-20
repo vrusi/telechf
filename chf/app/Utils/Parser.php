@@ -40,7 +40,7 @@ class Parser
                 }
 
                 // find the beggining of values
-                if (strlen($content) >= $i + 6) {
+                if (strlen($content) >= $i + 4) {
                     if ($content[$i] . $content[$i + 1] . $content[$i + 2] . $content[$i + 3] . $content[$i + 4] . $content[$i + 5] == 'values') {
                         for ($j = $i; $content[$j] != '['; $j++) {
                             $valuesStartIndex = $j + 2;

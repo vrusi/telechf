@@ -174,7 +174,7 @@
         var plot = {
             x: dates
             , y: values
-            , type: 'scatter'
+            , mode: 'lines',
             , name: name
             , showlegend: true
         , };
