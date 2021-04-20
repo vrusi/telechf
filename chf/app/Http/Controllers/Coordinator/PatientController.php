@@ -361,6 +361,7 @@ class PatientController extends Controller
         }
 
         $filePath = $request->file->getPathName();
+        dd($filePath);
         $parser = new Parser();
         $ecgParsed = $parser->parse($filePath);
 
