@@ -6,11 +6,10 @@ use Carbon\Carbon;
 
 class Parser
 {
-    function parse()
+    function parse(String $path)
     {
         $zipFile = new \PhpZip\ZipFile();
-
-        $path = '/Users/vrusi/Downloads/ECG_DATA.zip';
+        
         $file = $zipFile->openFile($path);
 
         $entries = $file->getEntries();

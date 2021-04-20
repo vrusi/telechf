@@ -371,6 +371,11 @@ class User extends Authenticatable
         return $this->hasMany(User::class, 'coordinator_id');
     }
 
+    public function ecgMeasurements()
+    {
+        return $this->hasMany(ECG::class, 'user_id');
+    }
+
     public function measurementsInDay(object $createdAt)
     {
         $measurements = $this->measurements;

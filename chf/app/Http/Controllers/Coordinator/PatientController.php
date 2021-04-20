@@ -5,12 +5,15 @@ namespace App\Http\Controllers\Coordinator;
 use App\Http\Controllers\Controller;
 use App\Models\Condition;
 use App\Models\Drug;
+use App\Models\ECG;
 use App\Models\Parameter;
 use App\Models\User;
+use App\Utils\Parser;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
 class PatientController extends Controller
@@ -338,5 +341,45 @@ class PatientController extends Controller
         $user = User::where('id', $request->route('patient'))->restore();
         flash('The user was successfully restored')->success();
         return redirect()->action([PatientController::class, 'index']);
+    }
+
+    function storeEcg(Request $request)
+    {
+        $params = $request->all();
+        $params['patient'] = $request->route('patient');
+
+        $validator = Validator::make(
+            $params,
+            [
+                'patient' => 'required|exists:users,id',
+                'file' => 'required|mimes:zip',
+            ]
+        );
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 422);
+        }
+
+        $filePath = $request->file->getPathName();
+        $parser = new Parser();
+        $ecgParsed = $parser->parse($filePath);
+
+        $userId = $params['patient'];
+        $values = implode(',', $ecgParsed['values']);
+        $pauseEvent = $ecgParsed['pauseEvent'] > 0 ? true : false;
+        $bradycardia = $ecgParsed['bradycardia'] > 0 ? true : false;
+        $tachycardia = $ecgParsed['tachycardia'] > 0 ? true : false;
+        $atrialFibrillation = $ecgParsed['atrialFibrillation'] > 0 ? true : false;
+        $createdAt = $ecgParsed['date'];
+
+        $ecgId = ECG::create([
+            'user_id' => $userId,
+            'values' => $values,
+            'pauseEvent' => $pauseEvent,
+            'bradycardia' => $bradycardia,
+            'tachycardia' => $tachycardia,
+            'atrialFibrillation' => $atrialFibrillation,
+            'created_at' => $createdAt,
+        ]);        
     }
 }

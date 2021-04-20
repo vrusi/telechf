@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Patient;
 
 use App\Http\Controllers\Controller;
+use App\Models\ECG;
 use App\Models\Measurement;
+use App\Models\Parameter;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,6 +25,9 @@ class ChartController extends Controller
         $charts = array();
 
         foreach ($parameters as $parameter) {
+            if (strtolower($parameter['name']) == 'ecg') {
+                continue;
+            }
             $name = $parameter->name;
             $unit = $parameter->unit;
 
@@ -95,10 +100,42 @@ class ChartController extends Controller
             unset($dates);
         }
 
+        // get ECG data
+        $ecgData = ECG::where('user_id', $user->id)->orderBy('created_at', 'DESC')->get();
+
+        $ecgParam = Parameter::where('name', 'ECG')->first();
+        $chartsECG = array();
+        foreach ($ecgData as $dataPoint) {
+            $ecgValues = explode(',', $dataPoint['values']);
+
+            $ecgDates = array();
+            $startDate = $dataPoint['created_at']->copy();
+
+            for ($i = 0; $i < count($ecgValues); $i++) {
+                array_push($ecgDates, $startDate->copy()->addMilliseconds($i));
+            }
+
+            array_push($chartsECG, [
+                'id' => $dataPoint['id'],
+                'name' => $ecgParam->name,
+                'unit' => $ecgParam->unit,
+                'values' =>  $ecgValues,
+                'dates' => $ecgDates,
+                'pauseEvent' => $dataPoint['pauseEvent'],
+                'bradycardia' => $dataPoint['bradycardia'],
+                'tachycardia' => $dataPoint['tachycardia'],
+                'atrialFibrillation' => $dataPoint['atrialFibrillation'],
+            ]);
+
+            break;
+        }
+
         return view('patient.charts.index', [
             'charts' => $charts,
             'charts_encoded' => json_encode($charts, JSON_HEX_QUOT | JSON_HEX_APOS | JSON_NUMERIC_CHECK),
             'filterOption' => $filterOption,
+            'chartsECG' => $chartsECG,
+            'chartsECG_encoded' => json_encode($chartsECG, JSON_HEX_QUOT | JSON_HEX_APOS | JSON_NUMERIC_CHECK),
         ]);
     }
 

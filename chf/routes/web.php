@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Coordinator\PatientController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -81,3 +82,11 @@ Route::post('coordinator/patients/{patient}/therapy/thresholds/store', 'App\Http
 
 Route::get('coordinator/patients/{patient}/deactivate', 'App\Http\Controllers\Coordinator\PatientController@deactivate')->middleware(['auth', 'coordinator']);
 Route::get('coordinator/patients/{patient}/restore', 'App\Http\Controllers\Coordinator\PatientController@restore')->middleware(['auth', 'coordinator']);
+
+/*
+|--------------------------------------------------------------------------
+| ECG Path
+|--------------------------------------------------------------------------
+*/
+
+Route::post('patients/{patient}/ecg', 'App\Http\Controllers\Coordinator\PatientController@storeEcg');

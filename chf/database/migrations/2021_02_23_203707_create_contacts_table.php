@@ -24,6 +24,7 @@ class CreateContactsTable extends Migration
             $table->string('mobile');
             $table->enum('type', ['general practitioner', 'cardiologist']);
             $table->timestamps();
+            $table->softDeletes();
         });
 
         DB::statement('ALTER TABLE contacts ADD CONSTRAINT chk_contact_info CHECK ((email IS NOT NULL AND mobile IS NULL) OR (email IS NULL AND mobile IS NOT NULL) OR (email IS NOT NULL AND mobile IS NOT NULL))');

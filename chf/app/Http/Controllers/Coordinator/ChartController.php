@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Coordinator;
 
 use App\Http\Controllers\Controller;
+use App\Models\ECG;
 use App\Models\Parameter;
 use App\Models\User;
 use App\Utils\Parser;
@@ -98,10 +99,6 @@ class ChartController extends Controller
                     'min_therapeutic' => $thresholds[$parameter->id]['therapeuticMin'],
                     'max_safety' => $thresholds[$parameter->id]['safetyMax'],
                     'min_safety' => $thresholds[$parameter->id]['safetyMin'],
-                    'pauseEvent' => false,
-                    'bradycardia' =>  false,
-                    'tachycardia' => false,
-                    'atrialFibrillation' => false,
                 ]
 
             );
@@ -110,41 +107,43 @@ class ChartController extends Controller
             unset($dates);
         }
 
-        // push ECG values to charts
+        // get ECG data
+        $ecgData = ECG::where('user_id', $patient->id)->orderBy('created_at', 'DESC')->get();
+
         $ecgParam = Parameter::where('name', 'ECG')->first();
-        $parser = new Parser();
-        $ecgParsed = $parser->parse();
+        $chartsECG = array();
+        foreach ($ecgData as $dataPoint) {
+            $ecgValues = explode(',', $dataPoint['values']);
 
-        $ecgValues = $ecgParsed['values'];
-        $ecgDates = array();
-        $startDate = $ecgParsed['date']->copy();
-        for ($i = 0; $i < count($ecgValues); $i++) {
-            array_push($ecgDates, $startDate->copy()->addMilliseconds($i));
-        }
+            $ecgDates = array();
+            $startDate = $dataPoint['created_at']->copy();
 
-        array_push(
-            $charts,
-            [
+            for ($i = 0; $i < count($ecgValues); $i++) {
+                array_push($ecgDates, $startDate->copy()->addMilliseconds($i));
+            }
+
+            array_push($chartsECG, [
+                'id' => $dataPoint['id'],
                 'name' => $ecgParam->name,
                 'unit' => $ecgParam->unit,
-                'values' => $ecgValues,
+                'values' =>  $ecgValues,
                 'dates' => $ecgDates,
-                'max_therapeutic' => null,
-                'min_therapeutic' => null,
-                'max_safety' => null,
-                'min_safety' => null,
-                'pauseEvent' => $ecgParsed['pauseEvent'] > 0 ? true : false,
-                'bradycardia' => $ecgParsed['bradycardia'] > 0 ? true : false,
-                'tachycardia' => $ecgParsed['tachycardia'] > 0 ? true : false,
-                'atrialFibrillation' => $ecgParsed['atrialFibrillation'] > 0 ? true : false,
-            ]
-        );
+                'pauseEvent' => $dataPoint['pauseEvent'],
+                'bradycardia' => $dataPoint['bradycardia'],
+                'tachycardia' => $dataPoint['tachycardia'],
+                'atrialFibrillation' => $dataPoint['atrialFibrillation'],
+            ]);
+
+            break;
+        }
 
         return view('coordinator.patients.charts.index', [
             'patient' => $patient,
             'charts' => $charts,
             'charts_encoded' => json_encode($charts, JSON_HEX_QUOT | JSON_HEX_APOS | JSON_NUMERIC_CHECK),
             'filterOption' => $filterOption,
+            'chartsECG' => $chartsECG,
+            'chartsECG_encoded' => json_encode($chartsECG, JSON_HEX_QUOT | JSON_HEX_APOS | JSON_NUMERIC_CHECK),
         ]);
     }
 

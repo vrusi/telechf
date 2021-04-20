@@ -11,7 +11,6 @@
         background: #f8fafc;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     }
-
 </style>
 
 <div class="container">
@@ -94,7 +93,11 @@
     @foreach($charts as $chart)
     <div id="{{ 'chart-'.$chart['name'] }}" class="mt-5">
     </div>
+    @endforeach
 
+    @foreach ($chartsECG as $chart)
+    <div class="ecg-chart mt-5" id="{{ 'chart-ecg-'.$chart['id'] }}">
+    </div>
 
     @if ($chart['pauseEvent'] || $chart['bradycardia'] || $chart['tachycardia'] || $chart['atrialFibrillation'])
     <div class="border border-danger p-3 mb-5">
@@ -159,7 +162,6 @@
     charts = {!!$charts_encoded!!};
 
     for (chart of charts) {
-
         name = chart['name'];
         unit = chart['unit'];
         values = chart['values'];
@@ -230,8 +232,6 @@
                 text: name,
             },
 
-            height: 1000,
-
             xaxis: {
                 title: {
                     text: 'Date'
@@ -263,6 +263,49 @@
         }
 
         Plotly.newPlot('chart-' + name, traces, layout);
+    }
+
+    // set up ecg charts
+    chartsECG = {!!$chartsECG_encoded!!};
+
+    for (chart of chartsECG) {
+        id = chart['id'];
+        name = chart['name'];
+        unit = chart['unit'];
+        values = chart['values'];
+        dates = chart['dates'];
+
+        var plot = {
+            x: dates
+            , y: values
+            , type: 'scatter'
+            , name: name
+            , showlegend: true
+        , };
+
+        var layout = {
+            title: {
+                text: name,
+            },
+
+            height: 1000,
+
+            xaxis: {
+                title: {
+                    text: 'Date'
+                }
+            },
+
+            yaxis: {
+                title: {
+                    text: 'Value (' + unit + ')'
+                , }
+            }
+        , }
+
+        traces = [plot];
+
+        Plotly.newPlot('chart-ecg-' + id, traces, layout);
     }
 
 </script>

@@ -17,7 +17,10 @@ class CreateUserEcgsTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->text('values');
-            $table->bool('alarm')->default(false);
+            $table->boolean('pauseEvent')->default(false);
+            $table->boolean('bradycardia')->default(false);
+            $table->boolean('tachycardia')->default(false);
+            $table->boolean('atrialFibrillation')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });
