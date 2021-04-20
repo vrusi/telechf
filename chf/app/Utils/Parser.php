@@ -27,7 +27,7 @@ class Parser
             for ($i = 0; $i < $contentLen; $i++) {
 
                 // extract timestamp
-                if ($content[$i] . $content[$i + 1] == 'ts') {
+                if ($content[$i] == 't' && ($content[$i] . $content[$i + 1] == 'ts')) {
 
                     $timestampArray = [];
                     for ($j = $i; $content[$j] != ','; $j++) {
