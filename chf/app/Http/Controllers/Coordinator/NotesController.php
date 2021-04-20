@@ -58,7 +58,7 @@ class NotesController extends Controller
 
         $notesAll = array();
         foreach ($measurementsPadded as $measurement) {
-            if (!key_exists('id', $measurement)) {
+            if (!$measurement || !key_exists('id', $measurement)) {
                 continue;
             }
 

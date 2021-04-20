@@ -200,6 +200,7 @@
             <label for="measurementSelect">Select a measurement to add the note to</label>
             <select class="form-control" id="measurementSelect" name="measurementSelect">
                 @foreach($measurements as $paramId => $measurement)
+                @if($measurement)
                 <option value="{{ $measurement['id'] }}">
 
                     @php
@@ -214,6 +215,7 @@
                         {{ $param['name'].', '.round($measurement['value'], 2).' '.$param['unit']}}
                     </span>
                 </option>
+                @endif
                 @endforeach
             </select>
         </div>

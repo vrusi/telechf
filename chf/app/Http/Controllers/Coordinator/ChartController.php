@@ -16,6 +16,8 @@ class ChartController extends Controller
 {
     function index(Request $request)
     {
+        ini_set('memory_limit', '-1');
+
         $filterOption = $request->has('filter') ? $request->input('filter') : "5";
 
         $patient = User::where('id', $request->route('patient'))->first();
@@ -26,6 +28,7 @@ class ChartController extends Controller
         $parameters = $patient->parameters()->orderBy('id', 'ASC')->get();
 
         $charts = array();
+
 
         foreach ($parameters as $parameter) {
             $name = $parameter->name;
@@ -137,13 +140,15 @@ class ChartController extends Controller
             break;
         }
 
+        $chartsECGEncoded = json_encode($chartsECG, JSON_HEX_QUOT | JSON_HEX_APOS | JSON_NUMERIC_CHECK);
+        
         return view('coordinator.patients.charts.index', [
             'patient' => $patient,
             'charts' => $charts,
             'charts_encoded' => json_encode($charts, JSON_HEX_QUOT | JSON_HEX_APOS | JSON_NUMERIC_CHECK),
             'filterOption' => $filterOption,
             'chartsECG' => $chartsECG,
-            'chartsECG_encoded' => json_encode($chartsECG, JSON_HEX_QUOT | JSON_HEX_APOS | JSON_NUMERIC_CHECK),
+            'chartsECG_encoded' => $chartsECGEncoded,
         ]);
     }
 

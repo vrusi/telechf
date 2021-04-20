@@ -218,8 +218,8 @@ class MeasurementController extends Controller
         // check global threshold alarms
         foreach ($parameters as $parameter) {
             if ($parameter->id == $request->parameter_id) {
-                $thresholdSafetyMin =  $thresholdSafetyMin ?  $thresholdSafetyMin : $parameter->threshold_min;
-                $thresholdSafetyMax = $thresholdSafetyMax ? $thresholdSafetyMax : $parameter->threshold_max;
+                $thresholdSafetyMin = $thresholdSafetyMin ? $thresholdSafetyMin : ($parameter->threshold_min ?? null);
+                $thresholdSafetyMax = $thresholdSafetyMax ? $thresholdSafetyMax : ($parameter->threshold_max ?? null);
             }
         }
 
@@ -233,10 +233,10 @@ class MeasurementController extends Controller
             'swellings' => $validated['swellings'],
             'exercise_tolerance' => $validated['exercise_tolerance'],
             'dyspnoea' => $validated['dyspnoea'],
-            'triggered_safety_alarm_min' => $validated['value'] <= $thresholdSafetyMin,
-            'triggered_safety_alarm_max' => $validated['value'] >= $thresholdSafetyMax,
-            'triggered_therapeutic_alarm_min' => $validated['value'] <= $thresholdTherapeuticMin,
-            'triggered_therapeutic_alarm_max' => $validated['value'] >= $thresholdTherapeuticMax,
+            'triggered_safety_alarm_min' => $thresholdSafetyMin ? $validated['value'] <= $thresholdSafetyMin : false,
+            'triggered_safety_alarm_max' => $thresholdSafetyMax ? $validated['value'] >= $thresholdSafetyMax : false,
+            'triggered_therapeutic_alarm_min' => $thresholdTherapeuticMin ? $validated['value'] <= $thresholdTherapeuticMin : false,
+            'triggered_therapeutic_alarm_max' => $thresholdTherapeuticMax ? $validated['value'] >= $thresholdTherapeuticMax : false,
             'extra' => $extra == "1" ? true : false,
             'extra_description' => $validated['extraDescription'] ?? null,
         ]);

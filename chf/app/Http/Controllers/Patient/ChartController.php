@@ -14,6 +14,8 @@ class ChartController extends Controller
 {
     function index(Request $request)
     {
+        ini_set('memory_limit', '-1');
+
         $filterOption = $request->has('filter') ? $request->input('filter') : "5";
 
         $user = Auth::user();
@@ -130,12 +132,14 @@ class ChartController extends Controller
             break;
         }
 
+        $chartsECGEncoded = json_encode($chartsECG, JSON_HEX_QUOT | JSON_HEX_APOS | JSON_NUMERIC_CHECK);
+
         return view('patient.charts.index', [
             'charts' => $charts,
             'charts_encoded' => json_encode($charts, JSON_HEX_QUOT | JSON_HEX_APOS | JSON_NUMERIC_CHECK),
             'filterOption' => $filterOption,
             'chartsECG' => $chartsECG,
-            'chartsECG_encoded' => json_encode($chartsECG, JSON_HEX_QUOT | JSON_HEX_APOS | JSON_NUMERIC_CHECK),
+            'chartsECG_encoded' => $chartsECGEncoded,
         ]);
     }
 
