@@ -356,12 +356,12 @@ class PatientController extends Controller
             ]
         );
 
+        dd($validator);
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 422);
         }
 
         $filePath = $request->file->getPathName();
-        dd($filePath);
         $parser = new Parser();
         $ecgParsed = $parser->parse($filePath);
 
