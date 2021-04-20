@@ -9,7 +9,7 @@ class Parser
     function parse(String $path)
     {
         $zipFile = new \PhpZip\ZipFile();
-        
+
         $file = $zipFile->openFile($path);
 
         $entries = $file->getEntries();
@@ -40,11 +40,13 @@ class Parser
                 }
 
                 // find the beggining of values
-                if ($content[$i] . $content[$i + 1] . $content[$i + 2] . $content[$i + 3] . $content[$i + 4] . $content[$i + 5] == 'values') {
-                    for ($j = $i; $content[$j] != '['; $j++) {
-                        $valuesStartIndex = $j + 2;
+                if (strlen($content) >= $i + 6) {
+                    if ($content[$i] . $content[$i + 1] . $content[$i + 2] . $content[$i + 3] . $content[$i + 4] . $content[$i + 5] == 'values') {
+                        for ($j = $i; $content[$j] != '['; $j++) {
+                            $valuesStartIndex = $j + 2;
+                        }
+                        break;
                     }
-                    break;
                 }
             }
 
