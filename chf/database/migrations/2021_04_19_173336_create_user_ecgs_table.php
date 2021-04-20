@@ -16,7 +16,7 @@ class CreateUserEcgsTable extends Migration
         Schema::create('user_ecgs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->text('values');
+            $table->longText('values');
             $table->boolean('pauseEvent')->default(false);
             $table->boolean('bradycardia')->default(false);
             $table->boolean('tachycardia')->default(false);
