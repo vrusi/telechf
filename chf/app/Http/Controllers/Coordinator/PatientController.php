@@ -356,7 +356,6 @@ class PatientController extends Controller
             ]
         );
 
-        dd($params['file']);
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 422);
         }
