@@ -202,7 +202,7 @@
         var plot = {
             x: dates
             , y: values
-            , mode: 'lines',
+            , mode: 'lines'
             , name: name
             , showlegend: true
         , };
@@ -210,48 +210,22 @@
         var lower_threshold_therapeutic = min_therapeutic ? {
             x: dates
             , y: Array(dates.length).fill(min_therapeutic)
-            , type: 'scatter'
-
+            , mode: 'lines'
             , line: {
                 dash: 'dot'
             , }
-            , name: 'Lower therapeutic threshold'
+            , name: 'Lower goal value'
             , showlegend: true
         , } : null;
 
         var upper_threshold_therapeutic = max_therapeutic ? {
             x: dates
             , y: Array(dates.length).fill(max_therapeutic)
-            , type: 'scatter'
-
+            , mode: 'lines'
             , line: {
                 dash: 'dot'
             , }
-            , name: 'Upper therapeutic threshold'
-            , showlegend: true
-        , } : null;
-
-        var upper_threshold_safety = max_safety ? {
-            x: dates
-            , y: Array(dates.length).fill(max_safety)
-            , type: 'scatter'
-
-            , line: {
-                dash: 'dot'
-            , }
-            , name: 'Upper safety threshold'
-            , showlegend: true
-        , } : null;
-
-        var lower_threshold_safety = min_safety ? {
-            x: dates
-            , y: Array(dates.length).fill(min_safety)
-            , type: 'scatter'
-
-            , line: {
-                dash: 'dot'
-            , }
-            , name: 'Lower safety threshold'
+            , name: 'Upper goal value'
             , showlegend: true
         , } : null;
 
@@ -280,14 +254,6 @@
 
         if (upper_threshold_therapeutic) {
             traces.push(upper_threshold_therapeutic);
-        }
-
-        if (lower_threshold_safety) {
-            traces.push(lower_threshold_safety);
-        }
-
-        if (upper_threshold_safety) {
-            traces.push(upper_threshold_safety);
         }
 
         Plotly.newPlot('chart-' + name, traces, layout);
