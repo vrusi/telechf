@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Coordinator;
 
 use App\Http\Controllers\Controller;
 use App\Models\ECG;
+use App\Models\Measurement;
 use App\Models\Parameter;
 use App\Models\User;
 use App\Utils\Parser;
@@ -24,7 +25,7 @@ class ChartController extends Controller
 
         $thresholds = $patient->thresholds();
 
-        $measurements = $patient->measurements;
+        $measurements = Measurement::where('user_id', $patient->id)->orderBy('created_at', 'DESC')->get();
         $parameters = $patient->parameters()->orderBy('id', 'ASC')->get();
 
         $charts = array();

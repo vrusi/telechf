@@ -21,7 +21,7 @@ class ChartController extends Controller
         $user = Auth::user();
         $thresholds = $user->thresholds();
 
-        $measurements = $user->measurements;
+        $measurements = Measurement::where('user_id', $user->id)->orderBy('created_at', 'DESC')->get();
         $parameters = $user->parameters;
 
         $charts = array();
