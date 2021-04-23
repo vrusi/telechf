@@ -28,7 +28,7 @@ class CreateMeasurementsTable extends Migration
             $table->boolean('triggered_therapeutic_alarm_max')->default(false);
             $table->boolean('checked')->default(false);
             $table->boolean('extra')->default(false);
-            $table->text('extra_description')->nullable();
+            $table->longText('extra_description')->nullable();
             $table->timestamps();
         });
 

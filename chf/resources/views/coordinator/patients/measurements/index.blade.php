@@ -115,7 +115,13 @@
 
     @foreach($alarms as $date => $alarm)
     @php
-    $alarmDate = $alarm[0]['date'];
+    $alarmDate = null;
+    foreach ($alarm as $measurement) {
+        if (array_key_exists('date', $measurement) && $measurement['date'] != null) {
+            $alarmDate = $measurement['date'];
+        }
+    }
+    
     $anyUncheckedInDay = $patient->isAnyMeasurementUncheckedInDay($alarmDate);
     @endphp
 
