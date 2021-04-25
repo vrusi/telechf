@@ -366,20 +366,22 @@ class PatientController extends Controller
 
         $userId = $params['patient'];
         $values = implode(',', $ecgParsed['values']);
-        $pauseEvent = $ecgParsed['pauseEvent'] > 0 ? true : false;
-        $bradycardia = $ecgParsed['bradycardia'] > 0 ? true : false;
-        $tachycardia = $ecgParsed['tachycardia'] > 0 ? true : false;
-        $atrialFibrillation = $ecgParsed['atrialFibrillation'] > 0 ? true : false;
+        $eventsE = implode(',', $ecgParsed['eventsP']);
+        $eventsB = implode(',', $ecgParsed['eventsB']);
+        $eventsT = implode(',', $ecgParsed['eventsT']);
+        $eventsAF = implode(',', $ecgParsed['eventsAF']);
         $createdAt = $ecgParsed['date'];
 
         $ecgId = ECG::create([
             'user_id' => $userId,
             'values' => $values,
-            'pauseEvent' => $pauseEvent,
-            'bradycardia' => $bradycardia,
-            'tachycardia' => $tachycardia,
-            'atrialFibrillation' => $atrialFibrillation,
+            'eventsE' => $eventsE,
+            'eventsB' => $eventsB,
+            'eventsT' => $eventsT,
+            'eventsAF' => $eventsAF,
             'created_at' => $createdAt,
-        ]);        
+        ]);
+        
+        return $ecgId;
     }
 }

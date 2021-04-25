@@ -108,13 +108,16 @@ class ChartController extends Controller
         $ecgParam = Parameter::where('name', 'ECG')->first();
         $chartsECG = array();
         foreach ($ecgData as $dataPoint) {
-            $ecgValues = explode(',', $dataPoint['values']);
+            $ecgValuesRaw = explode(',', $dataPoint['values']);
 
             $ecgDates = array();
+            $ecgValues = array();
+
             $startDate = $dataPoint['created_at']->copy();
 
-            for ($i = 0; $i < count($ecgValues); $i++) {
+            for ($i = 0; $i < count($ecgValuesRaw); $i++) {
                 array_push($ecgDates, $startDate->copy()->addMilliseconds($i));
+                array_push($ecgValues, round($ecgValuesRaw/300, 2));
             }
 
             array_push($chartsECG, [

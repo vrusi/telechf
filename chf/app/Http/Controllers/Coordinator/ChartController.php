@@ -117,13 +117,14 @@ class ChartController extends Controller
         $ecgParam = Parameter::where('name', 'ECG')->first();
         $chartsECG = array();
         foreach ($ecgData as $dataPoint) {
-            $ecgValues = explode(',', $dataPoint['values']);
+            $ecgValuesRaw = explode(',', $dataPoint['values']);
 
             $ecgDates = array();
-            $startDate = $dataPoint['created_at']->copy();
+            $ecgValues = array();
 
-            for ($i = 0; $i < count($ecgValues); $i++) {
-                array_push($ecgDates, $startDate->copy()->addMilliseconds($i));
+            for ($i = 0; $i < count($ecgValuesRaw); $i++) {
+                array_push($ecgDates, $i);
+                array_push($ecgValues, round(intval($ecgValuesRaw[$i])/400, 2));
             }
 
             array_push($chartsECG, [
@@ -132,10 +133,10 @@ class ChartController extends Controller
                 'unit' => $ecgParam->unit,
                 'values' =>  $ecgValues,
                 'dates' => $ecgDates,
-                'pauseEvent' => $dataPoint['pauseEvent'],
-                'bradycardia' => $dataPoint['bradycardia'],
-                'tachycardia' => $dataPoint['tachycardia'],
-                'atrialFibrillation' => $dataPoint['atrialFibrillation'],
+                'eventsP' => explode(',', $dataPoint['eventsP']),
+                'eventsB' => explode(',', $dataPoint['eventsB']),
+                'eventsT' => explode(',', $dataPoint['eventsT']),
+                'eventsAF' => explode(',', $dataPoint['eventsAF']),
             ]);
 
             break;

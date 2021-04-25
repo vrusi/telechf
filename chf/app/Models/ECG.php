@@ -25,10 +25,10 @@ class ECG extends Model
     protected $fillable = [
         'user_id',
         'values',
-        'pauseEvent',
-        'bradycardia',
-        'tachycardia',
-        'atrialFibrillation',
+        'eventsP',
+        'eventsB',
+        'eventsT',
+        'eventsAF',
         'created_at'
     ];
 }

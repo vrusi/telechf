@@ -54,7 +54,7 @@ class Parser
             // cut the values up into chunks so the memory si not overflowed
 
             // 300000 bytes allow for ~64000 values worth ~1 minute of ecg
-            $maxMemSize = 300000;
+            $maxMemSize = 150000;
 
             $valuesEndIndex = $contentLen - 2;
 
@@ -62,16 +62,17 @@ class Parser
             $valuesContent = substr($content, $valuesStartIndex, $maxMemSize);
             $valuesArray = explode(',', $valuesContent);
 
-            $eventsPCount = 0;
-            $eventsBCount = 0;
-            $eventsTCount = 0;
-            $eventsAFCount = 0;
             $pulseArray = [];
             $parsedValues = [];
 
+            $eventsP = [];
+            $eventsB = [];
+            $eventsT = [];
+            $eventsAF = [];
+
             // remove last element as it may be incorrectly cut off
             array_pop($valuesArray);
-            foreach ($valuesArray as $value) {
+            foreach ($valuesArray as $ms => $value) {
 
                 // pulse values
                 if (is_numeric(strpos($value, 'PE_'))) {
@@ -84,19 +85,19 @@ class Parser
                     if (count($split) == 2) {
                         // pause event
                         if (is_numeric(strpos($value, 'P')))
-                            $eventsPCount++;
+                            array_push($eventsP, $ms);
 
                         // bradycardia
                         if (is_numeric(strpos($value, 'B')))
-                            $eventsBCount++;
+                            array_push($eventsB, $ms);
 
                         // tachycardia
                         if (is_numeric(strpos($value, 'T')))
-                            $eventsTCount++;
+                            array_push($eventsT, $ms);
 
                         // atrial fibrillation
                         if (is_numeric(strpos($value, 'AF')))
-                            $eventsAFCount++;
+                            array_push($eventsAF, $ms);
 
                         array_push($parsedValues, $split[1]);
                     }
@@ -110,10 +111,10 @@ class Parser
             return [
                 'date' => $date,
                 'pulse' => $pulseArray,
-                'pauseEvent' => $eventsPCount,
-                'bradycardia' => $eventsBCount,
-                'tachycardia' => $eventsTCount,
-                'atrialFibrillation' => $eventsAFCount,
+                'eventsP' => $eventsP,
+                'eventsB' => $eventsB,
+                'eventsT' => $eventsT,
+                'eventsAF' => $eventsAF,
                 'values' => $parsedValues,
             ];
         }
