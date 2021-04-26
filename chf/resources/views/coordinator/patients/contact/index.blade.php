@@ -52,7 +52,7 @@
             <div class="row">
                 @foreach ($contacts as $contact)
                     <div class="col">
-                        <div class="card">
+                        <div class="card my-3">
                             <div class="card-body">
                                 <h4 class="card-title">
                                     {{ ucfirst(__($contact->type)) }}
