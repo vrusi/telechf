@@ -11,6 +11,7 @@
     "Logout": "Logout",
     "Patient": "Patient",
     "Coordinator": "Coordinator",
+    "Coordinator ": "Coordinator",
     "Reset Password": "Reset Password",
     "Email": "Email",
     "Password": "Password",
@@ -214,5 +215,4 @@
     "or pick an existing one": "or pick an existing one",
     "Add a new contact": "Add a new contact",
     "Create new contact": "Create new contact"
-
 }

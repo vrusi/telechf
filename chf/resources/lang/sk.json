@@ -11,6 +11,7 @@
     "Logout": "Odhlásiť",
     "Patient": "Pacient",
     "Coordinator": "Koordinátor",
+    "Coordinator ": "Koordinátorka",
     "Reset Password": "Obnova hesla",
     "Email": "Email",
     "Password": "Heslo",
@@ -214,5 +215,4 @@
     "or pick an existing one": "alebo vyberte existujúci",
     "Add a new contact": "Pridajte nový kontakt",
     "Create new contact": "Vytvoriť nový kontakt"
-
 }
