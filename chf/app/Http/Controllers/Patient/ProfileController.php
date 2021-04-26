@@ -36,7 +36,7 @@ class ProfileController extends Controller
         $user->mobile = $validated['mobile'] ?? $user->mobile;
         $response = $user->save();
 
-        if ($request) {
+        if ($response) {
             flash('Your personal information was successfully edited')->success();
         } else {
             flash('Something went wrong.')->error();

@@ -15,7 +15,7 @@
 
 <div class="container">
     <h1>
-        Patients
+        {{ __('Patients') }}
     </h1>
 
     <h2>
@@ -24,26 +24,26 @@
 
     <ul class="nav nav-tabs my-4">
         <li class="nav-item">
-            <a class="{{ Request::is('*/profile*') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/profile'}}">Profile</a>
+            <a class="{{ Request::is('*/profile*') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/profile'}}">{{ __('Profile') }}</a>
         </li>
         <li class="nav-item">
-            <a class="{{ Request::is('*/therapy*') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/therapy'}}">Therapy</a>
+            <a class="{{ Request::is('*/therapy*') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/therapy'}}">{{ __('Therapy') }}</a>
         </li>
         <li class="nav-item">
-            <a class="{{ Request::is('*/measurements*') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/measurements'}}">Measurements</a>
+            <a class="{{ Request::is('*/measurements*') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/measurements'}}">{{ __('Measurements') }}</a>
         </li>
         <li class="nav-item">
-            <a class="{{ Request::is('*/charts*') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/charts'}}">Charts</a>
+            <a class="{{ Request::is('*/charts*') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/charts'}}">{{ __('Charts') }}</a>
         </li>
         <li class="nav-item">
-            <a class="{{ Request::is('*/contacts*') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/contacts'}}">Contact</a>
+            <a class="{{ Request::is('*/contacts*') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/contacts'}}">{{ __('Contact') }}</a>
         </li>
     </ul>
 
     <div id="filter" class="py-3">
         <div class="container px-0">
             <h3>
-                Filter
+                {{ __('Filter') }}
             </h3>
 
             <div x-data="selectFilter()">
@@ -51,34 +51,34 @@
                     @csrf
                     <div class="d-flex align-items-center">
                         <div class="mr-3">
-                            Plot data from last
+                            {{ __('Plot data from last') }}
                         </div>
 
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="filterOption" id="inlineRadio1" value="1" x-bind:checked="select1">
-                            <label class="form-check-label" for="inlineRadio1">week</label>
+                            <label class="form-check-label" for="inlineRadio1">{{ __('week ') }}</label>
                         </div>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="filterOption" id="inlineRadio2" value="2" x-bind:checked="select2">
-                            <label class="form-check-label" for="inlineRadio2">month</label>
+                            <label class="form-check-label" for="inlineRadio2">{{ __('month ') }}</label>
                         </div>
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="filterOption" id="inlineRadio3" value="3" x-bind:checked="select3">
-                            <label class="form-check-label" for="inlineRadio3">three months</label>
+                            <label class="form-check-label" for="inlineRadio3">{{ __('three months') }}</label>
                         </div>
 
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="filterOption" id="inlineRadio4" value="4" x-bind:checked="select4">
-                            <label class="form-check-label" for="inlineRadio4">six months</label>
+                            <label class="form-check-label" for="inlineRadio4">{{ __('six months') }}</label>
                         </div>
 
                         <div class="form-check form-check-inline">
                             <input class="form-check-input" type="radio" name="filterOption" id="inlineRadio5" value="5" x-bind:checked="select5">
-                            <label class="form-check-label" for="inlineRadio5">all time data</label>
+                            <label class="form-check-label" for="inlineRadio5">{{ __('all time data') }}</label>
                         </div>
 
                         <div>
-                            <button type="submit" class="btn btn-outline-secondary">Submit</button>
+                            <button type="submit" class="btn btn-outline-secondary">{{ __('Plot') }}</button>
                         </div>
                     </div>
                 </form>
@@ -87,7 +87,7 @@
     </div>
 
     <h3>
-        Charts
+        {{ __('Charts') }}
     </h3>  
 
     @foreach($charts as $chart)
@@ -103,7 +103,7 @@
             <table>
                 <tr>
                     <td class="font-weight-bold pr-2">
-                        Marker 1:
+                        {{ __('Marker') }} 1:
                     </td>
                     <td id="marker1">
                         --
@@ -111,7 +111,7 @@
                 </tr>
                 <tr>
                     <td class="font-weight-bold pr-2">
-                        Marker 2:
+                        {{ __('Marker') }} 2:
                     </td>
                     <td id="marker2">
                         --
@@ -119,7 +119,7 @@
                 </tr>
                 <tr>
                     <td class="font-weight-bold pr-2">
-                        Difference:
+                        {{ __('Difference') }}:
                     </td>
                     <td id="markerResult">
                         --
@@ -135,7 +135,7 @@
                 <div class="mr-2" style="width: 30px; height: 30px; background-color: #b4aee880;">
                 </div>
                 <div>
-                    Pause detected
+                    {{ __('Pause detected') }}
                 </div>
             </div>
             @endif
@@ -145,7 +145,7 @@
                 <div class="mr-2" style="width: 30px; height: 30px; background-color: #f0c92980;">
                 </div>
                 <div>
-                    Bradycardia detected
+                    {{ __('Bradycardia detected') }}
                 </div>
             </div>
             @endif
@@ -155,7 +155,7 @@
                 <div class="mr-2" style="width: 30px; height: 30px; background-color: #f3918980;">
                 </div>
                 <div>
-                    Tachycardia detected
+                    {{ __('Tachycardia detected') }}
                 </div>
             </div>
             @endif
@@ -165,7 +165,7 @@
                 <div class="mr-2" style="width: 30px; height: 30px; background-color: #04658280;">
                 </div>
                 <div>
-                    Atrial fibrillation detected
+                    {{ __('Atrial fibrillation detected') }}
                 </div>
             </div>
             @endif
@@ -205,6 +205,25 @@
     // set up charts
     charts = {!!$charts_encoded!!};
 
+    names_sk = {
+        'Systolic Blood Pressure': 'Systolický krvný tlak',
+        'Diastolic Blood Pressure': 'Diastolický krvný tlak',
+        'Heart Rate': 'Tep srdca',
+        'Heart Rate': 'Tep srdca',
+        'SpO2': 'SpO2',
+        'Weight': 'Hmotnosť',
+        'Weight Change': 'Zmena hmotnosti',
+        'ECG': 'EKG',
+    };
+
+    units_sk = {
+        'mmHg': 'mmHg',
+        'bpm': 'úderov za minútu',
+        '%': '%',
+        'kg': 'kg',
+        'mV': 'mV',
+    };
+
     for (chart of charts) {
         name = chart['name'];
         unit = chart['unit'];
@@ -219,7 +238,7 @@
             x: dates,
             y: values,
             mode: 'lines',
-            name: name,
+            name: navigator.language === 'sk' ? names_sk[name] : name,
         };
 
         var lower_threshold_therapeutic = min_therapeutic
@@ -230,7 +249,7 @@
             line: {
                 dash: 'dot',
             },
-            name: 'Lower therapeutic threshold',
+            name: navigator.language === 'sk' ? 'Spodný terapeutický limit' : 'Lower therapeutic threshold',
         }
         : null;
 
@@ -242,7 +261,7 @@
             line: {
                 dash: 'dot',
             },
-            name: 'Upper therapeutic threshold',
+            name: navigator.language === 'sk' ? 'Horný terapeutický limit' : 'Upper therapeutic threshold',
         }
         : null;
 
@@ -254,7 +273,7 @@
             line: {
                 dash: 'dot',
             },
-            name: 'Upper safety threshold',
+            name: navigator.language === 'sk' ? 'Horný bezpečnostný limit' : 'Upper safety threshold',
         }
         : null;
 
@@ -266,22 +285,22 @@
             line: {
                 dash: 'dot',
             },
-            name: 'Lower safety threshold',
+            name: navigator.language === 'sk' ? 'Spodný bezpečnostný limit' : 'Lower safety threshold',
         }
         : null;
 
         var layout = {
             title: {
-                text: name,
+                text: navigator.language === 'sk' ? names_sk[name] : name,
             },
             xaxis: {
                 title: {
-                    text: 'Date',
+                    text: navigator.language === 'sk' ? 'Dátum' : 'Date',
                 },
             },
             yaxis: {
                 title: {
-                    text: 'Value (' + unit + ')',
+                    text: navigator.language === 'sk' ? 'Hodnota (' + units_sk[unit] + ')' : 'Value (' + unit + ')',
                 },
             },
             showlegend: true,
@@ -324,17 +343,17 @@
         unit = chart['unit'];
         values = chart['values'];
         dates = chart['dates'];
+        date = chart['date'];
         eventsP = chart['eventsP'];
         eventsB = chart['eventsB'];
         eventsT = chart['eventsT'];
         eventsAF = chart['eventsAF'];
 
-        console.log(values.length);
         var plot = {
             x: dates,
             y: values,
             type: 'scatter',
-            name: name,
+            name: navigator.language === 'sk' ? names_sk[name] : name,
         };
 
         var shapes = [];
@@ -408,12 +427,12 @@
 
         var layout = {
             title: {
-                text: name,
+                text: navigator.language === 'sk' ? names_sk[name] + ' zo dňa ' + date : name + ' from ' + date,
             },
             height: 1000,
             xaxis: {
                 title: {
-                    text: 'Miliseconds',
+                    text:  navigator.language === 'sk' ? 'Čas v ms' :'Time in ms',
                 },
                 autotick: false,
                 tick0: dates[0],
@@ -423,7 +442,7 @@
             },
             yaxis: {
                 title: {
-                    text: 'Value (' + unit + ')',
+                    text: navigator.language === 'sk' ? 'Hodnota (' + units_sk[unit] + ')' : 'Value (' + unit + ')',
                 },
                 autotick: false,
                 tick0: -10,

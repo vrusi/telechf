@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <h1>
-        Patients
+        {{ __('Patients') }}
     </h1>
 
     <h3>
@@ -12,19 +12,19 @@
 
     <ul class="nav nav-tabs my-4">
         <li class="nav-item">
-            <a class="{{ Request::is('*/profile*') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/profile'}}">Profile</a>
+            <a class="{{ Request::is('*/profile*') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/profile'}}">{{ __('Profile') }}</a>
         </li>
         <li class="nav-item">
-            <a class="{{ Request::is('*/therapy*') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/therapy'}}">Therapy</a>
+            <a class="{{ Request::is('*/therapy*') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/therapy'}}">{{ __('Therapy') }}</a>
         </li>
         <li class="nav-item">
-            <a class="{{ Request::is('*/measurements*') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/measurements'}}">Measurements</a>
+            <a class="{{ Request::is('*/measurements*') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/measurements'}}">{{ __('Measurements') }}</a>
         </li>
         <li class="nav-item">
-            <a class="{{ Request::is('*/charts*') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/charts'}}">Charts</a>
+            <a class="{{ Request::is('*/charts*') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/charts'}}">{{ __('Charts') }}</a>
         </li>
         <li class="nav-item">
-            <a class="{{ Request::is('*/contacts*') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/contacts'}}">Contact</a>
+            <a class="{{ Request::is('*/contacts*') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/contacts'}}">{{ __('Contact') }}</a>
         </li>
     </ul>
 
@@ -33,13 +33,13 @@
         <div class="d-flex justify-content-between align-items-center">
             <div>
                 <h3>
-                    Monitored parameters
+                    {{ __('Monitored parameters') }}
                 </h3>
             </div>
             <div>
                 <a href="{{'/coordinator/patients/'.$patient['id'].'/therapy/thresholds/create'}}" class="btn btn-outline-secondary">
                     <i class="fas fa-edit"></i>
-                    Edit personal thresholds
+                    {{ __('Edit personal thresholds') }}
                 </a>
             </div>
         </div>
@@ -49,16 +49,16 @@
                 <thead>
                     <tr>
                         <th>
-                            Parameter
+                            {{ __('Parameter') }}
                         </th>
                         <th class="px-3">
-                            Safety threshold
+                            {{ __('Safety threshold') }}
                         </th>
                         <th class="pr-3">
-                            Therapeutic threshold
+                            {{ __('Therapeutic threshold') }}
                         </th>
                         <th>
-                            Measurement frequency
+                            {{ __('Measurement frequency') }}
                         </th>
                     </tr>
                 </thead>
@@ -66,7 +66,7 @@
                     @foreach($parameters as $parameter)
                     <tr>
                         <td>
-                            {{ $parameter->name }}
+                            {{ __($parameter->name) }}
                         </td>
 
                         {{-- safety --}}
@@ -75,15 +75,15 @@
 
                             {{-- both min and max --}}
                             @if($parameter->pivot->threshold_safety_min && $parameter->pivot->threshold_safety_max)
-                            {{ $parameter->pivot->threshold_safety_min }} - {{ $parameter->pivot->threshold_safety_max }} {{ $parameter->unit }}
+                            {{ $parameter->pivot->threshold_safety_min }} - {{ $parameter->pivot->threshold_safety_max }} {{ __($parameter->unit) }}
 
                             {{-- only min --}}
                             @elseif($parameter->pivot->threshold_safety_min && !$parameter->pivot->threshold_safety_max)
-                            ≥ {{ $parameter->pivot->threshold_safety_min }} {{ $parameter->unit }}
+                            ≥ {{ $parameter->pivot->threshold_safety_min }} {{ __($parameter->unit) }}
 
                             {{-- only max --}}
                             @elseif(!$parameter->pivot->threshold_safety_min && $parameter->pivot->threshold_safety_max)
-                            ≤ {{ $parameter->pivot->threshold_safety_max }} {{ $parameter->unit }}
+                            ≤ {{ $parameter->pivot->threshold_safety_max }} {{ __($parameter->unit) }}
 
                             {{-- neither --}}
                             @else
@@ -99,15 +99,15 @@
 
                             {{-- both min and max --}}
                             @if($parameter->pivot->threshold_therapeutic_min && $parameter->pivot->threshold_therapeutic_max)
-                            {{ $parameter->pivot->threshold_therapeutic_min }} - {{ $parameter->pivot->threshold_therapeutic_max }} {{ $parameter->unit }}
+                            {{ $parameter->pivot->threshold_therapeutic_min }} - {{ $parameter->pivot->threshold_therapeutic_max }} {{ __($parameter->unit) }}
 
                             {{-- only min --}}
                             @elseif($parameter->pivot->threshold_therapeutic_min && !$parameter->pivot->threshold_therapeutic_max)
-                            ≥ {{ $parameter->pivot->threshold_therapeutic_min }} {{ $parameter->unit }}
+                            ≥ {{ $parameter->pivot->threshold_therapeutic_min }} {{ __($parameter->unit) }}
 
                             {{-- only max --}}
                             @elseif(!$parameter->pivot->threshold_therapeutic_min && $parameter->pivot->threshold_therapeutic_max)
-                            ≤ {{ $parameter->pivot->threshold_therapeutic_max }} {{ $parameter->unit }}
+                            ≤ {{ $parameter->pivot->threshold_therapeutic_max }} {{ __($parameter->unit) }}
 
                             {{-- neither --}}
                             @else
@@ -119,13 +119,13 @@
                         <td>
                             @if($parameter->pivot->measurement_times)
                             @if($parameter->pivot->measurement_times == 1)
-                            {{ 'once per '.$parameter->pivot->measurement_span }}
+                            {{ __('once per').' '.__($parameter->pivot->measurement_span) }}
                             @endif
                             @if($parameter->pivot->measurement_times == 2)
-                            {{ 'twice per '.$parameter->pivot->measurement_span }}
+                            {{ __('twice per').' '.__($parameter->pivot->measurement_span) }}
                             @endif
                             @if($parameter->pivot->measurement_times >= 3)
-                            {{ $parameter->pivot->measurement_times.' times per '.$parameter->pivot->measurement_span }}
+                            {{ $parameter->pivot->measurement_times.__('times per').' '.__($parameter->pivot->measurement_span) }}
                             @endif
                             @endif
 
@@ -143,7 +143,7 @@
 
     <div class="my-3">
         <h3>
-            Recommendations
+            {{ __('Recommendations') }}
         </h3>
         @if($patient->recommendations)
         <div>
@@ -151,14 +151,14 @@
         </div>
         @else
         <div>
-            There are no recommendations for {{ $patient['name'] }}.
+            {{ __('There are no recommendations for') }} {{ $patient['name'] }}.
         </div>
         @endif
     </div>
 
     <div class="my-3">
         <h3>
-            {{ $patient['name'] }} is being treated for
+            {{ $patient['name'] }} {{ __('is being treated for') }}
         </h3>
 
         @if(count($conditions))
@@ -178,20 +178,24 @@
 
         <div class="collapse" id="{{'conditionDescription'.$condition->id}}">
             <div class="card card-body">
-                {!! $condition->description !!}
+                @if ($locale == 'en')
+                {!! $condition->description_en !!}
+                @elseif ($locale == 'sk')
+                {!! $condition->description_sk !!}
+                @endif
             </div>
         </div>
         @endforeach
         @else
         <div>
-            {{ $patient['name'] }} has no conditions.
+            {{ $patient['name'] }} {{ __('has no conditions.') }}
         </div>
         @endif
 
     </div>
     <div class="my-3">
         <h3>
-            {{ $patient['name'] }} is currently prescribed
+            {{ $patient['name'] }} {{ __('is currently prescribed') }}
         </h3>
 
         @if(count($drugs) > 0)
@@ -209,13 +213,13 @@
                 <td class="pr-3">
                     @if($drug->dosage_times)
                     @if($drug->dosage_times == 1)
-                    {{ 'once per '.$drug->dosage_span }}
+                    {{ __('once per').' '.__($drug->dosage_span) }}
                     @endif
                     @if($drug->dosage_times == 2)
-                    {{ 'twice per '.$drug->dosage_span }}
+                    {{ __('twice per').' '.__($drug->dosage_span) }}
                     @endif
                     @if($drug->dosage_times >= 3)
-                    {{ $drug->dosage_times.' times per '.$drug->dosage_span }}
+                    {{ $drug->dosage_times.__('times per').' '.__($drug->dosage_span) }}
                     @endif
                     @endif
 
@@ -228,7 +232,7 @@
         </table>
         @else
         <div>
-            {{$patient['name']}} has no prescriptions.
+            {{$patient['name']}} {{ __('has no prescriptions.') }}
         </div>
         @endif
     </div>

@@ -12,7 +12,7 @@
     "Patient": "Patient",
     "Coordinator": "Coordinator",
     "Reset Password": "Reset Password",
-    "E-Mail Address": "Email",
+    "Email": "Email",
     "Password": "Password",
     "Confirm Password": "Confirm Password",
     "Send Password Reset Link": "Send Password Reset Link",
@@ -103,6 +103,8 @@
     "Your": "Your",
     "general practitioner": "general practitioner",
     "cardiologist": "cardiologist",
+    "General practitioner": "General practitioner",
+    "Cardiologist": "Cardiologist",
     "Name": "Name",
     "Here you can see your measurement data in charts.": "Here you can see your measurement data in charts.",
     "Filter": "Filter",
@@ -112,41 +114,105 @@
     "three months": "three months",
     "six months": "six months",
     "all time data": "all time data",
-    "Submit": "Submit"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
-
-
+    "Submit": "Submit",
+    "Alarm triggered by crossing safety thresholds.": "Alarm triggered by crossing safety thresholds.",
+    "Alarm triggered by crossing therapeutic thresholds.": "Alarm triggered by crossing therapeutic thresholds.",
+    "Check": "Check",
+    "Checked": "Checked",
+    "Show description": "Show description",
+    "said the following": "said",
+    "said the following ": "said",
+    "Global thresholds": "Global thresholds",
+    "Edit global thresholds": "Edit global thresholds",
+    "These threshold settings apply to every patient by default unless personal thresholds have been set for a patient. You can set personal thresholds for specific patients by visiting the thresholds tab within their profile.": "These threshold settings apply to every patient by default unless personal thresholds have been set for a patient. You can set personal thresholds for specific patients by visiting the thresholds tab within their profile.",
+    "Safety threshold": "Safety threshold",
+    "Therapeutic threshold": "Therapeutic threshold",
+    "Lower threshold": "Lower threshold",
+    "Upper threshold": "Upper threshold",
+    "Remove lower threshold": "Remove lower threshold",
+    "Remove upper threshold": "Remove upper threshold",
+    "Times": "Times",
+    "Per": "Per",
+    "Remove measurement frequency": "Remove measurement frequency",
+    "Save global thresholds": "Save global thresholds",
+    "New patient": "New patient",
+    "Active patients": "Active patients",
+    "Inactive patients": "Inactive patients",
+    "These are all the patients with active accounts that were assigned to you.": "These are all the patients with active accounts that were assigned to you.",
+    "These are all the patients with deactivated accounts that were assigned to you.": "These are all the patients with deactivated accounts that were assigned to you.",
+    "Surname": "Surname",
+    "Detail": "Detail",
+    "Deactivate": "Deactivate",
+    "Restore": "Restore",
+    "New patient form": "New patient form",
+    "Date of birth": "Date of birth",
+    "Day": "Day",
+    "Month": "Month",
+    "Year": "Year",
+    "Therapy information": "Therapy information",
+    "Parameters to monitor": "Parameters to monitor",
+    "Safety thresholds": "Safety thresholds",
+    "Enter value": "Enter value",
+    "Therapeutic thresholds": "Therapeutic thresholds",
+    "Enter some recommendations for the patient to stay healthy": "Enter some recommendations for the patient to stay healthy",
+    "Do not smoke. Exercise 3 times a week.": "Do not smoke. Exercise 3 times a week.",
+    "Conditions": "Conditions",
+    "Select which conditions the patient is being treated for, separate them with commas": "Select which conditions the patient is being treated for, separate them with commas",
+    "Drugs": "Drugs",
+    "Select which drugs the patient is currently prescribed": "Select which drugs the patient is currently prescribed",
+    "Dosage": "Dosage",
+    "Volume": "Volume",
+    "Unit": "Unit",
+    "Create patient profile": "Crate patient profile",
+    "Measurements": "Measurements",
+    "Contact": "Contact",
+    "There are no recommendations for": "There are no recommendations for",
+    "is being treated for": "is being treated for", 
+    "has no conditions.": "has no conditions.",
+    "is currently prescribed": "is currently prescribed",
+    "has no prescriptions.": "has no prescriptions.",
+    "Edit personal thresholds": "Edit personal thresholds",
+    "Personal safety threshold": "Personal safety threshold",
+    "Personal therapeutic threshold": "Personal therapeutic threshold",
+    "Save personal thresholds": "Save personal thresholds",
+    "Unchecked Alarms": "Unchecked Alarms",
+    "Mark all alarms as checked": "Mark all alarms as checked",
+    "An alarm was triggered on": "An alarm was triggered on",
+    "Mark as checked": "Mark as checked",
+    "over upper safety threshold:": "over upper safety threshold:",
+    "below lower safety threshold:": "below lower safety threshold:",
+    "over upper therapeutic threshold:": "over upper therapeutic threshold:",
+    "below lower therapeutic threshold:": "below lower therapeutic threshold:",
+    "The patient": "The patient",
+    "The cardiologist": "The cardiologist",
+    "The general practitioner": "The general practitioner",
+    "Patient contact": "Patient contact",
+    "General practitioner contact": "General practitioner contact",
+    "Cardiologist contact": "Cardiologist contact",
+    "Close": "Close",
+    "This patient has no unchecked alarms.": "This patient has no unchecked alarms.",
+    "Notes": "Notes",
+    "Notes for measurements taken on": "Notes for measurements taken on",
+    "No notes were taken for any of these measurements.": "No notes were taken for any of these measurements.",
+    "Select a measurement to add the note to": "Select a measurement to add the note to",
+    "Note": "Note",
+    "Add note": "Add note",
+    "No date was specified. Please pick a day to view the notes.": "No date was specified. Please pick a day to view the notes.",
+    "New note": "New note",
+    "Plot": "Plot",
+    "Marker": "Marker",
+    "Difference": "Difference",
+    "Pause detected": "ECG device outage detected",
+    "Bradycardia detected": "Bradycardia detected",
+    "Tachycardia detected": "Tachycardia detected",
+    "Atrial fibrillation detected": "Atrial fibrillation detected",
+    "New contact": "New contact",
+    "Titles before the name": "Titles before the name",
+    "Titles after the name": "Titles after the name",
+    "Type": "Type",
+    "Add patient contact": "Add patient contact",
+    "or pick an existing one": "or pick an existing one",
+    "Add a new contact": "Add a new contact",
+    "Create new contact": "Create new contact"
 
 }

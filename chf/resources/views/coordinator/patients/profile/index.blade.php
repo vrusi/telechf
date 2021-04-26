@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <h1>
-        Patients
+        {{ __('Patients') }}
     </h1>
 
     <h2>
@@ -12,24 +12,24 @@
 
     <ul class="nav nav-tabs my-4">
         <li class="nav-item">
-            <a class="{{ Request::is('*/profile*') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/profile'}}">Profile</a>
+            <a class="{{ Request::is('*/profile*') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/profile'}}">{{ __('Profile') }}</a>
         </li>
         <li class="nav-item">
-            <a class="{{ Request::is('*/therapy*') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/therapy'}}">Therapy</a>
+            <a class="{{ Request::is('*/therapy*') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/therapy'}}">{{ __('Therapy') }}</a>
         </li>
         <li class="nav-item">
-            <a class="{{ Request::is('*/measurements*') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/measurements'}}">Measurements</a>
+            <a class="{{ Request::is('*/measurements*') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/measurements'}}">{{ __('Measurements') }}</a>
         </li>
         <li class="nav-item">
-            <a class="{{ Request::is('*/charts*') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/charts'}}">Charts</a>
+            <a class="{{ Request::is('*/charts*') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/charts'}}">{{ __('Charts') }}</a>
         </li>
         <li class="nav-item">
-            <a class="{{ Request::is('*/contacts*') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/contacts'}}">Contact</a>
+            <a class="{{ Request::is('*/contacts*') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/contacts'}}">{{ __('Contact') }}</a>
         </li>
     </ul>
 
     <h3 class="mb-3">
-        Personal information
+        {{ __('Personal information') }}
     </h3>
 
 
@@ -37,7 +37,7 @@
         @if($patient['name'])
         <tr>
             <td class="font-weight-bold pr-3">
-                Name
+                {{ __('Name') }}
             </td>
             <td>
                 {{ $patient['name'] }}
@@ -48,7 +48,7 @@
         @if($patient['surname'])
         <tr>
             <td class="font-weight-bold pr-3">
-                Surname
+                {{ __('Surname') }}
             </td>
             <td>
                 {{ $patient['surname'] }}
@@ -59,10 +59,10 @@
         @if($patient['sex'])
         <tr>
             <td class="font-weight-bold pr-3">
-                Sex
+                {{ __('Sex') }}
             </td>
             <td>
-                {{ $patient['sex'] }}
+                {{ __($patient['sex']) }}
             </td>
         </tr>
         @endif
@@ -70,10 +70,10 @@
         @if($patient->age())
         <tr>
             <td class="font-weight-bold pr-3">
-                Age
+                {{ __('Age') }}
             </td>
             <td>
-                {{ $patient->age().' years' }}
+                {{ $patient->age().' '.__('years') }}
             </td>
         </tr>
         @endif
@@ -81,7 +81,7 @@
         @if($patient['height'])
         <tr>
             <td class="font-weight-bold pr-3">
-                Height
+                {{ __('Height') }}
             </td>
             <td>
                 {{ $patient['height'].' cm' }}
@@ -92,7 +92,7 @@
         @if($patient['weight'])
         <tr>
             <td class="font-weight-bold pr-3">
-                Weight
+                {{ __('Weight') }}
             </td>
             <td>
                 {{ $patient['weight'].' kg' }}
@@ -103,7 +103,7 @@
         @if($patient['email'])
         <tr>
             <td class="font-weight-bold pr-3">
-                Email
+                {{ __('Email') }}
             </td>
             <td>
                 <a href="mailto:{{ $patient['email'] }}">
@@ -116,7 +116,7 @@
         @if($patient['mobile'])
         <tr>
             <td class="font-weight-bold pr-3">
-                Mobile
+                {{ __('Mobile') }}
             </td>
             <td>
                 <a href="tel:{{ $patient['mobile'] }}">

@@ -25,7 +25,7 @@
                     @if($contact->email)
                     <tr>
                         <td class="font-weight-bold pr-3">
-                            {{ __('E-Mail Address') }}
+                            {{ __('Email') }}
                         </td>
                         <td>
                             <a href="mailto:{{$contact->email}}">

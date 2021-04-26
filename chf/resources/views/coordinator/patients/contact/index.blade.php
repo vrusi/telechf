@@ -1,98 +1,105 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <h1>
-        Patients
-    </h1>
+    <div class="container">
+        <h1>
+            {{ __('Patients') }}
+        </h1>
 
-    <h2>
-        {{ $patient['name'].' '.$patient['surname'] }}
-    </h2>
+        <h2>
+            {{ $patient['name'] . ' ' . $patient['surname'] }}
+        </h2>
 
-    <ul class="nav nav-tabs my-4">
-        <li class="nav-item">
-            <a class="{{ Request::is('*/profile*') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/profile'}}">Profile</a>
-        </li>
-        <li class="nav-item">
-            <a class="{{ Request::is('*/therapy*') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/therapy'}}">Therapy</a>
-        </li>
-        <li class="nav-item">
-            <a class="{{ Request::is('*/measurements*') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/measurements'}}">Measurements</a>
-        </li>
-        <li class="nav-item">
-            <a class="{{ Request::is('*/charts*') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/charts'}}">Charts</a>
-        </li>
-        <li class="nav-item">
-            <a class="{{ Request::is('*/contacts*') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/contacts'}}">Contact</a>
-        </li>
-    </ul>
+        <ul class="nav nav-tabs my-4">
+            <li class="nav-item">
+                <a class="{{ Request::is('*/profile*') ? 'nav-link active' : 'nav-link' }}"
+                    href="{{ '/coordinator/patients/' . $patient['id'] . '/profile' }}">{{ __('Profile') }}</a>
+            </li>
+            <li class="nav-item">
+                <a class="{{ Request::is('*/therapy*') ? 'nav-link active' : 'nav-link' }}"
+                    href="{{ '/coordinator/patients/' . $patient['id'] . '/therapy' }}">{{ __('Therapy') }}</a>
+            </li>
+            <li class="nav-item">
+                <a class="{{ Request::is('*/measurements*') ? 'nav-link active' : 'nav-link' }}"
+                    href="{{ '/coordinator/patients/' . $patient['id'] . '/measurements' }}">{{ __('Measurements') }}</a>
+            </li>
+            <li class="nav-item">
+                <a class="{{ Request::is('*/charts*') ? 'nav-link active' : 'nav-link' }}"
+                    href="{{ '/coordinator/patients/' . $patient['id'] . '/charts' }}">{{ __('Charts') }}</a>
+            </li>
+            <li class="nav-item">
+                <a class="{{ Request::is('*/contacts*') ? 'nav-link active' : 'nav-link' }}"
+                    href="{{ '/coordinator/patients/' . $patient['id'] . '/contacts' }}">{{ __('Contact') }}</a>
+            </li>
+        </ul>
 
+        <div class="d-flex justify-content-between">
+            <div>
+                <h3 class="my-3">
+                    {{ __('Contacts') }}
+                </h3>
+            </div>
+            <div>
+                <a href="{{ '/coordinator/patients/' . $patient['id'] . '/contacts/create' }}"
+                    class="btn btn-outline-secondary">
+                    <i class="fas fa-user-plus"></i>
+                    {{ __('New contact') }}
+                </a>
+            </div>
+        </div>
 
-    <h3 class="my-3">
-        Chat
-    </h3>
+        <div class="mb-3">
+            <div class="row">
+                @foreach ($contacts as $contact)
+                    <div class="col">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">
+                                    {{ ucfirst(__($contact->type)) }}
+                                </h4>
 
-    <div>
-        TODO
+                                <div class="card-text">
+                                    <table>
+                                        <tr>
+                                            <td class="font-weight-bold pr-3">
+                                                {{ __('Name') }}
+                                            </td>
+                                            <td>
+                                                {{ $contact->titles_prefix . ' ' . $contact->name . ' ' . $contact->surname . ' ' . $contact->titles_postfix }}
+                                            </td>
+                                        </tr>
+
+                                        @if ($contact->email)
+                                            <tr>
+                                                <td class="font-weight-bold pr-3">
+                                                    {{ __('Email') }}
+                                                </td>
+                                                <td>
+                                                    <a href="mailto:{{ $contact->email }}">
+                                                        {{ $contact->email }}
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        @endif
+                                        @if ($contact->mobile)
+                                            <tr>
+                                                <td class="font-weight-bold pr-3">
+                                                    {{ __('Mobile') }}
+                                                </td>
+                                                <td>
+                                                    <a href="tel:{{ $contact->mobile }}">
+                                                        {{ $contact->mobile }}
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        @endif
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        </div>
     </div>
-
-    <h3 class="my-3">
-        Contacts
-    </h3>
-
-    <div class="mb-3">
-        @foreach($contacts as $contact)
-        <address class="my-3">
-            <h4>
-                {{ $patient['name'].'\'s'}} {{$contact->type}}
-            </h4>
-
-            <table>
-                <tbody>
-                    <tr>
-                        <td class="font-weight-bold pr-3">
-                            Name
-                        </td>
-                        <td>
-                            {{$contact->titles_prefix.' '.$contact->name.' '.$contact->surname.' '.$contact->titles_postfix}}
-                        </td>
-                    </tr>
-
-                    @if($contact->email)
-                    <tr>
-                        <td class="font-weight-bold pr-3">
-                            E-mail
-                        </td>
-                        <td>
-                            <a href="mailto:{{$contact->email}}">
-                                {{$contact->email}}
-                            </a>
-                        </td>
-                    </tr>
-                    @endif
-                    @if($contact->mobile)
-                    <tr>
-                        <td class="font-weight-bold pr-3">
-                            Mobile
-                        </td>
-                        <td>
-                            <a href="tel:{{$contact->mobile}}">
-                                {{$contact->mobile}}
-                            </a>
-                        </td>
-                    </tr>
-                    @endif
-                </tbody>
-            </table>
-        </address>
-
-        @endforeach
-    </div>
-
-    <a href="{{ '/coordinator/patients/'.$patient['id'].'/contacts/create' }}" class="btn btn-secondary">Add new</a>
-
-</div>
-
-
 @endsection

@@ -17,13 +17,13 @@
 
     <div class="d-flex justify-content-between align-content-center">
         <div>
-            <h1>Patients</h1>
+            <h1>{{ __('Patients') }}</h1>
         </div>
 
         <div>
             <a href="{{ route('patients.create') }}" class="btn btn-outline-secondary">
                 <i class="fas fa-user-plus"></i>
-                Add new patient
+                {{ __('New patient') }}
             </a>
         </div>
 
@@ -31,19 +31,19 @@
 
     <ul class="nav nav-tabs">
         <li class="nav-item">
-            <a class="{{ $active ? 'nav-link active' : 'nav-link' }}" href="{{ route('patients.index', ['inactive' => false] ) }}">Active</a>
+            <a class="{{ $active ? 'nav-link active' : 'nav-link' }}" href="{{ route('patients.index', ['inactive' => false] ) }}">{{ __('Active patients') }}</a>
         </li>
 
         <li class="nav-item">
-            <a class="{{ !$active ? 'nav-link active' : 'nav-link' }}" href="{{ route('patients.index', ['inactive' => true]) }}">Inactive</a>
+            <a class="{{ !$active ? 'nav-link active' : 'nav-link' }}" href="{{ route('patients.index', ['inactive' => true]) }}">{{ __('Inactive patients') }}</a>
         </li>
     </ul>
 
     <p class="my-3">
         @if($active)
-        These are all the patients with active accounts that were assigned to you.
+        {{ __('These are all the patients with active accounts that were assigned to you.') }}
         @else
-        These are all the patients with deactivated accounts that had been assigned to you.
+        {{ __('These are all the patients with deactivated accounts that were assigned to you.') }}
         @endif
     </p>
 
@@ -51,41 +51,41 @@
         <thead>
             <tr>
                 <th>
-                    Name
+                    {{ __('Name') }}
                 </th>
                 <th>
-                    Surname
+                    {{ __('Surname') }}
+
                 </th>
                 <th>
-                    Sex
+                    {{ __('Sex') }}
                 </th>
                 <th>
-                    Age
+                    {{ __('Age') }}
                 </th>
                 <th>
-                    Height
+                    {{ __('Height') }}
                 </th>
                 <th>
-                    Weight
+                    {{ __('Weight') }}
                 </th>
                 <th>
-                    Email
+                    {{ __('Email') }}
                 </th>
                 <th>
-                    Mobile
+                    {{ __('Mobile') }}
                 </th>
                 @if($active)
                 <th>
-                    Detail
+                    {{ __('Detail') }}
                 </th>
                 @endif
                 <th>
                     @if($active)
-                    Deactivate
+                    {{ __('Deactivate') }}
                     @else
-                    Restore
+                    {{ __('Restore') }}
                     @endif
-
                 </th>
             </tr>
         </thead>
@@ -100,12 +100,12 @@
                 </td>
 
                 <td>
-                    {{ $patient['sex'] ?? '--' }}
+                    {{ __($patient['sex']) ?? '--' }}
                 </td>
 
                 <td> 
 
-                    {{ $patient->age().' years' ?? '--' }}
+                    {{ $patient->age().' '.__('years') ?? '--' }}
                 </td>
 
                 <td>
@@ -155,8 +155,11 @@
     $(document).ready(function() {
         $.noConflict();
         $('#patients-table').DataTable({
-            responsive: true
-        , });
+            responsive: true,
+            "language": {
+                "url": navigator.language === 'sk' ? '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Slovak.json' : '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/English.json',
+            },
+        });
     });
 
 </script>

@@ -42,8 +42,8 @@
         font-weight: 900;
     }
 
-    th,
-    td {
+    #summary-table th,
+    #summary-table td {
         min-width: 70px;
         padding: 0.5rem;
         border-width: 0 0 1px 0;
@@ -64,39 +64,42 @@
         max-width: 80vw;
     }
 
+    ul {
+        list-style-type: none;
+    }
 </style>
 
 
 <div class="container">
     <h1>
-        Patients
+        {{ __('Patients') }}
     </h1>
 
-    <h2>
+    <h3>
         {{ $patient['name'].' '.$patient['surname'] }}
-    </h2>
+    </h3>
 
     <ul class="nav nav-tabs my-4">
         <li class="nav-item">
-            <a class="{{ Request::is('*/profile*') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/profile'}}">Profile</a>
+            <a class="{{ Request::is('*/profile*') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/profile'}}">{{ __('Profile') }}</a>
         </li>
         <li class="nav-item">
-            <a class="{{ Request::is('*/therapy*') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/therapy'}}">Therapy</a>
+            <a class="{{ Request::is('*/therapy*') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/therapy'}}">{{ __('Therapy') }}</a>
         </li>
         <li class="nav-item">
-            <a class="{{ Request::is('*/measurements*') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/measurements'}}">Measurements</a>
+            <a class="{{ Request::is('*/measurements*') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/measurements'}}">{{ __('Measurements') }}</a>
         </li>
         <li class="nav-item">
-            <a class="{{ Request::is('*/charts*') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/charts'}}">Charts</a>
+            <a class="{{ Request::is('*/charts*') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/charts'}}">{{ __('Charts') }}</a>
         </li>
         <li class="nav-item">
-            <a class="{{ Request::is('*/contacts*') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/contacts'}}">Contact</a>
+            <a class="{{ Request::is('*/contacts*') ? 'nav-link active' : 'nav-link' }}" href="{{'/coordinator/patients/'.$patient['id'].'/contacts'}}">{{ __('Contact') }}</a>
         </li>
     </ul>
 
 
     <h3 class="my-3">
-        Unchecked Alarms
+        {{ __('Unchecked Alarms') }}
     </h3>
 
     @php
@@ -109,7 +112,7 @@
         <input type="hidden" name="date" value="null">
         <button type="submit" class="btn btn-outline-primary">
             <i class="fas fa-check"></i>
-            Mark all alarms as checked
+            {{ __('Mark all alarms as checked') }}
         </button>
     </form>
 
@@ -130,7 +133,7 @@
         <div class="d-flex justify-content-between align-items-center">
             <div>
                 <h3>
-                    An alarm was triggered on {{ $date }}
+                    {{ __('An alarm was triggered on') }} {{ $date }}
                 </h3>
             </div>
             <div>
@@ -139,13 +142,13 @@
                     <input type="hidden" name="date" value="{{ $alarmDate }}">
                     <button type="submit" class="btn btn-outline-primary">
                         <i class="fas fa-check"></i>
-                        Mark as checked
+                        {{ __('Mark as checked') }}
                     </button>
                 </form>
             </div>
         </div>
 
-        <ul>
+        <ul class="px-0">
             @foreach($alarm as $measurement)
             @if( array_key_exists('parameter', $measurement)
             && (
@@ -155,30 +158,30 @@
             || $measurement['triggered_therapeutic_alarm_min']
             ))
             <li>
-                {{ ucfirst(strtolower($measurement['parameter'])) }}
                 @if($measurement['triggered_safety_alarm_max'])
-                over maximum safety threshold:
+                <i class="fas fa-chevron-up alarm-safety-icon mr-1"></i>
+
                 @elseif($measurement['triggered_safety_alarm_min'])
-                below minimum safety threshold:
+                <i class="fas fa-chevron-down alarm-safety-icon mr-1"></i>
+
                 @elseif($measurement['triggered_therapeutic_alarm_max'])
-                over maximum therapeutic threshold:
+                <i class="fas fa-chevron-up alarm-therapeutic-icon mr-1"></i>
+
                 @elseif($measurement['triggered_therapeutic_alarm_min'])
-                below minimum therapeutic threshold:
+                <i class="fas fa-chevron-down alarm-therapeutic-icon mr-1"></i>
+                @endif
+
+                {{ ucfirst(mb_strtolower(__($measurement['parameter']))) }}
+                @if($measurement['triggered_safety_alarm_max'])
+                {{ __('over upper safety threshold:') }}
+                @elseif($measurement['triggered_safety_alarm_min'])
+                {{ __('below lower safety threshold:') }}
+                @elseif($measurement['triggered_therapeutic_alarm_max'])
+                {{ __('over upper therapeutic threshold:') }}
+                @elseif($measurement['triggered_therapeutic_alarm_min'])
+                {{ __('below lower therapeutic threshold:') }}
                 @endif
                 {{ round($measurement['value'], 2).' '.$measurement['unit'] }}
-
-                @if($measurement['triggered_safety_alarm_max'])
-                <i class="fas fa-chevron-up alarm-safety-icon"></i>
-
-                @elseif($measurement['triggered_safety_alarm_min'])
-                <i class="fas fa-chevron-down alarm-safety-icon"></i>
-
-                @elseif($measurement['triggered_therapeutic_alarm_max'])
-                <i class="fas fa-chevron-up alarm-therapeutic-icon"></i>
-
-                @elseif($measurement['triggered_therapeutic_alarm_min'])
-                <i class="fas fa-chevron-down alarm-therapeutic-icon"></i>
-                @endif
 
             </li>
             @endif
@@ -190,16 +193,16 @@
 
     <div class="mb-5">
         <h4>
-            Contact
+            {{ __('Contact') }}
         </h4>
 
         <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#modalPatient">
-            The patient
+            {{ __('The patient') }}
         </button>
 
         @foreach($contacts as $contact)
         <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="{{'#modal'.$contact->id}}">
-            The {{ $contact->type }}
+            {{ __('The '.$contact->type) }}
         </button>
         @endforeach
     </div>
@@ -210,7 +213,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="modalPatientLabel">
-                        Patient contact
+                        {{ __('Patient contact') }}
                     </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -220,7 +223,7 @@
                     <table class="contact-info">
                         <tr>
                             <td class="font-weight-bold">
-                                Name
+                                {{ __('Name') }}
                             </td>
                             <td>
                                 {{ $patient->name.' '.$patient->surname }}
@@ -229,7 +232,7 @@
                         @if($patient->email)
                         <tr>
                             <td class="font-weight-bold">
-                                Email
+                                {{ __('Email') }}
                             </td>
                             <td>
                                 <a href="tel:{{$patient->email}}">
@@ -242,7 +245,7 @@
                         @if($patient->mobile)
                         <tr>
                             <td class="font-weight-bold">
-                                Mobile
+                                {{ __('Mobile') }}
                             </td>
                             <td>
                                 <a href="tel:{{$patient->mobile}}">
@@ -254,8 +257,7 @@
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal">Chat</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('Close') }}</button>
                 </div>
             </div>
         </div>
@@ -268,7 +270,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="{{'modal'.$contact->id.'Label'}}">
-                        {{ ucfirst($contact->type) }} contact
+                        {{ __(ucfirst($contact->type).' contact') }}
                     </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
@@ -278,7 +280,7 @@
                     <table class="contact-info">
                         <tr>
                             <td class="font-weight-bold">
-                                Name
+                                {{ __('Name') }}
                             </td>
                             <td>
                                 {{$contact->titles_prefix.' '.$contact->name.' '.$contact->surname.' '.$contact->titles_postfix}}
@@ -287,7 +289,7 @@
                         @if($contact->email)
                         <tr>
                             <td class="font-weight-bold">
-                                Email
+                                {{ __('Email') }}
                             </td>
                             <td>
                                 <a href="mailto:{{$contact->email}}">
@@ -300,7 +302,7 @@
                         @if($contact->mobile)
                         <tr>
                             <td class="font-weight-bold">
-                                Mobile
+                                {{ __('Mobile') }}
                             </td>
                             <td>
                                 <a href="tel:{{$contact->mobile}}">
@@ -312,7 +314,7 @@
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">{{ __('Close') }}</button>
                 </div>
             </div>
         </div>
@@ -320,36 +322,36 @@
     @endforeach
 
     @else
-    <p>This patient has no unchecked alarms.</p>
+    <p>{{ __('This patient has no unchecked alarms.') }}</p>
     @endif
 
     <h3 class="my-3">
-        Measurements
+        {{ __('Measurements') }}
     </h3>
     <table id="summary-table">
         <thead>
             <tr>
                 <th class="pr-4">
-                    Date
+                    {{ __('Date') }}
                 </th>
                 @foreach($parameters as $parameter)
                 @if(!(strtolower($parameter['name']) == 'ecg'))
                 <th>
-                    {{ $parameter['name'] }} ({{ $parameter['unit'] }})
+                    {{ __($parameter['name']) }} ({{ __($parameter['unit']) }})
                 </th>
                 @endif
                 @endforeach
                 <th>
-                    Swellings
+                    {{ __('Swellings') }}
                 </th>
                 <th>
-                    Exercise Tolerance
+                    {{ __('Exercise Tolerance') }}
                 </th>
                 <th>
-                    Nocturnal Dyspnoea
+                    {{ __('Nocturnal Dyspnoea') }}
                 </th>
                 <th>
-                    Notes
+                    {{ __('Notes') }}
                 </th>
             </tr>
         </thead>
@@ -371,24 +373,22 @@
                     @endif
                     <div class="row">
                         <div class="col-12">
-
-                            {{
-                                !$measurement['value']
-                                ? '--'
-                                : (
-                                 is_numeric($measurement['value'])
-                                 ? round($measurement['value'], 2)
-                                 : $measurement['value']
-                                 ) 
-                            }}
-
+                            @if ($measurement['value'])
+                            @if (is_numeric($measurement['value']))
+                            {{ round($measurement['value'], 2) }}
+                            @else 
+                            {{ __($measurement['value']) }}
+                            @endif
+                            @else 
+                            --
+                            @endif
                         </div>
                         @if($measurement['triggered_safety_alarm_max'] || $measurement['triggered_safety_alarm_min'] || $measurement['triggered_therapeutic_alarm_max'] || $measurement['triggered_therapeutic_alarm_min'])
                         <div class="col-12 faint">
                             @if($measurement['triggered_safety_alarm_max'] || $measurement['triggered_therapeutic_alarm_max'])
-                            too high
+                            {{ __('too high') }}
                             @elseif($measurement['triggered_safety_alarm_min'] || $measurement['triggered_therapeutic_alarm_min'])
-                            too low
+                            {{ __('too low') }}
                             @endif
                         </div>
                         @endif
@@ -422,11 +422,14 @@
         $.noConflict();
         $('#summary-table').DataTable({
             fixedColumns: {
-                leftColumns: 1
-            }
-            , responsive: true
-            , "ordering": false
-        , });
+                leftColumns: 1,
+            },
+            responsive: true,
+            "ordering": false,
+            "language": {
+                "url": navigator.language === 'sk' ? '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Slovak.json' : '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/English.json',
+            },
+        });
     });
 
 </script>

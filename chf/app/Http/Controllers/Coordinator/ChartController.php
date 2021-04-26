@@ -125,13 +125,14 @@ class ChartController extends Controller
                 array_push($ecgDates, $i);
                 array_push($ecgValues, round(intval($ecgValuesRaw[$i])/1000, 2));
             }
-
+            
             array_push($chartsECG, [
                 'id' => $dataPoint['id'],
                 'name' => $ecgParam->name,
                 'unit' => $ecgParam->unit,
                 'values' =>  $ecgValues,
                 'dates' => $ecgDates,
+                'date' => $dataPoint['created_at']->format('d M Y'),
                 'eventsP' => explode(',', $dataPoint['eventsP']),
                 'eventsB' => explode(',', $dataPoint['eventsB']),
                 'eventsT' => explode(',', $dataPoint['eventsT']),

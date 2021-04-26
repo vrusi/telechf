@@ -64,8 +64,10 @@ class NotesController extends Controller
 
             $measurementId = $measurement['id'];
             $notes = Measurement::find($measurementId)->notes;
-
-            array_push($notesAll, ['measurement' => $measurement, 'notes' => $notes]);
+            
+            if (count($notes) > 0) {
+                array_push($notesAll, ['measurement' => $measurement, 'notes' => $notes]);
+            }
         }
 
         return view('coordinator.patients.measurements.notes.index', [

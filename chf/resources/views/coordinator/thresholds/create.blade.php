@@ -15,10 +15,10 @@
 
 <div class="container">
     <h1>
-        Global thresholds
+        {{ __('Global thresholds') }}
     </h1>
     <p class="text-justify">
-        These threshold settings apply to every patient by default unless personal thresholds have been set for a patient. You can set personal thresholds for specific patients by visiting the thresholds tab within their profile.
+        {{ __('These threshold settings apply to every patient by default unless personal thresholds have been set for a patient. You can set personal thresholds for specific patients by visiting the thresholds tab within their profile.') }}
     </p>
 
     @if ($errors->any())
@@ -37,15 +37,15 @@
             <thead>
                 <tr>
                     <th class="pr-3">
-                        Parameter
+                        {{ __('Parameter') }}
                     </th>
 
                     <th class="pr-3">
-                        Safety threshold
+                        {{ __('Safety threshold') }}
                     </th>
 
                     <th>
-                        Measurement frequency
+                        {{ __('Measurement frequency') }}
                     </th>
                 </tr>
 
@@ -55,7 +55,7 @@
                 @foreach($parameters as $parameter)
                 <tr>
                     <td class="pr-3">
-                        {{ $parameter['name'] }}
+                        {{ __($parameter['name']) }}
                     </td>
 
                     <td class="pr-3">
@@ -63,20 +63,20 @@
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-group">
-                                    <label for="{{ 'parameter'.$parameter->id.'min' }}">Minimum</label>
+                                    <label for="{{ 'parameter'.$parameter->id.'min' }}">{{ __('Lower threshold') }}</label>
                                     <div class="d-flex align-items-center">
                                         <input type="number" class="form-control" id="{{ 'parameter'.$parameter->id.'min' }}" name="{{ 'parameter'.$parameter->id.'min' }}" placeholder="{{ $parameter->threshold_min ?? '--' }}">
-                                        <label class="px-3"> {{ $parameter->unit }} </label>
+                                        <label class="px-3"> {{ __($parameter->unit) }} </label>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="col-6">
                                 <div class="form-group">
-                                    <label for="{{ 'parameter'.$parameter->id.'max' }}">Maximum</label>
+                                    <label for="{{ 'parameter'.$parameter->id.'max' }}">{{ __('Upper threshold') }}</label>
                                     <div class="d-flex align-items-center">
                                         <input type="number" class="form-control" id="{{ 'parameter'.$parameter->id.'max' }}" name="{{ 'parameter'.$parameter->id.'max' }}" placeholder="{{ $parameter->threshold_max ?? '--' }}">
-                                        <label class="px-3"> {{ $parameter->unit }} </label>
+                                        <label class="px-3"> {{ __($parameter->unit) }} </label>
                                     </div>
                                 </div>
                             </div>
@@ -86,7 +86,7 @@
                                 @if($parameter->threshold_min)
                                 <div class="form-group form-check">
                                     <input type="checkbox" class="form-check-input" id="{{ 'parameter'.$parameter->id.'minCheck' }}" name="{{ 'parameter'.$parameter->id.'minCheck' }}">
-                                    <label class="form-check-label" for="{{ 'parameter'.$parameter->id.'minCheck' }}"><i class="far fa-trash-alt"></i> Remove minimum threshold</label>
+                                    <label class="form-check-label" for="{{ 'parameter'.$parameter->id.'minCheck' }}"><i class="far fa-trash-alt"></i> {{ __('Remove lower threshold') }}</label>
                                 </div>
                                 @endif
                             </div>
@@ -95,7 +95,7 @@
                                 @if($parameter->threshold_max)
                                 <div class="form-group form-check">
                                     <input type="checkbox" class="form-check-input" id="{{ 'parameter'.$parameter->id.'maxCheck' }}" name="{{ 'parameter'.$parameter->id.'maxCheck' }}">
-                                    <label class="form-check-label" for="{{ 'parameter'.$parameter->id.'maxCheck' }}"><i class="far fa-trash-alt"></i> Remove maximum threshold</label>
+                                    <label class="form-check-label" for="{{ 'parameter'.$parameter->id.'maxCheck' }}"><i class="far fa-trash-alt"></i> {{ __('Remove upper threshold') }}</label>
                                 </div>
                                 @endif
                             </div>
@@ -107,19 +107,19 @@
                         <div class="row">
                             <div class="col-6">
                                 <div class="form-group">
-                                    <label for="{{ 'parameter'.$parameter->id.'times' }}">Times</label>
+                                    <label for="{{ 'parameter'.$parameter->id.'times' }}">{{ __('Times') }}</label>
                                     <input type="number" class="form-control" id="{{ 'parameter'.$parameter->id.'times' }}" name="{{ 'parameter'.$parameter->id.'times' }}" placeholder="{{ $parameter->measurement_times ?? '--' }}">
                                 </div>
                             </div>
                             <div class="col-6">
                                 <div class="form-group">
-                                    <label for="{{ 'parameter'.$parameter->id.'per' }}">Per</label>
+                                    <label for="{{ 'parameter'.$parameter->id.'per' }}">{{ __('Per') }}</label>
                                     <select class="form-control" id="{{ 'parameter'.$parameter->id.'per' }}" name="{{ 'parameter'.$parameter->id.'per' }}">
                                         <option value="" {{ $parameter->measurement_span == null ? 'selected' : '' }}>--</option>
-                                        <option value="hour" {{ $parameter->measurement_span == 'hour' ? 'selected' : '' }}>hour</option>
-                                        <option value="day" {{ $parameter->measurement_span == 'day' ? 'selected' : '' }}>day</option>
-                                        <option value="week" {{ $parameter->measurement_span == 'week' ? 'selected' : '' }}>week</option>
-                                        <option value="month" {{ $parameter->measurement_span == 'month' ? 'selected' : '' }}>month</option>
+                                        <option value="hour" {{ $parameter->measurement_span == 'hour' ? 'selected' : '' }}>{{ __('hour') }}</option>
+                                        <option value="day" {{ $parameter->measurement_span == 'day' ? 'selected' : '' }}>{{ __('day') }}</option>
+                                        <option value="week" {{ $parameter->measurement_span == 'week' ? 'selected' : '' }}>{{ __('week') }}</option>
+                                        <option value="month" {{ $parameter->measurement_span == 'month' ? 'selected' : '' }}>{{ __('month') }}</option>
                                     </select>
                                 </div>
                             </div>
@@ -129,7 +129,7 @@
                                 @if($parameter->measurement_times && $parameter->measurement_span)
                                 <div class="form-group form-check">
                                     <input type="checkbox" class="form-check-input" id="{{ 'parameter'.$parameter->id.'freqCheck' }}" name="{{ 'parameter'.$parameter->id.'freqCheck' }}">
-                                    <label class="form-check-label" for="{{ 'parameter'.$parameter->id.'freqCheck' }}"><i class="far fa-trash-alt"></i> Remove measurement frequency</label>
+                                    <label class="form-check-label" for="{{ 'parameter'.$parameter->id.'freqCheck' }}"><i class="far fa-trash-alt"></i> {{ __('Remove measurement frequency') }}</label>
                                 </div>
                                 @endif
                             </div>
@@ -142,13 +142,13 @@
 
         <div class="d-flex mb-5 justify-content-center">
             <div class="mr-3">
-                <a href="{{ route('coordinator.thresholds') }}" class="btn btn-secondary">Cancel</a>
+                <a href="{{ route('coordinator.thresholds') }}" class="btn btn-secondary">{{ __('Cancel') }}</a>
             </div>
 
             <div class="ml-3">
                 <button type="submit" class="btn btn-primary">
                     <i class="fas fa-save mr-1"></i>
-                    Save global thresholds
+                    {{ __('Save global thresholds') }}
                 </button>
             </div>
 

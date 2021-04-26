@@ -37,7 +37,7 @@
                 @if($user->email)
                 <tr>
                     <td class="font-weight-bold pr-3">
-                        {{ __('E-Mail Address') }}
+                        {{ __('Email') }}
                     </td>
                     <td>
                         <a href="mailto:{{ $user->email }}">

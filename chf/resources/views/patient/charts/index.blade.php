@@ -109,7 +109,7 @@
                             </div>
 
                             <div>
-                                <button type="submit" class="btn btn-outline-secondary">{{ __('Submit') }}</button>
+                                <button type="submit" class="btn btn-outline-secondary">{{ __('Plot') }}</button>
                             </div>
                         </div>
                     </div>
@@ -191,7 +191,6 @@
         max_safety = chart['max_safety'];
         min_safety = chart['min_safety'];
 
-        console.log(names_sk[name]);
         var plot = {
             x: dates,
             y: values,
@@ -279,7 +278,7 @@
             height: 1000,
             xaxis: {
                 title: {
-                    text: navigator.language === 'sk' ? 'Milisekundy' :'Miliseconds',
+                    text: navigator.language === 'sk' ? 'Čas v ms' :'Time in ms',
                 },
                 autotick: false,
                 tick0: dates[0],

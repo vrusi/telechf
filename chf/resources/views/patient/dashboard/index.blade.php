@@ -239,7 +239,7 @@
             responsive: true,
             "ordering": false,
             "language": {
-                "url": navigator.language === "sk" ? "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Slovak.json" : "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/English.json",
+                "url": navigator.language === 'sk' ? '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Slovak.json' : '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/English.json',
             },
         });
 
@@ -250,7 +250,7 @@
             responsive: true,
             "ordering": false,
             "language": {
-            "url": navigator.language === "sk" ? "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Slovak.json" : "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/English.json",
+            "url": navigator.language === 'sk' ? '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Slovak.json' : '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/English.json',
             },
         });
 

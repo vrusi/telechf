@@ -66,18 +66,18 @@
 </style>
 
 <div class="container pb-5">
-    <h1>Dashboard</h1>
+    <h1>{{ __('Dashboard') }}</h1>
 
     <div x-data="tab()">
         <ul class="nav nav-tabs">
             <li class="nav-item">
                 <a id="alarms-link" @click="tabSwitch()" :class="{'active': tab == 'alarms'}" class="nav-link active"
-                    href="">Alarms</a>
+                    href="">{{ __('Alarms') }}</a>
             </li>
 
             <li class="nav-item">
                 <a id="extras-link" @click="tabSwitch()" :class="{'active': tab == 'extras'}" class="nav-link"
-                    href="">Extra measurements</a>
+                    href="">{{ __('Extra measurements') }}</a>
             </li>
         </ul>
 
@@ -87,7 +87,7 @@
                 <div class="swatch safety mr-1">
                 </div>
                 <div>
-                    Alarm triggered by crossing safety thresholds.
+                    {{ __('Alarm triggered by crossing safety thresholds.') }}
                 </div>
             </div>
 
@@ -95,7 +95,7 @@
                 <div class="swatch therapeutic mr-1">
                 </div>
                 <div>
-                    Alarm triggered by crossing therapeutic thresholds.
+                    {{ __('Alarm triggered by crossing therapeutic thresholds.') }}
                 </div>
             </div>
 
@@ -106,29 +106,29 @@
                 <thead>
                     <tr>
                         <th class="pr-4">
-                            Patient
+                            {{ __('Patient') }}
                         </th>
                         <th>
-                            Date
+                            {{ __('Date') }}
                         </th>
                         @foreach($parameters as $parameter)
                         @if(!(strtolower($parameter['name']) == 'ecg'))
                         <th>
-                            {{ $parameter['name'] }} ({{ $parameter['unit'] }})
+                            {{ __($parameter['name']) }} ({{ __($parameter['unit']) }})
                         </th>
                         @endif
                         @endforeach
                         <th>
-                            Swellings
+                            {{ __('Swellings') }}
                         </th>
                         <th>
-                            Exercise Tolerance
+                            {{ __('Exercise Tolerance') }}
                         </th>
                         <th>
-                            Nocturnal Dyspnoea
+                            {{ __('Nocturnal Dyspnoea') }}
                         </th>
                         <th>
-                            Checked
+                            {{ __('Checked') }}
                         </th>
                     </tr>
                 </thead>
@@ -173,15 +173,16 @@
                             <div class="row">
                                 <!-- MEASUREMENT VALUE -->
                                 <div class="col-12">
-                                    {{
-                                !$measurement['value']
-                                ? '--'
-                                : (
-                                 is_numeric($measurement['value'])
-                                 ? round($measurement['value'], 2)
-                                 : $measurement['value']
-                                 ) 
-                            }}
+                                @if ($measurement['value'])
+                                    @if (is_numeric($measurement['value']))
+                                    {{ round($measurement['value'], 2) }}
+                                    @else 
+                                    {{ __($measurement['value']) }}
+                                    @endif
+                                @else 
+                                --
+                                @endif
+
                                 </div>
 
                                 <!-- ALARM DESCRIPTION -->
@@ -189,8 +190,8 @@
                                 <div class="col-12 faint">
                                     {{
                             ( $measurement['triggered_safety_alarm_max'] || $measurement['triggered_therapeutic_alarm_max'])
-                            ? 'too high'
-                            : 'too low'
+                            ? __('too high')
+                            : __('too low')
                             }}
                                 </div>
                                 @endif
@@ -214,7 +215,7 @@
                             @if($anyUnchecked)
                             <a href="{{'patients/'.$patientId.'/measurements'}}" class="d-flex align-items-center">
                                 <div class="mr-1">
-                                    Check
+                                    {{ __('Check') }}
                                 </div>
                                 <i class="fas fa-caret-right"></i>
                             </a>
@@ -235,29 +236,29 @@
                 <thead>
                     <tr>
                         <th class="pr-4">
-                            Patient
+                            {{ __('Patient') }}
                         </th>
                         <th>
-                            Date
+                            {{ __('Date') }}
                         </th>
                         @foreach($parameters as $parameter)
                         @if(!(strtolower($parameter['name']) == 'ecg'))
                         <th>
-                            {{ $parameter['name'] }} ({{ $parameter['unit'] }})
+                            {{ __($parameter['name']) }} ({{ __($parameter['unit']) }})
                         </th>
                         @endif
                         @endforeach
                         <th>
-                            Swellings
+                            {{ __('Swellings') }}
                         </th>
                         <th>
-                            Exercise Tolerance
+                            {{ __('Exercise Tolerance') }}
                         </th>
                         <th>
-                            Nocturnal Dyspnoea
+                            {{ __('Nocturnal Dyspnoea') }}
                         </th>
                         <th>
-                            Checked
+                            {{ __('Checked') }}
                         </th>
                     </tr>
                 </thead>
@@ -303,15 +304,15 @@
                             <div class="row">
                                 <!-- MEASUREMENT VALUE -->
                                 <div class="col-12">
-                                    {{
-                                !$measurement['value']
-                                ? '--'
-                                : (
-                                 is_numeric($measurement['value'])
-                                 ? round($measurement['value'], 2)
-                                 : $measurement['value']
-                                 ) 
-                            }}
+                                @if ($measurement['value'])
+                                    @if (is_numeric($measurement['value']))
+                                    {{ round($measurement['value'], 2) }}
+                                    @else 
+                                    {{ __($measurement['value']) }}
+                                    @endif
+                                @else 
+                                --
+                                @endif
                                 </div>
 
                                 <!-- ALARM DESCRIPTION -->
@@ -319,8 +320,8 @@
                                 <div class="col-12 faint">
                                     {{
                                         ( $measurement['triggered_safety_alarm_max'] || $measurement['triggered_therapeutic_alarm_max'])
-                                        ? 'too high'
-                                        : 'too low'
+                                        ? __('too high')
+                                        : __('too low')
                                         }}
                                 </div>
                                 @endif
@@ -340,7 +341,7 @@
                                     <!-- Button trigger modal -->
                                     <button type="button" class="btn btn-sm btn-secondary" data-toggle="modal"
                                         data-target="#extraDescriptionModal">
-                                        Show description
+                                        {{ __('Show description') }}
                                     </button>
 
                                     <!-- Modal -->
@@ -351,7 +352,11 @@
                                                 <div class="modal-header">
                                                     <h5 class="modal-title" id="extraDescriptionModalLabel">
                                                         {{ $patientRecord['patient']['name'].' '.$patientRecord['patient']['surname'] }}
-                                                        said the following
+                                                        @if ($patientRecord['patient']['sex'] == "male")
+                                                            {{ __('said the following') }}
+                                                        @else
+                                                            {{ __('said the following ') }}
+                                                        @endif
                                                     </h5>
                                                     <button type="button" class="close" data-dismiss="modal"
                                                         aria-label="Close">
@@ -363,7 +368,7 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-primary"
-                                                        data-dismiss="modal">Close</button>
+                                                        data-dismiss="modal">{{ __('Close') }}</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -385,7 +390,7 @@
                             @if($anyUnchecked)
                             <a href="{{'patients/'.$patientId.'/measurements'}}" class="d-flex align-items-center">
                                 <div class="mr-1">
-                                    Check
+                                    {{ __('Check') }}
                                 </div>
                                 <i class="fas fa-caret-right"></i>
                             </a>
@@ -413,19 +418,25 @@
 
         $('#alarms-table').DataTable({
             fixedColumns: {
-                leftColumns: 1
-            }
-            , responsive: true
-            , "ordering": false
-        , });
+                leftColumns: 1,
+            },
+            responsive: true,
+            "ordering": false,
+            "language": {
+                "url": navigator.language === 'sk' ? '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Slovak.json' : '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/English.json',
+            },
+        });
 
         $('#extras-table').DataTable({
             fixedColumns: {
-                leftColumns: 1
-            }
-            , responsive: true
-            , "ordering": false
-        , });
+                leftColumns: 1,
+            },
+            responsive: true,
+            "ordering": false,
+            "language": {
+                "url": navigator.language === 'sk' ? '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Slovak.json' : '//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/English.json',
+            },
+        });
 
         $('#alarms-link').click(function() {
             return false;

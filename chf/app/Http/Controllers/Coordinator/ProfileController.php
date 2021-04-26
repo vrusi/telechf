@@ -24,6 +24,14 @@ class ProfileController extends Controller
         $parameters = $patient->parameters()->orderBy('id', 'ASC')->get();
         $conditions = $patient->conditions;
         $drugs = $patient->drugs;
-        return view('coordinator.patients.therapy.index', ['patient' => $patient, 'parameters' => $parameters, 'conditions' => $conditions, 'drugs' => $drugs, 'thresholds' => $thresholds]);
+        $locale = $request->getPreferredLanguage(['en', 'sk']);
+        return view('coordinator.patients.therapy.index', [
+            'patient' => $patient,
+            'parameters' => $parameters,
+            'conditions' => $conditions,
+            'drugs' => $drugs,
+            'thresholds' => $thresholds,
+            'locale' => $locale,
+            ]);
     }
 }
