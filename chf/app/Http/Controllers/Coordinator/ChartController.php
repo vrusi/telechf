@@ -30,7 +30,6 @@ class ChartController extends Controller
 
         $charts = array();
 
-
         foreach ($parameters as $parameter) {
             $name = $parameter->name;
             if (strtolower($name) == 'ecg') {
@@ -124,7 +123,7 @@ class ChartController extends Controller
 
             for ($i = 0; $i < count($ecgValuesRaw); $i++) {
                 array_push($ecgDates, $i);
-                array_push($ecgValues, round(intval($ecgValuesRaw[$i])/400, 2));
+                array_push($ecgValues, round(intval($ecgValuesRaw[$i])/1000, 2));
             }
 
             array_push($chartsECG, [

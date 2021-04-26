@@ -21,7 +21,8 @@ class CreateParametersTable extends Migration
             $table->enum('measurement_span', ['hour', 'day', 'week', 'month'])->nullable();
             $table->float('threshold_min')->nullable();
             $table->float('threshold_max')->nullable();
-            $table->longText('instructions')->nullable();
+            $table->longText('instructions_en')->nullable();
+            $table->longText('instructions_sk')->nullable();
             $table->boolean('fillable')->default(true);
             $table->timestamps();
         });

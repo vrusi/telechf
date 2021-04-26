@@ -88,8 +88,15 @@ class MeasurementController extends Controller
         $endOfWeek = $today->copy()->endOfWeek();
 
         $user = Auth::user();
-        $parameters = $user->parameters;
-
+        
+        $parameters = [];
+        $parametersRaw = $user->parameters;
+        foreach($parametersRaw as $parameter) {
+            if ($parameter['fillable']) {
+                array_push($parameters, $parameter);
+            }
+        }
+        
         $takeToday = [];
         $takeThisWeek = [];
 
@@ -112,7 +119,7 @@ class MeasurementController extends Controller
             }
         }
 
-        $extra = array_udiff($parameters->toArray(), $takeToday, function ($a, $b) {
+        $extra = array_udiff($parameters, $takeToday, function ($a, $b) {
             return $a['id'] - $b['id'];
         });
 
@@ -309,6 +316,7 @@ class MeasurementController extends Controller
     {
         $extra = $request->query('extra');
         $parameter = Parameter::find($request->route('parameterId'));
-        return view('patient.measurements.form', ['parameter' => $parameter, 'extra' => $extra]);
+        $locale = $request->getPreferredLanguage(['en', 'sk']);
+        return view('patient.measurements.form', ['parameter' => $parameter, 'extra' => $extra, 'locale' => $locale]);
     }
 }

@@ -72,10 +72,10 @@
              <li class="nav-item dropdown">
                  <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                      @if(Auth::user()->is_coordinator)
-                     Coordinator: {{ Auth::user()->name.' '.Auth::user()->surname }}
+                     {{ __('Coordinator') }}: {{ Auth::user()->name.' '.Auth::user()->surname }}
 
                      @else
-                     Patient: {{ Auth::user()->name.' '.Auth::user()->surname }}
+                     {{ __('Patient') }}: {{ Auth::user()->name.' '.Auth::user()->surname }}
                      @endif
                  </a>
 

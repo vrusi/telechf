@@ -42,31 +42,31 @@
 
 </style>
 
-
-
 <div class="d-none d-xl-block instructions">
     <h2 class="pb-3">
-        Instructions
+        {{ __('Instructions') }}
     </h2>
     <div class="text-justify">
-        {!! $parameter->instructions !!}
+        @if ($locale == 'en')
+        {!! $parameter->instructions_en !!}
+        @elseif ($locale == 'sk')
+        {!! $parameter->instructions_sk !!}
+        @endif
     </div>
 </div>
 
-
 <div class="container patient">
-
     <h1 class="pb-3">
-        Measurement form
+        {{ __('Measurement form') }}
     </h1>
 
     @if($extra)
     <h2>
-        {{$parameter->name}} - extra measurement
+        {{ __($parameter->name) }} - {{ __('extra measurement') }}
     </h2>
     @else
     <h2>
-        {{$parameter->name}}
+        {{ __($parameter->name) }}
     </h2>
     @endif
 
@@ -75,7 +75,7 @@
             <button class="btn btn-outline-secondary">
                 <div class="d-flex align-items-center">
                     <div class="mr-3">
-                        Tap to read instructions
+                        {{ __('Tap to read instructions') }}
                     </div>
 
                     <i x-show="!instructionsOpen" class="fas fa-caret-down"></i>
@@ -87,8 +87,11 @@
 
         <div class="collapse" id="instructions">
             <div class="card card-body">
-                {!! $parameter->instructions !!}
-
+                @if ($locale == 'en')
+                {!! $parameter->instructions_en !!}
+                @elseif ($locale == 'sk')
+                {!! $parameter->instructions_esk !!}
+                @endif
             </div>
         </div>
     </div>
@@ -116,54 +119,54 @@
             <div class="mb-5">
                 <input type="hidden" name="parameter_id" value="{{ $parameter->id }}">
                 <div class="form-group">
-                    <label for="value">{{ $parameter->name }} ({{ $parameter->unit }})</label>
-                    <input required type="number" step="0.01" class="form-control" name="value" id="value" placeholder="Enter your measurement">
+                    <label for="value">{{ __($parameter->name) }} ({{ __($parameter->unit) }})</label>
+                    <input required type="number" step="0.01" class="form-control" name="value" id="value" placeholder="{{ __('Enter your measurement') }}">
                 </div>
 
                 <div class="form-group">
                     <label class="mt-3">
-                        Rate your swellings
+                        {{ __('Rate your swellings') }}
                     </label>
                     <select required name="swellings" class="form-control">
-                        <option value="1">Very good</option>
-                        <option value="2">Good</option>
-                        <option value="3" selected>Neutral</option>
-                        <option value="4">Bad</option>
-                        <option value="5">Very bad</option>
+                        <option value="1">{{ __('Very good') }}</option>
+                        <option value="2">{{ __('Good') }}</option>
+                        <option value="3" selected>{{ __('Neutral') }}</option>
+                        <option value="4">{{ __('Bad') }}</option>
+                        <option value="5">{{ __('Very bad') }}</option>
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label class="mt-3">
-                        Rate your physical exertion tolerance
+                        {{ __('Rate your physical exertion tolerance') }}
                     </label>
                     <select required name="exercise_tolerance" class="form-control">
-                        <option value="1">Very good</option>
-                        <option value="2">Good</option>
-                        <option value="3" selected>Neutral</option>
-                        <option value="4">Bad</option>
-                        <option value="5">Very bad</option>
+                        <option value="1"> {{ __('Very good') }} </option>
+                        <option value="2">{{ __('Good') }}</option>
+                        <option value="3" selected>{{ __('Neutral') }}</option>
+                        <option value="4">{{ __('Bad') }}</option>
+                        <option value="5">{{ __('Very bad') }}</option>
                     </select>
                 </div>
 
 
                 <div class="form-group">
                     <label class="mt-3">
-                        Rate your sleeping breathlessness
+                        {{ __('Rate your sleeping breathlessness') }}
                     </label>
                     <select required name="dyspnoea" class="form-control">
-                        <option value="1">Very good</option>
-                        <option value="2">Good</option>
-                        <option value="3" selected>Neutral</option>
-                        <option value="4">Bad</option>
-                        <option value="5">Very bad</option>
+                        <option value="1"> {{ __('Very good') }} </option>
+                        <option value="2">{{ __('Good') }}</option>
+                        <option value="3" selected>{{ __('Neutral') }}</option>
+                        <option value="4">{{ __('Bad') }}</option>
+                        <option value="5">{{ __('Very bad') }}</option>
                     </select>
                 </div>
 
                 @if($extra)
                 <div class="form-group">
-                    <label for="extraDescription">Why did you take the extra measurement?</label>
-                    <textarea class="form-control" id="extraDescription" name="extraDescription" rows="3" placeholder="Describe how you're feeling"></textarea>
+                    <label for="extraDescription">{{ __('Why did you take the extra measurement?') }}</label>
+                    <textarea class="form-control" id="extraDescription" name="extraDescription" rows="3" placeholder="{{ __("Describe how you're feeling") }}"></textarea>
                 </div>
                 @endif
             </div>
@@ -172,26 +175,23 @@
                 <div class="col">
                     <div class="d-flex d-md-none flex-row fixed-bottom">
                         <a class="btn btn-secondary w-50 rounded-0" href="{{ route('measurements.create') }}">
-                            Back
+                            {{ __('Back') }}
                         </a>
                         <button type="submit" class="btn btn-primary w-50 rounded-0">
-                            Finish
+                            {{ __('Finish') }}
                         </button>
                     </div>
 
                     <div class="d-none d-md-flex justify-content-center">
                         <a class="btn btn-secondary mr-3 w-50" href="{{ route('measurements.create') }}">
-                            Back
+                            {{ __('Back') }}
                         </a>
                         <button type="submit" class="btn btn-primary w-50">
-                            Finish
+                            {{ __('Finish') }}
                         </button>
                     </div>
                 </div>
             </div>
         </form>
-
-
-
 </div>
 @endsection

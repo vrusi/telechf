@@ -6,7 +6,7 @@
 
 <div class="container patient">
     <h1 class="mb-3">
-        Personal information
+        {{ __('Personal information') }}
     </h1>
 
     <form method="POST" action="/profile">
@@ -25,14 +25,14 @@
                 <div>
                     @if($user->email)
                     <div class="form-group">
-                        <label for="email"> Email </label>
+                        <label for="email"> {{ __('Email') }} </label>
                         <input type="email" class="form-control" name="email" id="email" placeholder="{{$user->email}}">
                     </div>
                     @endif
 
                     @if($user->mobile)
                     <div class="form-group">
-                        <label for="mobile"> Mobile </label>
+                        <label for="mobile"> {{ __('Mobile') }} </label>
                         <input type="tel" class="form-control" name="mobile" id="mobile"
                             placeholder="{{$user->mobile}}">
                     </div>
@@ -42,7 +42,7 @@
                     @if($user->name)
                     <tr>
                         <td class="font-weight-bold pr-3">
-                            First name
+                            {{ __('First name') }}
                         </td>
                         <td>
                             {{ $user->name }}
@@ -53,7 +53,7 @@
                     @if($user->surname)
                     <tr>
                         <td class="font-weight-bold pr-3">
-                            Last name
+                            {{ __('Last name') }}
                         </td>
                         <td>
                             {{ $user->surname }}
@@ -64,10 +64,10 @@
                     @if($user->sex)
                     <tr>
                         <td class="font-weight-bold pr-3">
-                            Sex
+                            {{ __('Sex') }}
                         </td>
                         <td>
-                            {{ $user->sex }}
+                            {{ __($user->sex) }}
                         </td>
                     </tr>
                     @endif
@@ -75,10 +75,10 @@
                     @if($user->age())
                     <tr>
                         <td class="font-weight-bold pr-3">
-                            Age
+                            {{ __('Age') }}
                         </td>
                         <td>
-                            {{ $user->age().' years' }}
+                            {{ $user->age().' '.__('years') }}
                         </td>
                     </tr>
                     @endif
@@ -86,7 +86,7 @@
                     @if($user->height)
                     <tr>
                         <td class="font-weight-bold pr-3">
-                            Height
+                            {{ __('Height') }}
                         </td>
                         <td>
                             {{ $user->height.' cm' }}
@@ -97,7 +97,7 @@
                     @if($user->weight)
                     <tr>
                         <td class="font-weight-bold pr-3">
-                            Weight
+                            {{ __('Weight') }}
                         </td>
                         <td>
                             {{ $user->weight.' kg' }}
@@ -110,11 +110,11 @@
 
 
         <div class="d-flex justify-content-center align-items-center py-3">
-            <a class="btn btn-outline-secondary mr-3" href="{{ route('profile') }}">Cancel</a>
+            <a class="btn btn-outline-secondary mr-3" href="{{ route('profile') }}">{{ __('Cancel') }}</a>
             <button class="btn btn-primary" type="submit">
                 <div class="d-flex align-items-center">
                     <i class="fas fa-save pr-1"></i>
-                    <div>Save</div>
+                    <div>{{ __('Save') }}</div>
                 </div>
             </button>
         </div>

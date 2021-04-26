@@ -291,7 +291,7 @@
                 yanchor:"top",
                 y: -0.3,
                 x: 0.5, 
-                },
+            },
         };
 
         traces = [plot];
@@ -439,7 +439,7 @@
                 yanchor:'top',
                 y: -0.1,
                 x: 0.5, 
-                },
+            },
         };
 
         traces = [plot];

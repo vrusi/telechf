@@ -1,0 +1,152 @@
+{
+    "Profile": "Profile",
+    "Therapy": "Therapy",
+    "New measurement": "New measurement",
+    "Contacts": "Contacts",
+    "Charts": "Charts",
+    "Dashboard": "Dashboard",
+    "Patients": "Patients", 
+    "Thresholds": "Thresholds",
+    "Login": "Login",
+    "Logout": "Logout",
+    "Patient": "Patient",
+    "Coordinator": "Coordinator",
+    "Reset Password": "Reset Password",
+    "E-Mail Address": "Email",
+    "Password": "Password",
+    "Confirm Password": "Confirm Password",
+    "Send Password Reset Link": "Send Password Reset Link",
+    "Please confirm your password before continuing.": "Please confirm your password before continuing.",
+    "Forgot Your Password?": "Forgot Your Password?",
+    "Remember Me": "Remember Me",
+    "None of your measurements have exceeded any of your goal values": "None of your measurements have exceeded any of your goal values",
+    "These measurements have exceeded your goal values": "These measurements have exceeded your goal values",
+    "Alarms": "Alarms",
+    "Summary": "Summary",
+    "Date": "Dátum",
+    "Systolic Blood Pressure": "Systolic Blood Pressure",
+    "Diastolic Blood Pressure": "Diastolic Blood Pressure",
+    "Heart Rate": "Heart Rate",
+    "SpO2": "SpO2",
+    "Weight": "Weight",
+    "Weight Change": "Weight Change",
+    "bpm": "bpm",
+    "Swellings": "Swellings",
+    "Exercise Tolerance": "Exercise Tolerance",
+    "Nocturnal Dyspnoea": "Nocturnal Dyspnoea",
+    "Very good": "Very good",
+    "Good": "Good",
+    "Neutral": "Neutral",
+    "Bad": "Bad",
+    "Very bad": "Very bad",
+    "too high": "too high",
+    "too low": "too low",
+    "You have not taken any measurements yet": "You have not taken any measurements yet",
+    "These are your latest measurements": "These are your latest measurements",
+    "Personal information": "Personal information",
+    "First name": "First name",
+    "Last name": "Last name",
+    "Mobile": "Mobile",
+    "Sex": "Sex",
+    "Age": "Age",
+    "Height": "Height",
+    "Edit": "Edit",
+    "male": "male",
+    "female": "female",
+    "years": "years",
+    "Cancel": "Cancel",
+    "Save": "Save",
+    "Your therapy": "Your therapy",
+    "Monitored parameters": "Monitored parameters",
+    "Parameter": "Parameter",
+    "Goal values": "Goal values",
+    "Measurement frequency": "Measurement frequency",
+    "ECG": "ECG",
+    "once per": "once per",
+    "twice per": "twice per",
+    "times per": " times per",
+    "Recommendations": "Recommendations",
+    "You are being treated for": "You are being treated for",
+    "You are being treated for ": "You are being treated for",
+    "Congestive heart failure": "Congestive heart failure",
+    "Rheumatoid arthritis": "Rheumatoid arthritis",
+    "Obesity": "Obesity",
+    "Morbid obesity": "Morbid obesity",
+    "Overweight": "Overweight",
+    "Kidney stones": "Kidney stones",
+    "You are currently prescribed": "You are currently prescribed",
+    "hour": "hour",
+    "day": "day",
+    "week": "week",
+    "month": "month",
+    "Please pick which measurement you would like to take and record.": "Please pick which measurement you would like to take and record.",
+    "To take today": "To take today",
+    "You have taken all your daily measurements.": "You have taken all your daily measurements.",
+    "To take this week": "To take this week",
+    "You have taken all your weekly measurements.": "You have taken all your weekly measurements.",
+    "Extra measurements": "Extra measurements",
+    "If you are feeling unwell, you can take and record a measurement even if you have already reached your prescribed measurement frequency.": "If you are feeling unwell, you can take and record a measurement even if you have already reached your prescribed measurement frequency.",
+    "You have not yet taken all your mandatory measurements.": "You have not yet taken all your mandatory measurements.",
+    "Instructions": "Instructions",
+    "Measurement form": "Measurement form", 
+    "extra measurement": "extra measurement",
+    "Tap to read instructions": "Tap to read instructions",
+    "Enter your measurement": "Enter your measurement",
+    "Rate your swellings": "Rate your swellings",
+    "Rate your physical exertion tolerance": "Rate your physical exertion tolerance",
+    "Rate your sleeping breathlessness": "Rate your sleeping breathlessness",
+    "Why did you take the extra measurement?": "Why did you take the extra measurement?",
+    "Describe how you're feeling": "Describe how you're feeling",
+    "Back": "Back",
+    "Finish": "Finish",
+    "Your contacts": "Your contacts",
+    "Your": "Your",
+    "general practitioner": "general practitioner",
+    "cardiologist": "cardiologist",
+    "Name": "Name",
+    "Here you can see your measurement data in charts.": "Here you can see your measurement data in charts.",
+    "Filter": "Filter",
+    "Plot data from last": "Plot data from last",
+    "week ": "week",
+    "month ": "month",
+    "three months": "three months",
+    "six months": "six months",
+    "all time data": "all time data",
+    "Submit": "Submit"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+}

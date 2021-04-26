@@ -51,6 +51,13 @@ class ProfileController extends Controller
         $parameters = Auth::user()->parameters;
         $conditions = Auth::user()->conditions;
         $drugs = Auth::user()->drugs;
-        return view('patient.therapy.index', ['user' => $user, 'parameters' => $parameters, 'conditions' => $conditions, 'drugs' => $drugs]);
+        $locale = $request->getPreferredLanguage(['en', 'sk']);
+        return view('patient.therapy.index', [
+            'user' => $user,
+            'parameters' => $parameters,
+            'conditions' => $conditions,
+            'drugs' => $drugs,
+            'locale' => $locale,
+            ]);
     }
 }

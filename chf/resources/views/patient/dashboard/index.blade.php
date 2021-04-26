@@ -33,11 +33,11 @@
     <div x-data="tab()">
         <ul class="nav nav-tabs">
             <li class="nav-item">
-                <a id="alarms-link" @click="tabSwitch()" :class="{'active': tab == 'alarms'}" class="nav-link active" href="">Alarms</a>
+                <a id="alarms-link" @click="tabSwitch()" :class="{'active': tab == 'alarms'}" class="nav-link active" href="">{{ __('Alarms') }}</a>
             </li>
 
             <li class="nav-item">
-                <a id="summary-link" @click="tabSwitch()" :class="{'active': tab == 'summary'}" class="nav-link" href="">Summary</a>
+                <a id="summary-link" @click="tabSwitch()" :class="{'active': tab == 'summary'}" class="nav-link" href="">{{ __('Summary') }}</a>
             </li>
         </ul>
 
@@ -45,9 +45,9 @@
             <div x-show="tab=='alarms'">
                 <h3 class="pb-5">
                     @if(empty($alarms))
-                    None of your measurements have triggered any alarms
+                    {{ __('None of your measurements have exceeded any of your goal values') }}
                     @else
-                    These measurements you took have triggered alarms
+                    {{ __('These measurements have exceeded your goal values') }}
                     @endif
                 </h3>
 
@@ -55,23 +55,23 @@
                     <thead>
                         <tr>
                             <th class="pr-4">
-                                Date
+                                {{ __('Date') }}
                             </th>
                             @foreach($parameters as $parameter)
                             @if(!(strtolower($parameter['name']) == 'ecg'))
                             <th>
-                                {{ $parameter['name'] }} ({{ $parameter['unit'] }})
+                                {{ __($parameter['name']) }} ({{ __($parameter['unit']) }})
                             </th>
                             @endif
                             @endforeach
                             <th>
-                                Swellings
+                                {{ __('Swellings') }}
                             </th>
                             <th>
-                                Exercise Tolerance
+                                {{ __('Exercise Tolerance') }}
                             </th>
                             <th>
-                                Nocturnal Dyspnoea
+                                {{ __('Nocturnal Dyspnoea') }}
                             </th>
                         </tr>
                     </thead>
@@ -95,15 +95,15 @@
                                 <div class="row">
                                     <!-- MEASUREMENT VALUE -->
                                     <div class="col-12">
-                                        {{
-                                            !$measurement['value']
-                                            ? '--'
-                                            : (
-                                             is_numeric($measurement['value'])
-                                             ? round($measurement['value'], 2)
-                                             : $measurement['value']
-                                             ) 
-                                        }}
+                                        @if ($measurement['value'])
+                                            @if (is_numeric($measurement['value']))
+                                            {{ round($measurement['value'], 2) }}
+                                            @else 
+                                            {{ __($measurement['value']) }}
+                                            @endif
+                                        @else 
+                                        --
+                                        @endif
                                     </div>
 
                                     <!-- ALARM DESCRIPTION -->
@@ -111,8 +111,8 @@
                                     <div class="col-12 faint">
                                         {{
                                             ( $measurement['triggered_safety_alarm_max'] || $measurement['triggered_therapeutic_alarm_max'])
-                                            ? 'too high'
-                                            : 'too low'
+                                            ? __('too high')
+                                            : __('too low')
                                         }}
                                     </div>
                                     @endif
@@ -136,9 +136,9 @@
             <div x-show="tab=='summary'">
                 <h3 class="pb-5">
                     @if(empty($summary))
-                    You have not taken any measurements yet
+                    {{ __('You have not taken any measurements yet') }}
                     @else
-                    These are your latest measurements
+                    {{ __('These are your latest measurements') }}
                     @endif
                 </h3>
 
@@ -146,23 +146,23 @@
                     <thead>
                         <tr>
                             <th class="pr-4">
-                                Date
+                                {{ __('Date') }}
                             </th>
                             @foreach($parameters as $parameter)
                             @if(!(strtolower($parameter['name']) == 'ecg'))
                             <th>
-                                {{ $parameter['name'] }} ({{ $parameter['unit'] }})
+                                {{ __($parameter['name']) }} ({{ __($parameter['unit']) }})
                             </th>
                             @endif
                             @endforeach
                             <th>
-                                Swellings
+                                {{ __('Swellings') }}
                             </th>
                             <th>
-                                Exercise Tolerance
+                                {{ __('Exercise Tolerance') }}
                             </th>
                             <th>
-                                Nocturnal Dyspnoea
+                                {{ __('Nocturnal Dyspnoea') }}
                             </th>
                         </tr>
                     </thead>
@@ -185,15 +185,15 @@
                                 <div class="row">
                                     <!-- MEASUREMENT VALUE -->
                                     <div class="col-12">
-                                        {{
-                                            !$measurement['value']
-                                            ? '--'
-                                            : (
-                                             is_numeric($measurement['value'])
-                                             ? round($measurement['value'], 2)
-                                             : $measurement['value']
-                                             ) 
-                                        }}
+                                        @if ($measurement['value'])
+                                            @if (is_numeric($measurement['value']))
+                                            {{ round($measurement['value'], 2) }}
+                                            @else 
+                                            {{ __($measurement['value']) }}
+                                            @endif
+                                        @else 
+                                        --
+                                        @endif
                                     </div>
 
                                     <!-- ALARM DESCRIPTION -->
@@ -201,8 +201,8 @@
                                     <div class="col-12 faint">
                                         {{
                                             ( $measurement['triggered_safety_alarm_max'] || $measurement['triggered_therapeutic_alarm_max'])
-                                            ? 'too high'
-                                            : 'too low'
+                                            ? __('too high')
+                                            : __('too low')
                                         }}
                                     </div>
                                     @endif
@@ -234,19 +234,25 @@
 
         $('#summary-table').DataTable({
             fixedColumns: {
-                leftColumns: 1
-            }
-            , responsive: true
-            , "ordering": false
-        , });
+                leftColumns: 1,
+            },
+            responsive: true,
+            "ordering": false,
+            "language": {
+                "url": navigator.language === "sk" ? "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Slovak.json" : "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/English.json",
+            },
+        });
 
         $('#alarms-table').DataTable({
             fixedColumns: {
-                leftColumns: 1
-            }
-            , responsive: true
-            , "ordering": false
-        , });
+                leftColumns: 1,
+            },
+            responsive: true,
+            "ordering": false,
+            "language": {
+            "url": navigator.language === "sk" ? "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Slovak.json" : "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/English.json",
+            },
+        });
 
         $('#alarms-link').click(function() {
             return false;
