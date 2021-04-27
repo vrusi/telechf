@@ -145,7 +145,7 @@ class User extends Authenticatable
                 ];
             }, $parameters);
 
-            $conditions = Arr::map(['swellings' => 'Swellings', 'exercise_tolerance' => 'Exercise Tolerance', 'dyspnoea' => 'Nocturnal Dyspnoea'], function ($key, $name) use ($measurementsPerDay) {
+            $conditions = Arr::map(['swellings' => 'Swellings', 'exercise_tolerance' => 'Exercise Tolerance', 'dyspnoea' => 'Dyspnoea while lying down'], function ($key, $name) use ($measurementsPerDay) {
                 $avg = null;
                 $avgMapped = '';
                 // TODO
@@ -259,7 +259,7 @@ class User extends Authenticatable
                 ];
             }, $parameters);
 
-            $conditions = Arr::map(['swellings' => 'Swellings', 'exercise_tolerance' => 'Exercise Tolerance', 'dyspnoea' => 'Nocturnal Dyspnoea'], function ($key, $name) use ($measurementsPerDay) {
+            $conditions = Arr::map(['swellings' => 'Swellings', 'exercise_tolerance' => 'Exercise Tolerance', 'dyspnoea' => 'Dyspnoea while lying down'], function ($key, $name) use ($measurementsPerDay) {
                 $avg = null;
                 $avgMapped = '';
                 // TODO
@@ -387,7 +387,7 @@ class User extends Authenticatable
             }
         }
 
-        $conditions = Arr::map(['swellings' => 'Swellings', 'exercise_tolerance' => 'Exercise Tolerance', 'dyspnoea' => 'Nocturnal Dyspnoea'], function ($key, $name) use ($measurementsInDay) {
+        $conditions = Arr::map(['swellings' => 'Swellings', 'exercise_tolerance' => 'Exercise Tolerance', 'dyspnoea' => 'Dyspnoea while lying down'], function ($key, $name) use ($measurementsInDay) {
             $avg = null;
             $avgMapped = '';
             // TODO

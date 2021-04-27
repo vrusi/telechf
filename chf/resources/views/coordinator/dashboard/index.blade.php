@@ -125,7 +125,7 @@
                             {{ __('Exercise Tolerance') }}
                         </th>
                         <th>
-                            {{ __('Nocturnal Dyspnoea') }}
+                            {{ __('Dyspnoea while lying down') }}
                         </th>
                         <th>
                             {{ __('Checked') }}
@@ -255,7 +255,7 @@
                             {{ __('Exercise Tolerance') }}
                         </th>
                         <th>
-                            {{ __('Nocturnal Dyspnoea') }}
+                            {{ __('Dyspnoea while lying down') }}
                         </th>
                         <th>
                             {{ __('Checked') }}

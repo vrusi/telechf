@@ -71,7 +71,7 @@
                                 {{ __('Exercise Tolerance') }}
                             </th>
                             <th>
-                                {{ __('Nocturnal Dyspnoea') }}
+                                {{ __('Dyspnoea while lying down') }}
                             </th>
                         </tr>
                     </thead>
@@ -162,7 +162,7 @@
                                 {{ __('Exercise Tolerance') }}
                             </th>
                             <th>
-                                {{ __('Nocturnal Dyspnoea') }}
+                                {{ __('Dyspnoea while lying down') }}
                             </th>
                         </tr>
                     </thead>

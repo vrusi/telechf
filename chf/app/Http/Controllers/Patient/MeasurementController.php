@@ -47,7 +47,7 @@ class MeasurementController extends Controller
             return ['parameter' => $parameter['name'], 'value' => $value, 'unit' => $parameter['unit'], 'date' => $measurementDate];
         }, $parameters);
 
-        $conditions = Arr::map(['swellings' => 'Swellings', 'exercise_tolerance' => 'Exercise Tolerance', 'dyspnoea' => 'Nocturnal Dyspnoea'], function ($key, $name) use ($measurements) {
+        $conditions = Arr::map(['swellings' => 'Swellings', 'exercise_tolerance' => 'Exercise Tolerance', 'dyspnoea' => 'Dyspnoea while lying down'], function ($key, $name) use ($measurements) {
             $avg = null;
 
             if (count($measurements) > 0) {
