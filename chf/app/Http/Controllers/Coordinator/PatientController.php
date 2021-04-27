@@ -13,6 +13,7 @@ use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 
@@ -73,6 +74,7 @@ class PatientController extends Controller
             'mobile' => 'nullable',
             'coordinatorId' => 'required|exists:users,id',
             'password' => 'required',
+            'mac' => ['required', 'string', 'regex:/^([0-9A-Fa-f]{2}[:]){5}([0-9A-Fa-f]{2})$/'],
 
             'parameter1MinSafety' => 'nullable|numeric|min:1',
             'parameter1MaxSafety' => 'nullable|numeric|min:1',
@@ -171,8 +173,30 @@ class PatientController extends Controller
             }
         }
 
+        // create external user
+        $responsePatient = Http::post(
+            'http://147.175.106.7:5000/api/patient/createExternal',
+            [
+                'email' => $validated['email'],
+                'name' => $validated['name'],
+                'lastname' => $validated['surname'],
+                'username' => $validated['email'],
+                'password' => $validated['password'],
+                'type' => 'patient',
+            ]
+        );
+
+        $responseMac = Http::post(
+            'http://147.175.106.7:5000/api/patient/addSensor',
+            [
+                'MAC' => $validated['mac'],
+                'patientId' => intval($responsePatient->body()),
+            ]
+        );
+
         $dateOfBirth = strval($validated['birthYear']) . '-' . strval($validated['birthMonth']) . '-' . strval($validated['birthDay']);
         $patient = User::create([
+            'id_external' => $responsePatient->body(),
             'name' => $validated['name'],
             'surname' =>  $validated['surname'],
             'sex' => $validated['sex'],
@@ -185,6 +209,7 @@ class PatientController extends Controller
             'coordinator_id' => $validated['coordinatorId'],
             'password' => Hash::make($validated['password']),
             'is_coordinator' => false,
+            'mac' => $validated['mac'],
         ]);
 
         if ($request->parameter1check) {
@@ -324,6 +349,9 @@ class PatientController extends Controller
             }
         }
 
+        dump(intval($responsePatient->body()));
+        dd($responseMac->body());
+
         flash('Patient ' . $patient->name . ' ' . $patient->surname . ' was successfully added.')->success();
         return redirect()->action([ProfileController::class, 'index'], ['patient' => $patient->id]);
     }
@@ -381,7 +409,7 @@ class PatientController extends Controller
             'eventsAF' => $eventsAF,
             'created_at' => $createdAt,
         ]);
-        
+
         return $ecgId;
     }
 }

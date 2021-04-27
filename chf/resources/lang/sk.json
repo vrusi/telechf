@@ -214,5 +214,9 @@
     "Add patient contact": "Pridať pacientovi kontakt",
     "or pick an existing one": "alebo vyberte existujúci",
     "Add a new contact": "Pridajte nový kontakt",
-    "Create new contact": "Vytvoriť nový kontakt"
+    "Create new contact": "Vytvoriť nový kontakt",
+    "The MAC address of patient's ECG sensor": "MAC adresa pacientovho EKG senzora",
+    "Format:": "Formát:",
+    "or": "alebo",
+    "no conditions": "bez podmienok"
 }

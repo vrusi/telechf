@@ -214,5 +214,9 @@
     "Add patient contact": "Add patient contact",
     "or pick an existing one": "or pick an existing one",
     "Add a new contact": "Add a new contact",
-    "Create new contact": "Create new contact"
+    "Create new contact": "Create new contact",
+    "The MAC address of patient's ECG sensor": "The MAC address of patient's ECG sensor",
+    "Format:": "Format:",
+    "or": "or",
+    "no conditions": "no conditions"
 }
