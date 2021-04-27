@@ -109,7 +109,7 @@
         @if (count($chartsECG) > 0)
             @foreach ($chartsECG as $chart)
                 @if ($chart)
-                    <div class="d-flex justify-content-between p-5 mt-5 bg-white">
+                    <div class="d-flex justify-content-between  align-items-center  p-5 mt-5 bg-white">
                         <div>
                             <table>
                                 <tr>
@@ -132,7 +132,65 @@
                                     <td class="font-weight-bold pr-2">
                                         {{ __('Difference') }}:
                                     </td>
-                                    <td id="markerResult">
+                                    <td id="markerResult1">
+                                        --
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div>
+                            <table>
+                                <tr>
+                                    <td class="font-weight-bold pr-2">
+                                        {{ __('Marker') }} 3:
+                                    </td>
+                                    <td id="marker3">
+                                        --
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="font-weight-bold pr-2">
+                                        {{ __('Marker') }} 4:
+                                    </td>
+                                    <td id="marker4">
+                                        --
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="font-weight-bold pr-2">
+                                        {{ __('Difference') }}:
+                                    </td>
+                                    <td id="markerResult2">
+                                        --
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div>
+                            <table>
+                                <tr>
+                                    <td class="font-weight-bold pr-2">
+                                        {{ __('Marker') }} 5:
+                                    </td>
+                                    <td id="marker5">
+                                        --
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="font-weight-bold pr-2">
+                                        {{ __('Marker') }} 6:
+                                    </td>
+                                    <td id="marker6">
+                                        --
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="font-weight-bold pr-2">
+                                        {{ __('Difference') }}:
+                                    </td>
+                                    <td id="markerResult3">
                                         --
                                     </td>
                                 </tr>
@@ -495,10 +553,6 @@
             var myPlot = document.getElementById('chart-ecg-' + id)
             var markers = [];
             var markerInfo = [];
-            var marker1Div = document.getElementById('marker1')
-            var marker2Div = document.getElementById('marker2')
-            var markerResultDiv = document.getElementById('markerResult')
-
 
             // (register to plotly event click) -> adds Marker on click
             myPlot.on('plotly_click', function(data) {
@@ -521,7 +575,7 @@
                     },
                 })
 
-                if (markers.length > 2) {
+                if (markers.length > 6) {
                     markers.shift();
                     markerInfo.shift();
                 }
@@ -534,8 +588,18 @@
                 // print marker info 
                 $('#marker1')[0].innerText = markerInfo[0] ? (markerInfo[0] + ' ms') : '--';
                 $('#marker2')[0].innerText = markerInfo[1] ? (markerInfo[1] + ' ms') : '--';
-                $('#markerResult')[0].innerText = (markerInfo[1] != undefined && markerInfo[0] != undefined) ? ((
+                $('#markerResult1')[0].innerText = (markerInfo[1] != undefined && markerInfo[0] != undefined) ? ((
                     markerInfo[1] - markerInfo[0]) + ' ms') : '--';
+
+                $('#marker3')[0].innerText = markerInfo[2] ? (markerInfo[2] + ' ms') : '--';
+                $('#marker4')[0].innerText = markerInfo[3] ? (markerInfo[3] + ' ms') : '--';
+                $('#markerResult2')[0].innerText = (markerInfo[3] != undefined && markerInfo[2] != undefined) ? ((
+                    markerInfo[3] - markerInfo[2]) + ' ms') : '--';
+
+                $('#marker5')[0].innerText = markerInfo[4] ? (markerInfo[4] + ' ms') : '--';
+                $('#marker6')[0].innerText = markerInfo[5] ? (markerInfo[5] + ' ms') : '--';
+                $('#markerResult3')[0].innerText = (markerInfo[5] != undefined && markerInfo[4] != undefined) ? ((
+                    markerInfo[5] - markerInfo[4]) + ' ms') : '--';
             });
 
         }

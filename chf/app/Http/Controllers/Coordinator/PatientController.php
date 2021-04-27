@@ -412,6 +412,6 @@ class PatientController extends Controller
             'created_at' => $createdAt,
         ]);
 
-        return $ecgId;
+        return $ecgId->id;
     }
 }
