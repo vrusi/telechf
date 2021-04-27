@@ -17,10 +17,10 @@ class CreateUserEcgsTable extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->longText('values');
-            $table->longText('eventsP');
-            $table->longText('eventsB');
-            $table->longText('eventsT');
-            $table->longText('eventsAF');
+            $table->longText('eventsP')->nullable();
+            $table->longText('eventsB')->nullable();
+            $table->longText('eventsT')->nullable();
+            $table->longText('eventsAF')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
