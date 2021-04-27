@@ -54,6 +54,10 @@ Auth::routes();
 |--------------------------------------------------------------------------
 */
 
+Route::get('/coordinator', function () {
+    return redirect('/coordinator/dashboard');
+})->middleware(['auth','coordinator']);
+
 Route::get('coordinator/dashboard', 'App\Http\Controllers\Coordinator\DashboardController@index')->middleware(['auth', 'coordinator'])->name('coordinator.dashboard');
 
 Route::resource('coordinator/patients', 'App\Http\Controllers\Coordinator\PatientController')->middleware(['auth', 'coordinator']);
