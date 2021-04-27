@@ -20,7 +20,6 @@ class Parser
 
             $content = $zipFile->getEntryContents($entry->getName());
             $timestamp = null;
-            $date = null;
             $valuesStartIndex = null;
 
             $contentLen = strlen($content);
@@ -37,7 +36,6 @@ class Parser
                     }
 
                     $timestamp = implode("", $timestampArray);
-                    $date = Carbon::createFromTimestampMs($timestamp);
                 }
 
                 // find the beggining of values
@@ -53,14 +51,18 @@ class Parser
 
             // cut the values up into chunks so the memory si not overflowed
 
-            // 300000 bytes allow for ~64000 values worth ~1 minute of ecg
+            // 150000 bytes allow for ~38000 values worth ~1 minute of ecg
             $maxMemSize = 150000;
-
             $valuesEndIndex = $contentLen - 2;
 
             // for now work on the first chunk only
             $valuesContent = substr($content, $valuesStartIndex, $maxMemSize);
             $valuesArray = explode(',', $valuesContent);
+
+            // cut the first second off
+            $msToSkip = 1000;
+            $valuesArray = array_slice($valuesArray, $msToSkip);
+            $timestamp += $msToSkip;
 
             $pulseArray = [];
             $parsedValues = [];
@@ -109,7 +111,7 @@ class Parser
             }
 
             return [
-                'date' => $date,
+                'timestamp' => $timestamp,
                 'pulse' => $pulseArray,
                 'eventsP' => $eventsP,
                 'eventsB' => $eventsB,

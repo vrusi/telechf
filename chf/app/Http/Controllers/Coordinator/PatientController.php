@@ -9,6 +9,7 @@ use App\Models\ECG;
 use App\Models\Parameter;
 use App\Models\User;
 use App\Utils\Parser;
+use Carbon\Carbon;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -391,6 +392,7 @@ class PatientController extends Controller
         $filePath = $request->file->getPathName();
         $parser = new Parser();
         $ecgParsed = $parser->parse($filePath);
+        $ecgDate = Carbon::createFromTimestampMs($ecgParsed['timestamp']);
 
         $userId = $params['patient'];
         $values = implode(',', $ecgParsed['values']);
@@ -398,7 +400,7 @@ class PatientController extends Controller
         $eventsB = implode(',', $ecgParsed['eventsB']);
         $eventsT = implode(',', $ecgParsed['eventsT']);
         $eventsAF = implode(',', $ecgParsed['eventsAF']);
-        $createdAt = $ecgParsed['date'];
+        $createdAt = $ecgDate;
 
         $ecgId = ECG::create([
             'user_id' => $userId,

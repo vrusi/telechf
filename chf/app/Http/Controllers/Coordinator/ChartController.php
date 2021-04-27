@@ -20,6 +20,7 @@ class ChartController extends Controller
         ini_set('memory_limit', '-1');
 
         $filterOption = $request->has('filter') ? $request->input('filter') : "5";
+        $chosenEcgDate = $request->has('chosenEcgDate') ? Carbon::parse($request->chosenEcgDate) : null;
 
         $patient = User::where('id', $request->route('patient'))->first();
 
@@ -110,40 +111,53 @@ class ChartController extends Controller
             unset($dates);
         }
 
+        // get available ECG data dates
+        $ecgAvailableDatesRaw = ECG::where('user_id', $patient->id)->orderBy('created_at', 'DESC')->orderBy('updated_at', 'DESC')->pluck('created_at', 'updated_at');
+        $ecgAvailableDates = array();
+        foreach ($ecgAvailableDatesRaw as $ecgAvailableDate) {
+            array_push(
+                $ecgAvailableDates,
+                [
+                    'date' => $ecgAvailableDate,
+                    'dateFormatted' => $ecgAvailableDate->format('d M Y, H:i'),
+                ]
+            );
+        }
+
         // get ECG data
-        $ecgData = ECG::where('user_id', $patient->id)->orderBy('created_at', 'DESC')->get();
+        $ecgData = $chosenEcgDate
+            ? ECG::where('user_id', $patient->id)->whereDate('created_at', $chosenEcgDate)->first()
+            : ECG::where('user_id', $patient->id)->orderBy('created_at', 'DESC')->orderBy('updated_at', 'DESC')->first();
 
         $ecgParam = Parameter::where('name', 'ECG')->first();
         $chartsECG = array();
-        foreach ($ecgData as $dataPoint) {
-            $ecgValuesRaw = explode(',', $dataPoint['values']);
 
-            $ecgDates = array();
-            $ecgValues = array();
+        $ecgValuesRaw = explode(',', $ecgData['values']);
 
-            for ($i = 0; $i < count($ecgValuesRaw); $i++) {
-                array_push($ecgDates, $i);
-                array_push($ecgValues, round(intval($ecgValuesRaw[$i])/1000, 2));
-            }
-            
-            array_push($chartsECG, [
-                'id' => $dataPoint['id'],
-                'name' => $ecgParam->name,
-                'unit' => $ecgParam->unit,
-                'values' =>  $ecgValues,
-                'dates' => $ecgDates,
-                'date' => $dataPoint['created_at']->format('d M Y'),
-                'eventsP' => explode(',', $dataPoint['eventsP']),
-                'eventsB' => explode(',', $dataPoint['eventsB']),
-                'eventsT' => explode(',', $dataPoint['eventsT']),
-                'eventsAF' => explode(',', $dataPoint['eventsAF']),
-            ]);
+        $ecgDates = array();
+        $ecgValues = array();
 
-            break;
+        for ($i = 0; $i < count($ecgValuesRaw); $i++) {
+            array_push($ecgDates, $i);
+            array_push($ecgValues, round(intval($ecgValuesRaw[$i]) / 1000, 2));
         }
 
+        array_push($chartsECG, [
+            'id' => $ecgData['id'],
+            'name' => $ecgParam->name,
+            'unit' => $ecgParam->unit,
+            'values' =>  $ecgValues,
+            'dates' => $ecgDates,
+            'date' => $ecgData['created_at']->format('d M Y, H:i'),
+            'eventsP' => explode(',', $ecgData['eventsP']),
+            'eventsB' => explode(',', $ecgData['eventsB']),
+            'eventsT' => explode(',', $ecgData['eventsT']),
+            'eventsAF' => explode(',', $ecgData['eventsAF']),
+        ]);
+
+
         $chartsECGEncoded = json_encode($chartsECG, JSON_HEX_QUOT | JSON_HEX_APOS | JSON_NUMERIC_CHECK);
-        
+
         return view('coordinator.patients.charts.index', [
             'patient' => $patient,
             'charts' => $charts,
@@ -151,14 +165,40 @@ class ChartController extends Controller
             'filterOption' => $filterOption,
             'chartsECG' => $chartsECG,
             'chartsECG_encoded' => $chartsECGEncoded,
+            'ecgAvailableDates' => $ecgAvailableDates,
         ]);
     }
 
     function filter(Request $request)
     {
         $patient = User::where('id', $request->route('patient'))->first();
-
         $filterOption = $request->filterOption;
-        return redirect()->action([ChartController::class, 'index'], ['patient' => $patient->id, 'filter' => $filterOption]);
+        return redirect()->action(
+            [
+                ChartController::class,
+                'index'
+            ],
+            [
+                'patient' => $patient->id,
+                'filter' => $filterOption
+            ]
+        );
+    }
+
+    function selectDate(Request $request)
+    {
+        $patient = User::where('id', $request->route('patient'))->first();
+        $chosenEcgDate = $request->ecgDateChoice ? $request->ecgDateChoice : null;
+
+        return redirect()->action(
+            [
+                ChartController::class,
+                'index'
+            ],
+            [
+                'patient' => $patient->id,
+                'chosenEcgDate' => $chosenEcgDate,
+            ]
+        );
     }
 }

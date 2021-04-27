@@ -218,5 +218,7 @@
     "The MAC address of patient's ECG sensor": "MAC adresa pacientovho EKG senzora",
     "Format:": "Formát:",
     "or": "alebo",
-    "no conditions": "bez podmienok"
+    "no conditions": "bez podmienok",
+    "Select a measurement by date": "Vyberte meranie podľa dátumu",
+    "Select": "Vybrať"
 }

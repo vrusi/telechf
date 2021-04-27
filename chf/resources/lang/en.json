@@ -218,5 +218,7 @@
     "The MAC address of patient's ECG sensor": "The MAC address of patient's ECG sensor",
     "Format:": "Format:",
     "or": "or",
-    "no conditions": "no conditions"
+    "no conditions": "no conditions",
+    "Select a measurement by date": "Select a measurement by date",
+    "Select": "Select"
 }

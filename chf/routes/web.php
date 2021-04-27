@@ -68,6 +68,8 @@ Route::post('coordinator/patients/{patient}/measurements/check', 'App\Http\Contr
 
 Route::get('coordinator/patients/{patient}/charts', 'App\Http\Controllers\Coordinator\ChartController@index')->middleware(['auth', 'coordinator'])->name('coordinator.patients.charts');
 Route::post('coordinator/patients/{patient}/charts/filter', 'App\Http\Controllers\Coordinator\ChartController@filter')->middleware(['auth', 'coordinator']);
+Route::post('coordinator/patients/{patient}/charts', 'App\Http\Controllers\Coordinator\ChartController@selectDate')->middleware(['auth', 'coordinator'])->name('coordinator.patients.charts');
+
 
 Route::get('coordinator/patients/{patient}/profile', 'App\Http\Controllers\Coordinator\ProfileController@index')->middleware(['auth', 'coordinator'])->name('coordinator.patients.profile');
 Route::get('coordinator/patients/{patient}/therapy', 'App\Http\Controllers\Coordinator\ProfileController@therapy')->middleware(['auth', 'coordinator'])->name('coordinator.patients.therapy');
@@ -78,7 +80,6 @@ Route::post('coordinator/patients/contacts', 'App\Http\Controllers\Coordinator\C
 Route::get('coordinator/thresholds', 'App\Http\Controllers\Coordinator\ThresholdController@index')->middleware(['auth', 'coordinator'])->name('coordinator.thresholds');
 Route::get('coordinator/thresholds/create', 'App\Http\Controllers\Coordinator\ThresholdController@create')->middleware(['auth', 'coordinator'])->name('coordinator.thresholds.create');
 Route::post('coordinator/thresholds/store', 'App\Http\Controllers\Coordinator\ThresholdController@store')->middleware(['auth', 'coordinator']);
-
 
 Route::get('coordinator/patients/{patient}/therapy/thresholds/create', 'App\Http\Controllers\Coordinator\PatientThresholdController@create')->middleware(['auth', 'coordinator']);
 Route::post('coordinator/patients/{patient}/therapy/thresholds/store', 'App\Http\Controllers\Coordinator\PatientThresholdController@store')->middleware(['auth', 'coordinator']);
