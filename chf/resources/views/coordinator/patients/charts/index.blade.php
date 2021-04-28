@@ -549,7 +549,6 @@
                 }
             }
 
-
             if (!(eventsT.length == 1 && !eventsT[0])) {
                 for (event of eventsT) {
                     shapes.push({

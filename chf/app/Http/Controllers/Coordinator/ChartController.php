@@ -146,7 +146,6 @@ class ChartController extends Controller
             ? ECG::where('user_id', $patient->id)->whereDate('created_at', $chosenEcgDate)->first()
             : ECG::where('user_id', $patient->id)->orderBy('created_at', 'DESC')->orderBy('updated_at', 'DESC')->first();
 
-
         if (!$ecgData) {
             return view('coordinator.patients.charts.index', [
                 'patient' => $patient,
@@ -182,7 +181,6 @@ class ChartController extends Controller
             'eventsT' => explode(',', $ecgData['eventsT']),
             'eventsAF' => explode(',', $ecgData['eventsAF']),
         ];
-
 
         return view(
             'coordinator.patients.charts.index',
