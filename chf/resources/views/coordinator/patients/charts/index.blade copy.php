@@ -490,55 +490,6 @@
         // set up ecg charts
         chartECG = {!! $chartECG_encoded !!};
 
-        function generateXgrid(x) {
-            var lines = [];
-            var counter = 0;
-            let length = x.length;
-            for (let i = 0; i < length; i += 40) {
-                lines.push({
-                    type: 'line',
-                    xref: 'x',
-                    yref: 'paper',
-                    x0: x[i],
-                    y0: 0,
-                    x1: x[i],
-                    opacity: 0.7,
-                    y1: 1,
-                    layer: 'below',
-                    line: {
-                        color: '#ff000040',
-                        width: counter++ % 5 != 0 ? 0.5 : 2,
-                    }
-                });
-            }
-            return lines;
-        }
-
-        function generateYgrid(y) {
-            var lines = [];
-            var counter = 0;
-            let min = Math.min(...y);
-            let max = Math.max(...y);
-            for (let i = min; i < max; i += 0.1) {
-                lines.push({
-                    type: 'line',
-                    xref: 'paper',
-                    yref: 'y',
-                    x0: 0,
-                    y0: i,
-                    x1: 1,
-                    opacity: 0.7,
-                    y1: i,
-                    layer: 'below',
-                    line: {
-                        color: '#ff000040',
-                        width: counter++ % 5 != 0 ? 0.5 : 2,
-                    }
-                });
-            }
-            return lines;
-        }
-
         if (chartECG) {
             id = chartECG['id'];
             name = chartECG['name'];
@@ -558,19 +509,6 @@
                 mode: 'lines',
                 name: navigator.language === 'sk' ? names_sk[name] : name,
             };
-
-            var grid = [...generateXgrid(dates), ...generateYgrid(values)]
-
-            var layout = {
-                xaxis: {
-                    showgrid: false,
-                },
-                yaxis: {
-                    showgrid: false,
-                },
-
-                shapes: grid,
-            }
 
             var shapes = [];
             if (!(eventsP.length == 1 && !eventsT[0])) {
@@ -653,23 +591,30 @@
                 title: {
                     text: navigator.language === 'sk' ? names_sk[name] + ' zo dňa ' + date : name + ' from ' + date,
                 },
-                height: 800,
+                height: 1000,
                 xaxis: {
                     title: {
                         text: navigator.language === 'sk' ? 'Čas v ms' : 'Time in ms',
                     },
-                    showgrid: false,
-                    range: [15000, 20000],
+                    autotick: false,
+                    tick0: dates[0],
+                    dtick: 40,
+                    showgrid: true,
+                    gridcolor: '#ff000020',
+                    range: [15000,20000],
                 },
                 yaxis: {
                     title: {
                         text: navigator.language === 'sk' ? 'Hodnota (' + units_sk[unit] + ')' : 'Value (' + unit +
                             ')',
                     },
-                    showgrid: false,
-
+                    autotick: false,
+                    tick0: -10,
+                    dtick: 1,
+                    showgrid: true,
+                    gridcolor: '#ff000020',
                 },
-                shapes: shapes.length > 0 ? [...shapes, ...grid] : grid,
+                shapes: length.shapes > 0 ? shapes : [],
                 showlegend: true,
                 legend: {
                     orientation: 'h',
