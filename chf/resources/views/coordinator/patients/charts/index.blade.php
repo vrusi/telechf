@@ -12,6 +12,14 @@
             box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
         }
 
+        .hidden {
+            display: none;
+        }
+
+        .visible {
+            display: block;
+        }
+
     </style>
 
     <div class="container">
@@ -46,9 +54,9 @@
             </li>
         </ul>
 
-        <div id="filter" class="py-3">
+        <div id="filter" class="py-2">
             <div class="container px-0">
-                <h3>
+                <h3 id="filter-title">
                     {{ __('Filter') }}
                 </h3>
 
@@ -271,13 +279,18 @@
     <script>
         // make filter sticky
         var filter = $('#filter')[0];
+        var filterTitle = $('#filter-title')[0];
         var sticky = filter.offsetTop;
 
         window.onscroll = () => {
             if (window.pageYOffset > sticky) {
                 filter.classList.add("sticky");
+                filterTitle.classList.add("hidden");
+                filterTitle.classList.remove("visible");
             } else {
                 filter.classList.remove("sticky");
+                filterTitle.classList.add("visible");
+                filterTitle.classList.remove("hidden");
             }
         };
 
