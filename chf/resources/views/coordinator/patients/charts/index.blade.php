@@ -613,7 +613,7 @@
                     showgrid: true,
                     gridcolor: '#ff000020',
                 },
-                shapes: length.shapes > 0 ? shapes : null,
+                shapes: length.shapes > 0 ? shapes : [],
                 showlegend: true,
                 legend: {
                     orientation: 'h',
