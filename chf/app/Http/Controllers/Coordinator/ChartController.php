@@ -108,6 +108,26 @@ class ChartController extends Controller
             unset($dates);
         }
 
+        // get conditions data
+        $conditions = $patient->conditionsAveragesByDay();
+        $conditionsDates = array();
+        $swellingsValues = array();
+        $exerciseValues = array();
+        $dyspnoeaValues = array();
+        foreach($conditions as $date => $conditionsInDay) {
+            array_push($conditionsDates, Carbon::parse($date));
+            array_push($swellingsValues, round($conditionsInDay['swellings'], 2));
+            array_push($exerciseValues, round($conditionsInDay['exercise'], 2));
+            array_push($dyspnoeaValues, round($conditionsInDay['dyspnoea'], 2));
+        }
+
+        $conditionsParsed = [
+            'dates' => $conditionsDates,
+            'swellings' => $swellingsValues,
+            'exercise' => $exerciseValues,
+            'dyspnoea' => $dyspnoeaValues,
+        ];
+
         // get available ECG data dates
         $ecgAvailableDatesRaw = ECG::where('user_id', $patient->id)->orderBy('created_at', 'DESC')->orderBy('updated_at', 'DESC')->pluck('created_at');
         $ecgAvailableDates = array();
@@ -171,11 +191,12 @@ class ChartController extends Controller
                 'charts' => $charts,
                 'charts_encoded' => json_encode($charts, JSON_HEX_QUOT | JSON_HEX_APOS | JSON_NUMERIC_CHECK),
                 'filterOption' => $filterOption,
+                'conditions' => $conditionsParsed,
+                'conditions_encoded' => json_encode($conditionsParsed, JSON_HEX_QUOT | JSON_HEX_APOS | JSON_NUMERIC_CHECK),
                 'chartECG' => $chartECG,
                 'chartECG_encoded' => json_encode($chartECG, JSON_HEX_QUOT | JSON_HEX_APOS | JSON_NUMERIC_CHECK),
                 'ecgAvailableDates' => $ecgAvailableDates,
             ]
-
         );
     }
 

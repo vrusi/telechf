@@ -106,6 +106,11 @@
             </div>
         @endforeach
 
+        @if ($conditions)
+            <div id="chart-conditions" class="mt-5">
+            </div>
+        @endif
+
         @if ($chartECG)
             <div class="d-flex justify-content-between  align-items-center  p-5 mt-5 bg-white">
                 <div>
@@ -289,7 +294,7 @@
             };
         }
 
-        // set up charts
+        // set up the charts
         charts = {!! $charts_encoded !!};
 
         names_sk = {
@@ -416,6 +421,58 @@
 
             Plotly.newPlot('chart-' + name, traces, layout);
         }
+
+        // fill the conditions plot
+        var conditions = {!! $conditions_encoded !!};
+        var plotSwellings = {
+            x: conditions['dates'],
+            y: conditions['swellings'],
+            mode: 'lines',
+            name: navigator.language === 'sk' ? 'Opuchy' : 'Swellings',
+        };
+
+        var plotExercise = {
+            x: conditions['dates'],
+            y: conditions['exercise'],
+            mode: 'lines',
+            name: navigator.language === 'sk' ? 'Tolerancia fyzickej námahy' : 'Physical exertion tolerance',
+        };
+
+        var plotDyspnoea = {
+            x: conditions['dates'],
+            y: conditions['dyspnoea'],
+            mode: 'lines',
+            name: navigator.language === 'sk' ? 'Dýchavičnosť v ľahu' : 'Dyspnoea while lying down',
+        };
+
+        var layout = {
+            title: {
+                text: navigator.language === 'sk' ? 'Stav' : 'Status',
+            },
+            xaxis: {
+                title: {
+                    text: navigator.language === 'sk' ? 'Dátum' : 'Date',
+                },
+            },
+            yaxis: {
+                title: {
+                    text: navigator.language === 'sk' ? 'Hodnotenie (1: Veľmi dobré - 5: Veľmi zlé)' :
+                        'Rating (1: Very good - 5: Very bad)',
+                },
+            },
+            showlegend: true,
+            legend: {
+                "orientation": "h",
+                xanchor: "center",
+                yanchor: "top",
+                y: -0.3,
+                x: 0.5,
+            },
+        };
+
+        traces = [plotSwellings, plotExercise, plotDyspnoea];
+
+        Plotly.newPlot('chart-conditions', traces, layout);
 
         // set up ecg charts
         chartECG = {!! $chartECG_encoded !!};
@@ -612,9 +669,6 @@
                         markerInfo[5] - markerInfo[4]) + ' ms') : '--';
             });
         }
-
-        const urlParams = new URLSearchParams(window.location.search);
-        const param = urlParams.get('chosenEcgDate');
 
     </script>
 

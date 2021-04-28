@@ -89,6 +89,46 @@ class User extends Authenticatable
         })->toArray();
     }
 
+    public function conditionsAveragesByDay()
+    {
+        $measurementsByDay = $this->measurementsByDay();
+
+        $avgConditions = array();
+        foreach ($measurementsByDay as $date => $day) {
+            $swellings = 0;
+            $swellingsCount = 0;
+
+            $exercise = 0;
+            $exerciseCount = 0;
+
+            $dyspnoea = 0;
+            $dyspnoeaCount = 0;
+
+            foreach ($day as $measurement) {
+                $swellings += $measurement['swellings'];
+                $swellingsCount++;
+
+                $exercise += $measurement['exercise_tolerance'];
+                $exerciseCount++;
+
+                $dyspnoea += $measurement['dyspnoea'];
+                $dyspnoeaCount++;
+            }
+
+            $swellingsAvg = $swellingsCount > 0 ? $swellings / $swellingsCount : null;
+            $exerciseAvg = $exerciseCount > 0 ? $exercise / $exerciseCount : null;
+            $dyspnoeaAvg = $dyspnoeaCount > 0 ? $dyspnoea / $dyspnoeaCount : null;
+
+            $avgConditions[$date] = [
+                'swellings' => $swellingsAvg,
+                'exercise' => $exerciseAvg,
+                'dyspnoea' => $dyspnoeaAvg,
+            ];
+        }
+
+        return $avgConditions;
+    }
+
     public function extraMeasurementsByDay()
     {
         return Measurement::where('user_id', $this->id)->where('extra', true)->orderBy('created_at', 'desc')->get()->groupBy(function ($measurement) {
