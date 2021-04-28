@@ -143,7 +143,7 @@ class ChartController extends Controller
 
         // get ECG data
         $ecgData = $chosenEcgDate
-            ? ECG::where('user_id', $patient->id)->whereDate('created_at', $chosenEcgDate)->first()
+            ? ECG::where('user_id', $patient->id)->where('created_at', $chosenEcgDate)->first()
             : ECG::where('user_id', $patient->id)->orderBy('created_at', 'DESC')->orderBy('updated_at', 'DESC')->first();
 
         if (!$ecgData) {
