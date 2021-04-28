@@ -106,161 +106,160 @@
             </div>
         @endforeach
 
-        @if (count($chartsECG) > 0)
-            @foreach ($chartsECG as $chart)
-                @if ($chart)
-                    <div class="d-flex justify-content-between  align-items-center  p-5 mt-5 bg-white">
-                        <div>
-                            <table>
-                                <tr>
-                                    <td class="font-weight-bold pr-2">
-                                        {{ __('Marker') }} 1:
-                                    </td>
-                                    <td id="marker1">
-                                        --
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="font-weight-bold pr-2">
-                                        {{ __('Marker') }} 2:
-                                    </td>
-                                    <td id="marker2">
-                                        --
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="font-weight-bold pr-2">
-                                        {{ __('Difference') }}:
-                                    </td>
-                                    <td id="markerResult1">
-                                        --
-                                    </td>
-                                </tr>
-                            </table>
+        @if ($chartECG)
+            <div class="d-flex justify-content-between  align-items-center  p-5 mt-5 bg-white">
+                <div>
+                    <table>
+                        <tr>
+                            <td class="font-weight-bold pr-2">
+                                {{ __('Marker') }} 1:
+                            </td>
+                            <td id="marker1">
+                                --
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font-weight-bold pr-2">
+                                {{ __('Marker') }} 2:
+                            </td>
+                            <td id="marker2">
+                                --
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font-weight-bold pr-2">
+                                {{ __('Difference') }}:
+                            </td>
+                            <td id="markerResult1">
+                                --
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div>
+                    <table>
+                        <tr>
+                            <td class="font-weight-bold pr-2">
+                                {{ __('Marker') }} 3:
+                            </td>
+                            <td id="marker3">
+                                --
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font-weight-bold pr-2">
+                                {{ __('Marker') }} 4:
+                            </td>
+                            <td id="marker4">
+                                --
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font-weight-bold pr-2">
+                                {{ __('Difference') }}:
+                            </td>
+                            <td id="markerResult2">
+                                --
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div>
+                    <table>
+                        <tr>
+                            <td class="font-weight-bold pr-2">
+                                {{ __('Marker') }} 5:
+                            </td>
+                            <td id="marker5">
+                                --
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font-weight-bold pr-2">
+                                {{ __('Marker') }} 6:
+                            </td>
+                            <td id="marker6">
+                                --
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="font-weight-bold pr-2">
+                                {{ __('Difference') }}:
+                            </td>
+                            <td id="markerResult3">
+                                --
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div>
+                    <form method="POST" action="{{ '/coordinator/patients/' . $patient['id'] . '/charts#chart-ecg' }}">
+                        @csrf
+                        <div class="form-group">
+                            <label for="ecgDateChoice">{{ __('Select a measurement by date') }}</label>
+                            <select class="form-control" id="ecgDateChoice" name="ecgDateChoice">
+                                @foreach ($ecgAvailableDates as $ecgAvailableDate)
+                                    <option value="{{ $ecgAvailableDate['date'] }}">
+                                        {{ $ecgAvailableDate['dateFormatted'] }}</option>
+                                @endforeach
+                            </select>
                         </div>
-
-                        <div>
-                            <table>
-                                <tr>
-                                    <td class="font-weight-bold pr-2">
-                                        {{ __('Marker') }} 3:
-                                    </td>
-                                    <td id="marker3">
-                                        --
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="font-weight-bold pr-2">
-                                        {{ __('Marker') }} 4:
-                                    </td>
-                                    <td id="marker4">
-                                        --
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="font-weight-bold pr-2">
-                                        {{ __('Difference') }}:
-                                    </td>
-                                    <td id="markerResult2">
-                                        --
-                                    </td>
-                                </tr>
-                            </table>
+                        <input type="hidden" value="{{ $patient['id'] }}">
+                        <button type="submit" class="btn btn-outline-primary w-100">
+                            {{ __('Select') }}
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="ecg-chart" id="chart-ecg">
+                <div class="d-flex align-items-center justify-content-between pr-5 pb-5 pl-5 mb-5 bg-white">
+                    @if (count($chartECG['eventsP']) > 0)
+                        <div class="d-flex align-items-center">
+                            <div class="mr-2" style="width: 30px; height: 30px; background-color: #b4aee880;">
+                            </div>
+                            <div>
+                                {{ __('Pause detected') }}
+                            </div>
                         </div>
+                    @endif
 
-                        <div>
-                            <table>
-                                <tr>
-                                    <td class="font-weight-bold pr-2">
-                                        {{ __('Marker') }} 5:
-                                    </td>
-                                    <td id="marker5">
-                                        --
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="font-weight-bold pr-2">
-                                        {{ __('Marker') }} 6:
-                                    </td>
-                                    <td id="marker6">
-                                        --
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="font-weight-bold pr-2">
-                                        {{ __('Difference') }}:
-                                    </td>
-                                    <td id="markerResult3">
-                                        --
-                                    </td>
-                                </tr>
-                            </table>
+                    @if (count($chartECG['eventsB']) > 0)
+                        <div class="d-flex align-items-center">
+                            <div class="mr-2" style="width: 30px; height: 30px; background-color: #f0c92980;">
+                            </div>
+                            <div>
+                                {{ __('Bradycardia detected') }}
+                            </div>
                         </div>
+                    @endif
 
-                        <div>
-                            <form method="POST" action="{{ '/coordinator/patients/' . $patient['id'] . '/charts' }}">
-                                @csrf
-                                <div class="form-group">
-                                    <label for="ecgDateChoice">{{ __('Select a measurement by date') }}</label>
-                                    <select class="form-control" id="ecgDateChoice" name="ecgDateChoice">
-                                        @foreach ($ecgAvailableDates as $ecgAvailableDate)
-                                            <option value="{{ $ecgAvailableDate['date'] }}">
-                                                {{ $ecgAvailableDate['dateFormatted'] }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <input type="hidden" value="{{ $patient['id'] }}">
-                                <button type="submit" class="btn btn-outline-primary w-100">
-                                    {{ __('Select') }}
-                                </button>
-                            </form>
+                    @if (count($chartECG['eventsT']) > 0)
+                        <div class="d-flex align-items-center">
+                            <div class="mr-2" style="width: 30px; height: 30px; background-color: #f3918980;">
+                            </div>
+                            <div>
+                                {{ __('Tachycardia detected') }}
+                            </div>
                         </div>
-                    </div>
-                    <div class="ecg-chart" id="{{ 'chart-ecg-' . $chart['id'] }}">
-                        <div class="d-flex align-items-center justify-content-between pr-5 pb-5 pl-5 mb-5 bg-white">
-                            @if (count($chart['eventsP']) > 0)
-                                <div class="d-flex align-items-center">
-                                    <div class="mr-2" style="width: 30px; height: 30px; background-color: #b4aee880;">
-                                    </div>
-                                    <div>
-                                        {{ __('Pause detected') }}
-                                    </div>
-                                </div>
-                            @endif
+                    @endif
 
-                            @if (count($chart['eventsB']) > 0)
-                                <div class="d-flex align-items-center">
-                                    <div class="mr-2" style="width: 30px; height: 30px; background-color: #f0c92980;">
-                                    </div>
-                                    <div>
-                                        {{ __('Bradycardia detected') }}
-                                    </div>
-                                </div>
-                            @endif
-
-                            @if (count($chart['eventsT']) > 0)
-                                <div class="d-flex align-items-center">
-                                    <div class="mr-2" style="width: 30px; height: 30px; background-color: #f3918980;">
-                                    </div>
-                                    <div>
-                                        {{ __('Tachycardia detected') }}
-                                    </div>
-                                </div>
-                            @endif
-
-                            @if (count($chart['eventsAF']) > 0)
-                                <div class="d-flex align-items-center">
-                                    <div class="mr-2" style="width: 30px; height: 30px; background-color: #04658280;">
-                                    </div>
-                                    <div>
-                                        {{ __('Atrial fibrillation detected') }}
-                                    </div>
-                                </div>
-                            @endif
+                    @if (count($chartECG['eventsAF']) > 0)
+                        <div class="d-flex align-items-center">
+                            <div class="mr-2" style="width: 30px; height: 30px; background-color: #04658280;">
+                            </div>
+                            <div>
+                                {{ __('Atrial fibrillation detected') }}
+                            </div>
                         </div>
-                    </div>
-                @endif
-            @endforeach
+                    @endif
+                </div>
+            </div>
+
+        @else
+            <div class="mb-5"></div>
         @endif
     </div>
 
@@ -419,94 +418,104 @@
         }
 
         // set up ecg charts
-        chartsECG = {!! $chartsECG_encoded !!};
+        chartECG = {!! $chartECG_encoded !!};
 
-        for (chart of chartsECG) {
-            id = chart['id'];
-            name = chart['name'];
-            unit = chart['unit'];
-            values = chart['values'];
-            dates = chart['dates'];
-            date = chart['date'];
-            eventsP = chart['eventsP'];
-            eventsB = chart['eventsB'];
-            eventsT = chart['eventsT'];
-            eventsAF = chart['eventsAF'];
+        if (chartECG) {
+            id = chartECG['id'];
+            name = chartECG['name'];
+            unit = chartECG['unit'];
+            values = chartECG['values'];
+            dates = chartECG['dates'];
+            date = chartECG['date'];
+            eventsP = chartECG['eventsP'];
+            eventsB = chartECG['eventsB'];
+            eventsT = chartECG['eventsT'];
+            eventsAF = chartECG['eventsAF'];
 
             var plot = {
                 x: dates,
                 y: values,
                 type: 'scatter',
+                mode: 'lines',
                 name: navigator.language === 'sk' ? names_sk[name] : name,
             };
 
             var shapes = [];
-            for (event of eventsP) {
-                shapes.push({
-                    type: 'rect',
-                    xref: 'x',
-                    yref: 'paper',
-                    x0: event,
-                    x1: event + 1,
-                    y0: 0,
-                    y1: 1,
-                    fillcolor: '#b4aee880',
-                    line: {
-                        width: 0,
-                    },
-                    layer: 'below',
-                });
+            if (!(eventsP.length == 1 && !eventsT[0])) {
+                for (event of eventsP) {
+                    shapes.push({
+                        type: 'rect',
+                        xref: 'x',
+                        yref: 'paper',
+                        x0: event,
+                        x1: event + 1,
+                        y0: 0,
+                        y1: 1,
+                        fillcolor: '#b4aee880',
+                        line: {
+                            width: 0,
+                        },
+                        layer: 'below',
+                    });
+                }
             }
 
-            for (event of eventsB) {
-                shapes.push({
-                    type: 'rect',
-                    xref: 'x',
-                    yref: 'paper',
-                    x0: event,
-                    x1: event + 1,
-                    y0: 0,
-                    y1: 1,
-                    fillcolor: '#f0c92980',
-                    line: {
-                        width: 0,
-                    },
-                    layer: 'below',
-                });
+            if (!(eventsB.length == 1 && !eventsT[0])) {
+                for (event of eventsB) {
+                    shapes.push({
+                        type: 'rect',
+                        xref: 'x',
+                        yref: 'paper',
+                        x0: event,
+                        x1: event + 1,
+                        y0: 0,
+                        y1: 1,
+                        fillcolor: '#f0c92980',
+                        line: {
+                            width: 0,
+                        },
+                        layer: 'below',
+                    });
+                }
             }
 
-            for (event of eventsT) {
-                shapes.push({
-                    type: 'rect',
-                    xref: 'x',
-                    yref: 'paper',
-                    x0: event,
-                    x1: event + 1,
-                    y0: 0,
-                    y1: 1,
-                    fillcolor: '#f3918980',
-                    line: {
-                        width: 0,
-                    },
-                    layer: 'below',
-                });
+
+            if (!(eventsT.length == 1 && !eventsT[0])) {
+                for (event of eventsT) {
+                    shapes.push({
+                        type: 'rect',
+                        xref: 'x',
+                        yref: 'paper',
+                        x0: event,
+                        x1: event + 1,
+                        y0: 0,
+                        y1: 1,
+                        fillcolor: '#f3918980',
+                        line: {
+                            width: 0,
+                        },
+                        layer: 'below',
+                    });
+                }
             }
 
-            for (event of eventsAF) {
-                shapes.push({
-                    type: 'rect',
-                    xref: 'x',
-                    yref: 'paper',
-                    x0: event,
-                    x1: event + 1,
-                    y0: 0,
-                    y1: 1,
-                    fillcolor: '#04658280',
-                    line: {
-                        width: 0,
-                    },
-                    layer: 'below',
-                });
+            if (!(eventsAF.length == 1 && !eventsT[0])) {
+                for (event of eventsAF) {
+                    shapes.push({
+                        type: 'rect',
+                        xref: 'x',
+                        yref: 'paper',
+                        x0: event,
+                        x1: event + 1,
+                        y0: 0,
+                        y1: 1,
+                        fillcolor: '#04658280',
+                        line: {
+                            width: 0,
+                        },
+                        layer: 'below',
+                    });
+                }
             }
 
             var layout = {
@@ -526,7 +535,8 @@
                 },
                 yaxis: {
                     title: {
-                        text: navigator.language === 'sk' ? 'Hodnota (' + units_sk[unit] + ')' : 'Value (' + unit + ')',
+                        text: navigator.language === 'sk' ? 'Hodnota (' + units_sk[unit] + ')' : 'Value (' + unit +
+                            ')',
                     },
                     autotick: false,
                     tick0: -10,
@@ -534,7 +544,7 @@
                     showgrid: true,
                     gridcolor: '#ff000020',
                 },
-                shapes: shapes,
+                shapes: length.shapes > 0 ? shapes : null,
                 showlegend: true,
                 legend: {
                     orientation: 'h',
@@ -545,18 +555,15 @@
                 },
             };
 
-            traces = [plot];
-
-            Plotly.newPlot('chart-ecg-' + id, traces, layout);
+            Plotly.newPlot('chart-ecg', [plot], layout);
 
             // Markers 
-            var myPlot = document.getElementById('chart-ecg-' + id)
+            var myPlot = document.getElementById('chart-ecg')
             var markers = [];
             var markerInfo = [];
 
             // (register to plotly event click) -> adds Marker on click
             myPlot.on('plotly_click', function(data) {
-
                 var pointX = data.points[0].x
                 markerInfo.push(pointX);
                 markers.push({
@@ -588,21 +595,26 @@
                 // print marker info 
                 $('#marker1')[0].innerText = markerInfo[0] ? (markerInfo[0] + ' ms') : '--';
                 $('#marker2')[0].innerText = markerInfo[1] ? (markerInfo[1] + ' ms') : '--';
-                $('#markerResult1')[0].innerText = (markerInfo[1] != undefined && markerInfo[0] != undefined) ? ((
-                    markerInfo[1] - markerInfo[0]) + ' ms') : '--';
+                $('#markerResult1')[0].innerText = (markerInfo[1] != undefined && markerInfo[0] != undefined) ?
+                    ((
+                        markerInfo[1] - markerInfo[0]) + ' ms') : '--';
 
                 $('#marker3')[0].innerText = markerInfo[2] ? (markerInfo[2] + ' ms') : '--';
                 $('#marker4')[0].innerText = markerInfo[3] ? (markerInfo[3] + ' ms') : '--';
-                $('#markerResult2')[0].innerText = (markerInfo[3] != undefined && markerInfo[2] != undefined) ? ((
-                    markerInfo[3] - markerInfo[2]) + ' ms') : '--';
+                $('#markerResult2')[0].innerText = (markerInfo[3] != undefined && markerInfo[2] != undefined) ?
+                    ((
+                        markerInfo[3] - markerInfo[2]) + ' ms') : '--';
 
                 $('#marker5')[0].innerText = markerInfo[4] ? (markerInfo[4] + ' ms') : '--';
                 $('#marker6')[0].innerText = markerInfo[5] ? (markerInfo[5] + ' ms') : '--';
-                $('#markerResult3')[0].innerText = (markerInfo[5] != undefined && markerInfo[4] != undefined) ? ((
-                    markerInfo[5] - markerInfo[4]) + ' ms') : '--';
+                $('#markerResult3')[0].innerText = (markerInfo[5] != undefined && markerInfo[4] != undefined) ?
+                    ((
+                        markerInfo[5] - markerInfo[4]) + ' ms') : '--';
             });
-
         }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const param = urlParams.get('chosenEcgDate');
 
     </script>
 

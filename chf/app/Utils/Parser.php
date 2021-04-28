@@ -13,6 +13,7 @@ class Parser
         $file = $zipFile->openFile($path);
 
         $entries = $file->getEntries();
+        $parsedEntries = array();
         foreach ($entries as $entry) {
             if ($entry->isDirectory()) {
                 continue;
@@ -110,7 +111,7 @@ class Parser
                 }
             }
 
-            return [
+            array_push($parsedEntries, [
                 'timestamp' => $timestamp,
                 'pulse' => $pulseArray,
                 'eventsP' => $eventsP,
@@ -118,10 +119,11 @@ class Parser
                 'eventsT' => $eventsT,
                 'eventsAF' => $eventsAF,
                 'values' => $parsedValues,
-            ];
+            ]);
         }
-
-
+        
         $zipFile->close();
+
+        return $parsedEntries;
     }
 }

@@ -391,27 +391,33 @@ class PatientController extends Controller
 
         $filePath = $request->file->getPathName();
         $parser = new Parser();
-        $ecgParsed = $parser->parse($filePath);
-        $ecgDate = Carbon::createFromTimestampMs($ecgParsed['timestamp']);
+        $ecgParsedArray = $parser->parse($filePath);
 
-        $userId = $params['patient'];
-        $values = implode(',', $ecgParsed['values']);
-        $eventsE = implode(',', $ecgParsed['eventsP']);
-        $eventsB = implode(',', $ecgParsed['eventsB']);
-        $eventsT = implode(',', $ecgParsed['eventsT']);
-        $eventsAF = implode(',', $ecgParsed['eventsAF']);
-        $createdAt = $ecgDate;
+        $ecgIds = array();
+        foreach ($ecgParsedArray as $ecgParsed) {
+            $ecgDate = Carbon::createFromTimestampMs($ecgParsed['timestamp']);
 
-        $ecgId = ECG::create([
-            'user_id' => $userId,
-            'values' => $values,
-            'eventsE' => $eventsE,
-            'eventsB' => $eventsB,
-            'eventsT' => $eventsT,
-            'eventsAF' => $eventsAF,
-            'created_at' => $createdAt,
-        ]);
+            $userId = $params['patient'];
+            $values = implode(',', $ecgParsed['values']);
+            $eventsE = implode(',', $ecgParsed['eventsP']);
+            $eventsB = implode(',', $ecgParsed['eventsB']);
+            $eventsT = implode(',', $ecgParsed['eventsT']);
+            $eventsAF = implode(',', $ecgParsed['eventsAF']);
+            $createdAt = $ecgDate;
 
-        return $ecgId->id;
+            $ecg = ECG::create([
+                'user_id' => $userId,
+                'values' => $values,
+                'eventsE' => $eventsE,
+                'eventsB' => $eventsB,
+                'eventsT' => $eventsT,
+                'eventsAF' => $eventsAF,
+                'created_at' => $createdAt,
+            ]);
+
+            array_push($ecgIds, $ecg->id);
+        }
+
+        return $ecgIds;
     }
 }

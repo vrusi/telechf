@@ -7,11 +7,8 @@ use App\Models\ECG;
 use App\Models\Measurement;
 use App\Models\Parameter;
 use App\Models\User;
-use App\Utils\Parser;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class ChartController extends Controller
 {
@@ -112,14 +109,14 @@ class ChartController extends Controller
         }
 
         // get available ECG data dates
-        $ecgAvailableDatesRaw = ECG::where('user_id', $patient->id)->orderBy('created_at', 'DESC')->orderBy('updated_at', 'DESC')->pluck('created_at', 'updated_at');
+        $ecgAvailableDatesRaw = ECG::where('user_id', $patient->id)->orderBy('created_at', 'DESC')->orderBy('updated_at', 'DESC')->pluck('created_at');
         $ecgAvailableDates = array();
         foreach ($ecgAvailableDatesRaw as $ecgAvailableDate) {
             array_push(
                 $ecgAvailableDates,
                 [
                     'date' => $ecgAvailableDate,
-                    'dateFormatted' => $ecgAvailableDate->format('d M Y, H:i'),
+                    'dateFormatted' => $ecgAvailableDate->format('d M Y, H:i:s'),
                 ]
             );
         }
@@ -129,9 +126,20 @@ class ChartController extends Controller
             ? ECG::where('user_id', $patient->id)->whereDate('created_at', $chosenEcgDate)->first()
             : ECG::where('user_id', $patient->id)->orderBy('created_at', 'DESC')->orderBy('updated_at', 'DESC')->first();
 
-        $ecgParam = Parameter::where('name', 'ECG')->first();
-        $chartsECG = array();
 
+        if (!$ecgData) {
+            return view('coordinator.patients.charts.index', [
+                'patient' => $patient,
+                'charts' => $charts,
+                'charts_encoded' => json_encode($charts, JSON_HEX_QUOT | JSON_HEX_APOS | JSON_NUMERIC_CHECK),
+                'filterOption' => $filterOption,
+                'chartECG' => null,
+                'chartECG_encoded' => json_encode(false, JSON_HEX_QUOT | JSON_HEX_APOS | JSON_NUMERIC_CHECK),
+                'ecgAvailableDates' => $ecgAvailableDates,
+            ]);
+        }
+
+        $ecgParam = Parameter::where('name', 'ECG')->first();
         $ecgValuesRaw = explode(',', $ecgData['values']);
 
         $ecgDates = array();
@@ -142,31 +150,33 @@ class ChartController extends Controller
             array_push($ecgValues, round(intval($ecgValuesRaw[$i]) / 1000, 2));
         }
 
-        array_push($chartsECG, [
+        $chartECG = [
             'id' => $ecgData['id'],
             'name' => $ecgParam->name,
             'unit' => $ecgParam->unit,
             'values' =>  $ecgValues,
             'dates' => $ecgDates,
-            'date' => $ecgData['created_at']->format('d M Y, H:i'),
+            'date' => $ecgData['created_at']->format('d M Y, H:i:s'),
             'eventsP' => explode(',', $ecgData['eventsP']),
             'eventsB' => explode(',', $ecgData['eventsB']),
             'eventsT' => explode(',', $ecgData['eventsT']),
             'eventsAF' => explode(',', $ecgData['eventsAF']),
-        ]);
+        ];
 
 
-        $chartsECGEncoded = json_encode($chartsECG, JSON_HEX_QUOT | JSON_HEX_APOS | JSON_NUMERIC_CHECK);
+        return view(
+            'coordinator.patients.charts.index',
+            [
+                'patient' => $patient,
+                'charts' => $charts,
+                'charts_encoded' => json_encode($charts, JSON_HEX_QUOT | JSON_HEX_APOS | JSON_NUMERIC_CHECK),
+                'filterOption' => $filterOption,
+                'chartECG' => $chartECG,
+                'chartECG_encoded' => json_encode($chartECG, JSON_HEX_QUOT | JSON_HEX_APOS | JSON_NUMERIC_CHECK),
+                'ecgAvailableDates' => $ecgAvailableDates,
+            ]
 
-        return view('coordinator.patients.charts.index', [
-            'patient' => $patient,
-            'charts' => $charts,
-            'charts_encoded' => json_encode($charts, JSON_HEX_QUOT | JSON_HEX_APOS | JSON_NUMERIC_CHECK),
-            'filterOption' => $filterOption,
-            'chartsECG' => $chartsECG,
-            'chartsECG_encoded' => $chartsECGEncoded,
-            'ecgAvailableDates' => $ecgAvailableDates,
-        ]);
+        );
     }
 
     function filter(Request $request)
