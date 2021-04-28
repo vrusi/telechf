@@ -22,6 +22,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
+        'id_external',
         'name',
         'surname',
         'email',
@@ -33,7 +34,8 @@ class User extends Authenticatable
         'weight',
         'is_coordinator',
         'coordinator_id',
-        'recommendations'
+        'recommendations',
+        'mac'
     ];
 
     private function mapConditions(int $value)

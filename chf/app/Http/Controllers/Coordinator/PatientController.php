@@ -350,9 +350,6 @@ class PatientController extends Controller
             }
         }
 
-        dump(intval($responsePatient->body()));
-        dd($responseMac->body());
-
         flash('Patient ' . $patient->name . ' ' . $patient->surname . ' was successfully added.')->success();
         return redirect()->action([ProfileController::class, 'index'], ['patient' => $patient->id]);
     }
