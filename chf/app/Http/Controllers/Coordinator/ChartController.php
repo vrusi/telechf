@@ -114,7 +114,7 @@ class ChartController extends Controller
         $swellingsValues = array();
         $exerciseValues = array();
         $dyspnoeaValues = array();
-        foreach($conditions as $date => $conditionsInDay) {
+        foreach ($conditions as $date => $conditionsInDay) {
             array_push($conditionsDates, Carbon::parse($date));
             array_push($swellingsValues, round($conditionsInDay['swellings'], 2));
             array_push($exerciseValues, round($conditionsInDay['exercise'], 2));
@@ -169,6 +169,66 @@ class ChartController extends Controller
             array_push($ecgValues, round(intval($ecgValuesRaw[$i]) / 1000, 2));
         }
 
+        $eventsP = explode(',', $ecgData['eventsP']);
+        $eventsB = explode(',', $ecgData['eventsB']);
+        $eventsT = explode(',', $ecgData['eventsT']);
+        $eventsAF = explode(',', $ecgData['eventsAF']);
+
+        $eventsPSegments = array();
+        $eventsBSegments = array();
+        $eventsTSegments = array();
+        $eventsAFSegments = array();
+        
+        $eventsMerged = [$eventsP, $eventsB, $eventsT, $eventsAF];
+        foreach ($eventsMerged as $indexEvents => $events) {
+
+            $eventsLength = count($events);
+            $isEmpty = $eventsLength == 0 || ($eventsLength == 1 && !$events[0]);
+            if ($isEmpty) {
+                continue;
+            }
+            $segmentStart = -1;
+            $lastPosition = -1;
+            $current = -1;
+            // $event is the position in time
+            foreach ($events as $index => $event) {
+
+                // if start was unassigned, start is now
+                if ($segmentStart == -1) {
+                    $segmentStart = $event;
+                    $current = $event;
+                    continue;
+                }
+
+                $willOverflow = $eventsLength - 1 == $index;
+                $valueAhead = $events[$index];
+                // if next event is one ms away, it's a part of the current event segment
+                if (!$willOverflow && ($valueAhead == $current + 1)) {
+
+                    $current++;
+
+                }
+                // if this is the last item in the array
+                // or if next event is more than a ms away,
+                // the current event marks the end of the segment
+                else {
+                    if ($indexEvents == 0) {
+                        array_push($eventsPSegments, ['start' => $segmentStart, 'end' => $current]);
+                    } elseif ($indexEvents == 1) {
+                        array_push($eventsBSegments, ['start' => $segmentStart, 'end' => $current]);
+                    } elseif ($indexEvents == 2) {
+                        array_push($eventsTSegments, ['start' => $segmentStart, 'end' => $current]);
+                    } elseif ($indexEvents == 3) {
+                        array_push($eventsAFSegments, ['start' => $segmentStart, 'end' => $current]);
+                    }
+
+                    $segmentStart = -1;
+                    $current = -1;
+
+                }
+            }
+        }
+
         $chartECG = [
             'id' => $ecgData['id'],
             'name' => $ecgParam->name,
@@ -176,10 +236,10 @@ class ChartController extends Controller
             'values' =>  $ecgValues,
             'dates' => $ecgDates,
             'date' => $ecgData['created_at']->format('d M Y, H:i:s'),
-            'eventsP' => explode(',', $ecgData['eventsP']),
-            'eventsB' => explode(',', $ecgData['eventsB']),
-            'eventsT' => explode(',', $ecgData['eventsT']),
-            'eventsAF' => explode(',', $ecgData['eventsAF']),
+            'eventsP' => $eventsPSegments,
+            'eventsB' => $eventsBSegments,
+            'eventsT' => $eventsTSegments,
+            'eventsAF' => $eventsAFSegments,
         ];
 
         return view(

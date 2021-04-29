@@ -228,46 +228,39 @@
                 </div>
             </div>
             <div class="ecg-chart" id="chart-ecg">
-                <div class="d-flex align-items-center justify-content-between pr-5 pb-5 pl-5 mb-5 bg-white">
-                    @if (count($chartECG['eventsP']) > 0)
-                        <div class="d-flex align-items-center">
-                            <div class="mr-2" style="width: 30px; height: 30px; background-color: #b4aee880;">
-                            </div>
-                            <div>
-                                {{ __('Pause detected') }}
-                            </div>
+                <div class="d-flex align-items-center justify-content-center pr-5 pb-5 pl-5 mb-5 bg-white">
+                    <div class="d-flex align-items-center mx-3">
+                        <div class="mr-2" style="width: 30px; height: 30px; background-color: #b4aee840;">
                         </div>
-                    @endif
+                        <div>
+                            {{ __('Pause detected') }}
+                        </div>
+                    </div>
 
-                    @if (count($chartECG['eventsB']) > 0)
-                        <div class="d-flex align-items-center">
-                            <div class="mr-2" style="width: 30px; height: 30px; background-color: #f0c92980;">
-                            </div>
-                            <div>
-                                {{ __('Bradycardia detected') }}
-                            </div>
+                    <div class="d-flex align-items-center mx-3">
+                        <div class="mr-2" style="width: 30px; height: 30px; background-color: #f0c92940;">
                         </div>
-                    @endif
+                        <div>
+                            {{ __('Bradycardia detected') }}
+                        </div>
+                    </div>
 
-                    @if (count($chartECG['eventsT']) > 0)
-                        <div class="d-flex align-items-center">
-                            <div class="mr-2" style="width: 30px; height: 30px; background-color: #f3918980;">
-                            </div>
-                            <div>
-                                {{ __('Tachycardia detected') }}
-                            </div>
+                    <div class="d-flex align-items-center mx-3">
+                        <div class="mr-2" style="width: 30px; height: 30px; background-color: #f3918940;">
                         </div>
-                    @endif
+                        <div>
+                            {{ __('Tachycardia detected') }}
+                        </div>
+                    </div>
 
-                    @if (count($chartECG['eventsAF']) > 0)
-                        <div class="d-flex align-items-center">
-                            <div class="mr-2" style="width: 30px; height: 30px; background-color: #04658280;">
-                            </div>
-                            <div>
-                                {{ __('Atrial fibrillation detected') }}
-                            </div>
+                    <div class="d-flex align-items-center mx-3">
+                        <div class="mr-2" style="width: 30px; height: 30px; background-color: #04658240;">
                         </div>
-                    @endif
+                        <div>
+                            {{ __('Atrial fibrillation detected') }}
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
@@ -573,80 +566,73 @@
             }
 
             var shapes = [];
-            if (!(eventsP.length == 1 && !eventsT[0])) {
-                for (event of eventsP) {
-                    shapes.push({
-                        type: 'rect',
-                        xref: 'x',
-                        yref: 'paper',
-                        x0: event,
-                        x1: event + 1,
-                        y0: 0,
-                        y1: 1,
-                        fillcolor: '#b4aee880',
-                        line: {
-                            width: 0,
-                        },
-                        layer: 'below',
-                    });
-                }
+
+            for (event of eventsP) {
+                shapes.push({
+                    type: 'rect',
+                    xref: 'x',
+                    yref: 'paper',
+                    x0: event['start'],
+                    x1: event['end'],
+                    y0: 0,
+                    y1: 1,
+                    fillcolor: '#b4aee840',
+                    line: {
+                        width: 0,
+                    },
+                    layer: 'below',
+                });
             }
 
-            if (!(eventsB.length == 1 && !eventsT[0])) {
-                for (event of eventsB) {
-                    shapes.push({
-                        type: 'rect',
-                        xref: 'x',
-                        yref: 'paper',
-                        x0: event,
-                        x1: event + 1,
-                        y0: 0,
-                        y1: 1,
-                        fillcolor: '#f0c92980',
-                        line: {
-                            width: 0,
-                        },
-                        layer: 'below',
-                    });
-                }
+            for (event of eventsB) {
+                shapes.push({
+                    type: 'rect',
+                    xref: 'x',
+                    yref: 'paper',
+                    x0: event['start'],
+                    x1: event['end'],
+                    y0: 0,
+                    y1: 1,
+                    fillcolor: '#f0c92940',
+                    line: {
+                        width: 0,
+                    },
+                    layer: 'below',
+                });
             }
 
-            if (!(eventsT.length == 1 && !eventsT[0])) {
-                for (event of eventsT) {
-                    shapes.push({
-                        type: 'rect',
-                        xref: 'x',
-                        yref: 'paper',
-                        x0: event,
-                        x1: event + 1,
-                        y0: 0,
-                        y1: 1,
-                        fillcolor: '#f3918980',
-                        line: {
-                            width: 0,
-                        },
-                        layer: 'below',
-                    });
-                }
+            for (event of eventsT) {
+                shapes.push({
+                    type: 'rect',
+                    xref: 'x',
+                    yref: 'paper',
+                    x0: event['start'],
+                    x1: event['end'],
+                    y0: 0,
+                    y1: 1,
+                    fillcolor: '#f3918940',
+                    line: {
+                        width: 0,
+                    },
+                    layer: 'below',
+                });
             }
 
-            if (!(eventsAF.length == 1 && !eventsT[0])) {
-                for (event of eventsAF) {
-                    shapes.push({
-                        type: 'rect',
-                        xref: 'x',
-                        yref: 'paper',
-                        x0: event,
-                        x1: event + 1,
-                        y0: 0,
-                        y1: 1,
-                        fillcolor: '#04658280',
-                        line: {
-                            width: 0,
-                        },
-                        layer: 'below',
-                    });
-                }
+            for (event of eventsAF) {
+                shapes.push({
+                    type: 'rect',
+                    xref: 'x',
+                    yref: 'paper',
+                    x0: event['start'],
+                    x1: event['end'],
+                    y0: 0,
+                    y1: 1,
+                    fillcolor: '#04658240',
+                    line: {
+                        width: 0,
+                    },
+                    layer: 'below',
+                });
             }
 
             var layout = {
