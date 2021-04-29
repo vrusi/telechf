@@ -188,6 +188,7 @@ class ChartController extends Controller
         $ecgValues = array();
 
         $currentDate = $ecgData['created_at'];
+
         for ($i = 0; $i < count($ecgValuesRaw); $i++) {
             array_push($ecgDatesMs, $i);
             array_push($ecgDates, $currentDate->copy()->addMilliseconds($i));

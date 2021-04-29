@@ -554,7 +554,7 @@
         // set up ecg charts
         chartECG = {!! $chartECG_encoded !!};
 
-        // from https://stackoverflow.com/a/8273091
+        // taken from https://stackoverflow.com/a/8273091
         function range(start, stop, step) {
             if (typeof stop == 'undefined') {
                 // one param defined
@@ -578,6 +578,7 @@
             return result;
         };
 
+        // taken and edited from https://jsfiddle.net/76s1px0j/27/
         function generateXgrid(x) {
             var lines = [];
             var counter = 0;
@@ -602,6 +603,7 @@
             return lines;
         }
 
+        // taken and edited from https://jsfiddle.net/76s1px0j/27/
         function generateYgrid(y) {
             var lines = [];
             var counter = 0;
@@ -634,21 +636,28 @@
             values = chartECG['values'];
             dates = chartECG['dates'];
             datesMs = chartECG['datesMs'];
-
             date = chartECG['date'];
             eventsP = chartECG['eventsP'];
             eventsB = chartECG['eventsB'];
             eventsT = chartECG['eventsT'];
             eventsAF = chartECG['eventsAF'];
 
+
+            var datesWithTimezone = []
+            for (let d of dates) {
+                //let dWithTimezone = new Date(d);
+                let dWithTimezone = moment(d).tz("Europe/Bratislava").format('YYYY-MM-DD[T]HH:mm:ss.SSSSSS');
+                datesWithTimezone.push(dWithTimezone);
+            }
+
             var plot = {
-                x: dates,
+                x: datesWithTimezone,
                 y: values,
                 mode: 'lines',
                 name: navigator.language === 'sk' ? names_sk[name] : name,
             };
 
-            var grid = [...generateXgrid(dates), ...generateYgrid(values)]
+            var grid = [...generateXgrid(datesWithTimezone), ...generateYgrid(values)]
 
             var shapesEvents = [];
             for (event of eventsP) {
@@ -656,8 +665,8 @@
                     type: 'rect',
                     xref: 'x',
                     yref: 'paper',
-                    x0: event['start'],
-                    x1: event['end'],
+                    x0: moment(event['start']).tz("Europe/Bratislava").format('YYYY-MM-DD[T]HH:mm:ss.SSSSSS'),
+                    x1: moment(event['end']).tz("Europe/Bratislava").format('YYYY-MM-DD[T]HH:mm:ss.SSSSSS'),
                     y0: 0,
                     y1: 1,
                     fillcolor: '#b4aee840',
@@ -673,8 +682,8 @@
                     type: 'rect',
                     xref: 'x',
                     yref: 'paper',
-                    x0: event['start'],
-                    x1: event['end'],
+                    x0: moment(event['start']).tz("Europe/Bratislava").format('YYYY-MM-DD[T]HH:mm:ss.SSSSSS'),
+                    x1: moment(event['end']).tz("Europe/Bratislava").format('YYYY-MM-DD[T]HH:mm:ss.SSSSSS'),
                     y0: 0,
                     y1: 1,
                     fillcolor: '#f0c92940',
@@ -690,8 +699,8 @@
                     type: 'rect',
                     xref: 'x',
                     yref: 'paper',
-                    x0: event['start'],
-                    x1: event['end'],
+                    x0: moment(event['start']).tz("Europe/Bratislava").format('YYYY-MM-DD[T]HH:mm:ss.SSSSSS'),
+                    x1: moment(event['end']).tz("Europe/Bratislava").format('YYYY-MM-DD[T]HH:mm:ss.SSSSSS'),
                     y0: 0,
                     y1: 1,
                     fillcolor: '#f3918940',
@@ -703,12 +712,13 @@
             }
 
             for (event of eventsAF) {
+
                 shapesEvents.push({
                     type: 'rect',
                     xref: 'x',
                     yref: 'paper',
-                    x0: event['start'],
-                    x1: event['end'],
+                    x0: moment(event['start']).tz("Europe/Bratislava").format('YYYY-MM-DD[T]HH:mm:ss.SSSSSS'),
+                    x1: moment(event['end']).tz("Europe/Bratislava").format('YYYY-MM-DD[T]HH:mm:ss.SSSSSS'),
                     y0: 0,
                     y1: 1,
                     fillcolor: '#04658240',
@@ -729,7 +739,7 @@
                         text: navigator.language === 'sk' ? 'Čas merania' : 'Time of the measurement (s)',
                     },
                     showgrid: false,
-                    range: [dates[14000], dates[17000]],
+                    range: [datesWithTimezone[14000], datesWithTimezone[17000]],
                 },
                 yaxis: {
                     title: {
@@ -749,10 +759,9 @@
                 },
             };
 
-
             Plotly.newPlot('chart-ecg', [plot], layout);
 
-            // Markers 
+            // Markers taken and edited from https://jsfiddle.net/76s1px0j/27/
             var myPlot = document.getElementById('chart-ecg')
             var markers = [];
             var markerInfo = [];
