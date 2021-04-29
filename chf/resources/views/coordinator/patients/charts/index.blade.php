@@ -232,32 +232,76 @@
                     <div class="d-flex align-items-center mx-3">
                         <div class="mr-2" style="width: 30px; height: 30px; background-color: #b4aee840;">
                         </div>
-                        <div>
-                            {{ __('Pause detected') }}
+                        <div class="d-flex">
+                            <div class="mr-1">
+                                {{ __('Pause detected') }}
+                            </div>
+                            @if (count($chartECG['eventsP']))
+                                <div class="text-danger">
+                                    ({{ count($chartECG['eventsP']) }})
+                                </div>
+                            @else
+                                <div>
+                                    ({{ count($chartECG['eventsP']) }})
+                                </div>
+                            @endif
                         </div>
                     </div>
 
                     <div class="d-flex align-items-center mx-3">
                         <div class="mr-2" style="width: 30px; height: 30px; background-color: #f0c92940;">
                         </div>
-                        <div>
-                            {{ __('Bradycardia detected') }}
+                        <div class="d-flex">
+                            <div class="mr-1">
+                                {{ __('Bradycardia detected') }}
+                            </div>
+                            @if (count($chartECG['eventsB']))
+                                <div class="text-danger">
+                                    ({{ count($chartECG['eventsB']) }})
+                                </div>
+                            @else
+                                <div>
+                                    ({{ count($chartECG['eventsB']) }})
+                                </div>
+                            @endif
                         </div>
                     </div>
 
                     <div class="d-flex align-items-center mx-3">
                         <div class="mr-2" style="width: 30px; height: 30px; background-color: #f3918940;">
                         </div>
-                        <div>
-                            {{ __('Tachycardia detected') }}
+                        <div class="d-flex">
+                            <div class="mr-1">
+                                {{ __('Tachycardia detected') }}
+                            </div>
+                            @if (count($chartECG['eventsT']))
+                                <div class="text-danger">
+                                    ({{ count($chartECG['eventsT']) }})
+                                </div>
+                            @else
+                                <div>
+                                    ({{ count($chartECG['eventsT']) }})
+                                </div>
+                            @endif
                         </div>
                     </div>
 
                     <div class="d-flex align-items-center mx-3">
                         <div class="mr-2" style="width: 30px; height: 30px; background-color: #04658240;">
                         </div>
-                        <div>
-                            {{ __('Atrial fibrillation detected') }}
+                        <div class="d-flex">
+                            <div class="mr-1">
+                                {{ __('Atrial fibrillation detected') }}
+                            </div>
+                            @if (count($chartECG['eventsAF']))
+                                <div class="text-danger">
+                                    ({{ count($chartECG['eventsAF']) }})
+                                </div>
+                            @else
+                                <div>
+                                    ({{ count($chartECG['eventsAF']) }})
+                                </div>
+                            @endif
                         </div>
                     </div>
 
@@ -483,6 +527,30 @@
         // set up ecg charts
         chartECG = {!! $chartECG_encoded !!};
 
+        // from https://stackoverflow.com/a/8273091
+        function range(start, stop, step) {
+            if (typeof stop == 'undefined') {
+                // one param defined
+                stop = start;
+                start = 0;
+            }
+
+            if (typeof step == 'undefined') {
+                step = 1;
+            }
+
+            if ((step > 0 && start >= stop) || (step < 0 && start <= stop)) {
+                return [];
+            }
+
+            var result = [];
+            for (var i = start; step > 0 ? i < stop : i > stop; i += step) {
+                result.push(i);
+            }
+
+            return result;
+        };
+
         function generateXgrid(x) {
             var lines = [];
             var counter = 0;
@@ -538,6 +606,8 @@
             unit = chartECG['unit'];
             values = chartECG['values'];
             dates = chartECG['dates'];
+            datesMs = chartECG['datesMs'];
+
             date = chartECG['date'];
             eventsP = chartECG['eventsP'];
             eventsB = chartECG['eventsB'];
@@ -547,28 +617,15 @@
             var plot = {
                 x: dates,
                 y: values,
-                type: 'scatter',
                 mode: 'lines',
                 name: navigator.language === 'sk' ? names_sk[name] : name,
             };
 
             var grid = [...generateXgrid(dates), ...generateYgrid(values)]
 
-            var layout = {
-                xaxis: {
-                    showgrid: false,
-                },
-                yaxis: {
-                    showgrid: false,
-                },
-
-                shapes: grid,
-            }
-
-            var shapes = [];
-
+            var shapesEvents = [];
             for (event of eventsP) {
-                shapes.push({
+                shapesEvents.push({
                     type: 'rect',
                     xref: 'x',
                     yref: 'paper',
@@ -585,7 +642,7 @@
             }
 
             for (event of eventsB) {
-                shapes.push({
+                shapesEvents.push({
                     type: 'rect',
                     xref: 'x',
                     yref: 'paper',
@@ -602,7 +659,7 @@
             }
 
             for (event of eventsT) {
-                shapes.push({
+                shapesEvents.push({
                     type: 'rect',
                     xref: 'x',
                     yref: 'paper',
@@ -619,7 +676,7 @@
             }
 
             for (event of eventsAF) {
-                shapes.push({
+                shapesEvents.push({
                     type: 'rect',
                     xref: 'x',
                     yref: 'paper',
@@ -642,10 +699,10 @@
                 height: 800,
                 xaxis: {
                     title: {
-                        text: navigator.language === 'sk' ? 'Čas v ms' : 'Time in ms',
+                        text: navigator.language === 'sk' ? 'Čas merania' : 'Time of the measurement (s)',
                     },
                     showgrid: false,
-                    range: [15000, 20000],
+                    range: [dates[14000], dates[17000]],
                 },
                 yaxis: {
                     title: {
@@ -653,9 +710,8 @@
                             ')',
                     },
                     showgrid: false,
-
                 },
-                shapes: shapes.length > 0 ? [...shapes, ...grid] : grid,
+                shapes: [...shapesEvents, ...grid],
                 showlegend: true,
                 legend: {
                     orientation: 'h',
@@ -665,6 +721,7 @@
                     x: 0.5,
                 },
             };
+
 
             Plotly.newPlot('chart-ecg', [plot], layout);
 

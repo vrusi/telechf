@@ -162,10 +162,14 @@ class ChartController extends Controller
         $ecgValuesRaw = explode(',', $ecgData['values']);
 
         $ecgDates = array();
+        $ecgDatesMs = array();
+
         $ecgValues = array();
 
+        $currentDate = $ecgData['created_at'];
         for ($i = 0; $i < count($ecgValuesRaw); $i++) {
-            array_push($ecgDates, $i);
+            array_push($ecgDatesMs, $i);
+            array_push($ecgDates, $currentDate->copy()->addMilliseconds($i));
             array_push($ecgValues, round(intval($ecgValuesRaw[$i]) / 1000, 2));
         }
 
@@ -178,7 +182,7 @@ class ChartController extends Controller
         $eventsBSegments = array();
         $eventsTSegments = array();
         $eventsAFSegments = array();
-        
+
         $eventsMerged = [$eventsP, $eventsB, $eventsT, $eventsAF];
         foreach ($eventsMerged as $indexEvents => $events) {
 
@@ -187,26 +191,23 @@ class ChartController extends Controller
             if ($isEmpty) {
                 continue;
             }
-            $segmentStart = -1;
-            $lastPosition = -1;
-            $current = -1;
+            $segmentStart = null;
+            $current = null;
             // $event is the position in time
             foreach ($events as $index => $event) {
 
                 // if start was unassigned, start is now
-                if ($segmentStart == -1) {
-                    $segmentStart = $event;
-                    $current = $event;
+                if ($segmentStart == null) {
+                    $segmentStart = $ecgData['created_at']->copy()->addMilliseconds($event);
+                    $current = $segmentStart->copy();
                     continue;
                 }
 
                 $willOverflow = $eventsLength - 1 == $index;
-                $valueAhead = $events[$index];
+                $valueAhead = $ecgData['created_at']->copy()->addMilliseconds($events[$index]);
                 // if next event is one ms away, it's a part of the current event segment
-                if (!$willOverflow && ($valueAhead == $current + 1)) {
-
-                    $current++;
-
+                if (!$willOverflow && ($valueAhead->eq($current->copy()->addMillisecond()))) {
+                    $current->addMillisecond();
                 }
                 // if this is the last item in the array
                 // or if next event is more than a ms away,
@@ -222,8 +223,8 @@ class ChartController extends Controller
                         array_push($eventsAFSegments, ['start' => $segmentStart, 'end' => $current]);
                     }
 
-                    $segmentStart = -1;
-                    $current = -1;
+                    $segmentStart = null;
+                    $current = null;
 
                 }
             }
@@ -235,6 +236,7 @@ class ChartController extends Controller
             'unit' => $ecgParam->unit,
             'values' =>  $ecgValues,
             'dates' => $ecgDates,
+            'datesMs' => $ecgDatesMs,
             'date' => $ecgData['created_at']->format('d M Y, H:i:s'),
             'eventsP' => $eventsPSegments,
             'eventsB' => $eventsBSegments,
