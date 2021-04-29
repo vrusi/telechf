@@ -18,6 +18,7 @@ class ChartController extends Controller
 
         $filterOption = $request->has('filter') ? $request->input('filter') : "5";
         $chosenEcgDate = $request->has('chosenEcgDate') ? Carbon::parse($request->chosenEcgDate) : null;
+        $chosenConditionsDate = $request->has('chosenConditionsDate') ? Carbon::parse($request->chosenConditionsDate) : null;
 
         $patient = User::where('id', $request->route('patient'))->first();
 
@@ -114,15 +115,35 @@ class ChartController extends Controller
         $swellingsValues = array();
         $exerciseValues = array();
         $dyspnoeaValues = array();
+        $entryDate = null;
+        $hasOneEntry = false;
         foreach ($conditions as $date => $conditionsInDay) {
-            array_push($conditionsDates, Carbon::parse($date));
-            array_push($swellingsValues, $conditionsInDay['swellings']);
-            array_push($exerciseValues, $conditionsInDay['exercise']);
-            array_push($dyspnoeaValues, $conditionsInDay['dyspnoea']);
+            $parsedDate = Carbon::parse($date);
+
+            if ($chosenConditionsDate) {
+                if ($parsedDate->isSameDay($chosenConditionsDate)) {
+                    array_push($swellingsValues, $conditionsInDay['swellings']);
+                    array_push($exerciseValues, $conditionsInDay['exercise']);
+                    array_push($dyspnoeaValues, $conditionsInDay['dyspnoea']);
+                    $entryDate = $parsedDate->copy()->format('d M Y');
+                }
+            }
+            else {
+                if (!$hasOneEntry) {
+                    array_push($swellingsValues, $conditionsInDay['swellings']);
+                    array_push($exerciseValues, $conditionsInDay['exercise']);
+                    array_push($dyspnoeaValues, $conditionsInDay['dyspnoea']);
+                    $hasOneEntry = true;
+                    $entryDate = $parsedDate->copy()->format('d M Y');
+                }
+            }
+
+            array_push($conditionsDates, $parsedDate);
         }
 
         $conditionsParsed = [
             'dates' => $conditionsDates,
+            'date' => $entryDate,
             'swellings' => $swellingsValues,
             'exercise' => $exerciseValues,
             'dyspnoea' => $dyspnoeaValues,
@@ -225,7 +246,6 @@ class ChartController extends Controller
 
                     $segmentStart = null;
                     $current = null;
-
                 }
             }
         }
@@ -280,6 +300,7 @@ class ChartController extends Controller
     {
         $patient = User::where('id', $request->route('patient'))->first();
         $chosenEcgDate = $request->ecgDateChoice ? $request->ecgDateChoice : null;
+        $chosenConditionsDate = $request->conditionsDateChoice ? $request->conditionsDateChoice : null;
 
         return redirect()->action(
             [
@@ -289,7 +310,10 @@ class ChartController extends Controller
             [
                 'patient' => $patient->id,
                 'chosenEcgDate' => $chosenEcgDate,
+                'chosenConditionsDate' => $chosenConditionsDate,
+
             ]
         );
     }
+
 }

@@ -115,24 +115,27 @@
         @endforeach
 
         @if ($conditions)
-            <div id="chart-conditions" class="mt-5">
+            <div class="d-flex justify-content-end align-items-center px-5 pt-5 mt-5 bg-white">
+                <div>
+                    <form method="POST" action="{{ '/coordinator/patients/' . $patient['id'] . '/charts#chart-conditions' }}">
+                        @csrf
+                        <div class="form-group">
+                            <label for="conditionsDateChoice">{{ __('Select a measurement by date') }}</label>
+                            <select class="form-control" id="conditionsDateChoice" name="conditionsDateChoice">
+                                @foreach ($conditions['dates'] as $conditionsAvailableDate)
+                                    <option value="{{ $conditionsAvailableDate }}">
+                                        {{ $conditionsAvailableDate->format('d M Y') }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <input type="hidden" value="{{ $patient['id'] }}">
+                        <button type="submit" class="btn btn-outline-primary w-100">
+                            {{ __('Select') }}
+                        </button>
+                    </form>
+                </div>
             </div>
-            <div class="d-flex align-items-center justify-content-center pr-5 pb-5 pl-5 bg-white">
-                <div class="mx-3">
-                    1: {{ __('Very good') }}
-                </div>
-                <div class="mx-3">
-                    2: {{ __('Good') }}
-                </div>
-                <div class="mx-3">
-                    3: {{ __('Neutral') }}
-                </div>
-                <div class="mx-3">
-                    4: {{ __('Bad') }}
-                </div>
-                <div class="mx-3">
-                    5: {{ __('Very bad') }}
-                </div>
+            <div id="chart-conditions">
             </div>
         @endif
 
@@ -491,7 +494,7 @@
 
         // fill the conditions plot
         var conditions = {!! $conditions_encoded !!};
-        console.log(conditions['swellings']);
+
         var plotSwellings = {
             x: Object.keys(conditions['swellings'][0]),
             y: Object.values(conditions['swellings'][0]),
@@ -516,16 +519,18 @@
         var layout = {
             barmode: 'group',
             title: {
-                text: navigator.language === 'sk' ? 'Stav' : 'Status',
+                text: navigator.language === 'sk' ? 'Stav zo dňa ' + conditions['date'] : 'Status from ' + conditions['date'],
             },
             xaxis: {
                 title: {
-                    text: navigator.language === 'sk' ? 'Dátum' : 'Date',
+                    text: navigator.language === 'sk' ? 'Hodnotenie' : 'Rating',
                 },
+                tickvals: [1, 2, 3, 4, 5],
+                ticktext: navigator.language === 'sk' ? ['Veľmi dobré', 'Dobré', 'Stredne', 'Zlé', 'Veľmi zlé'] : ['Very good', 'Good', 'Neutral', 'Bad', 'Very bad']
             },
             yaxis: {
                 title: {
-                    text: navigator.language === 'sk' ? 'Hodnotenie' : 'Rating',
+                    text: navigator.language === 'sk' ? 'Počet' : 'Count',
                 },
                 autotick: false,
                 tick0: 0,
