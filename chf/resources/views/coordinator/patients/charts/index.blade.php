@@ -117,6 +117,23 @@
         @if ($conditions)
             <div id="chart-conditions" class="mt-5">
             </div>
+            <div class="d-flex align-items-center justify-content-center pr-5 pb-5 pl-5 bg-white">
+                <div class="mx-3">
+                    1: {{ __('Very good') }}
+                </div>
+                <div class="mx-3">
+                    2: {{ __('Good') }}
+                </div>
+                <div class="mx-3">
+                    3: {{ __('Neutral') }}
+                </div>
+                <div class="mx-3">
+                    4: {{ __('Bad') }}
+                </div>
+                <div class="mx-3">
+                    5: {{ __('Very bad') }}
+                </div>
+            </div>
         @endif
 
         @if ($chartECG)
@@ -474,28 +491,30 @@
 
         // fill the conditions plot
         var conditions = {!! $conditions_encoded !!};
+        console.log(conditions['swellings']);
         var plotSwellings = {
-            x: conditions['dates'],
-            y: conditions['swellings'],
-            mode: 'lines',
+            x: Object.keys(conditions['swellings'][0]),
+            y: Object.values(conditions['swellings'][0]),
+            type: 'bar',
             name: navigator.language === 'sk' ? 'Opuchy' : 'Swellings',
         };
 
         var plotExercise = {
-            x: conditions['dates'],
-            y: conditions['exercise'],
-            mode: 'lines',
+            x: Object.keys(conditions['exercise'][0]),
+            y: Object.values(conditions['exercise'][0]),
+            type: 'bar',
             name: navigator.language === 'sk' ? 'Tolerancia fyzickej námahy' : 'Physical exertion tolerance',
         };
 
         var plotDyspnoea = {
-            x: conditions['dates'],
-            y: conditions['dyspnoea'],
-            mode: 'lines',
+            x: Object.keys(conditions['dyspnoea'][0]),
+            y: Object.values(conditions['dyspnoea'][0]),
+            type: 'bar',
             name: navigator.language === 'sk' ? 'Dýchavičnosť v ľahu' : 'Dyspnoea while lying down',
         };
 
         var layout = {
+            barmode: 'group',
             title: {
                 text: navigator.language === 'sk' ? 'Stav' : 'Status',
             },
@@ -506,9 +525,12 @@
             },
             yaxis: {
                 title: {
-                    text: navigator.language === 'sk' ? 'Hodnotenie (1: Veľmi dobré - 5: Veľmi zlé)' :
-                        'Rating (1: Very good - 5: Very bad)',
+                    text: navigator.language === 'sk' ? 'Hodnotenie' : 'Rating',
                 },
+                autotick: false,
+                tick0: 0,
+                dtick: 1,
+                range: [0, 5],
             },
             showlegend: true,
             legend: {
@@ -761,23 +783,29 @@
                 Plotly.redraw(myPlot, window.data, layout);
 
                 // print marker info 
-                $('#marker1')[0].innerText = markerInfo[0] ? (markerInfo[0] + ' ms') : '--';
-                $('#marker2')[0].innerText = markerInfo[1] ? (markerInfo[1] + ' ms') : '--';
-                $('#markerResult1')[0].innerText = (markerInfo[1] != undefined && markerInfo[0] != undefined) ?
-                    ((
-                        markerInfo[1] - markerInfo[0]) + ' ms') : '--';
+                $('#marker1')[0].innerText = markerInfo[0] ? (markerInfo[0]) : '--';
+                $('#marker2')[0].innerText = markerInfo[1] ? (markerInfo[1]) : '--';
+                if (markerInfo[0] && markerInfo[1]) {
+                    let a = new Date(markerInfo[0]);
+                    let b = new Date(markerInfo[1]);
+                    $('#markerResult1')[0].innerText = b - a + ' ms';
+                }
 
-                $('#marker3')[0].innerText = markerInfo[2] ? (markerInfo[2] + ' ms') : '--';
-                $('#marker4')[0].innerText = markerInfo[3] ? (markerInfo[3] + ' ms') : '--';
-                $('#markerResult2')[0].innerText = (markerInfo[3] != undefined && markerInfo[2] != undefined) ?
-                    ((
-                        markerInfo[3] - markerInfo[2]) + ' ms') : '--';
+                $('#marker3')[0].innerText = markerInfo[2] ? (markerInfo[2]) : '--';
+                $('#marker4')[0].innerText = markerInfo[3] ? (markerInfo[3]) : '--';
+                if (markerInfo[2] && markerInfo[3]) {
+                    let a = new Date(markerInfo[2]);
+                    let b = new Date(markerInfo[3]);
+                    $('#markerResult2')[0].innerText = b - a + ' ms';
+                }
 
-                $('#marker5')[0].innerText = markerInfo[4] ? (markerInfo[4] + ' ms') : '--';
-                $('#marker6')[0].innerText = markerInfo[5] ? (markerInfo[5] + ' ms') : '--';
-                $('#markerResult3')[0].innerText = (markerInfo[5] != undefined && markerInfo[4] != undefined) ?
-                    ((
-                        markerInfo[5] - markerInfo[4]) + ' ms') : '--';
+                $('#marker5')[0].innerText = markerInfo[4] ? (markerInfo[4]) : '--';
+                $('#marker6')[0].innerText = markerInfo[5] ? (markerInfo[5]) : '--';
+                if (markerInfo[4] && markerInfo[5]) {
+                    let a = new Date(markerInfo[4]);
+                    let b = new Date(markerInfo[5]);
+                    $('#markerResult3')[0].innerText = b - a + ' ms';
+                }
             });
         }
 

@@ -109,16 +109,16 @@ class ChartController extends Controller
         }
 
         // get conditions data
-        $conditions = $patient->conditionsAveragesByDay();
+        $conditions = $patient->conditionsCountsByDay();
         $conditionsDates = array();
         $swellingsValues = array();
         $exerciseValues = array();
         $dyspnoeaValues = array();
         foreach ($conditions as $date => $conditionsInDay) {
             array_push($conditionsDates, Carbon::parse($date));
-            array_push($swellingsValues, round($conditionsInDay['swellings'], 2));
-            array_push($exerciseValues, round($conditionsInDay['exercise'], 2));
-            array_push($dyspnoeaValues, round($conditionsInDay['dyspnoea'], 2));
+            array_push($swellingsValues, $conditionsInDay['swellings']);
+            array_push($exerciseValues, $conditionsInDay['exercise']);
+            array_push($dyspnoeaValues, $conditionsInDay['dyspnoea']);
         }
 
         $conditionsParsed = [

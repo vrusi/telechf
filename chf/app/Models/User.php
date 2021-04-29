@@ -131,6 +131,98 @@ class User extends Authenticatable
         return $avgConditions;
     }
 
+    public function conditionsCountsByDay()
+    {
+        $measurementsByDay = $this->measurementsByDay();
+        $counts = array();
+        foreach ($measurementsByDay as $date => $day) {
+            $swellings1 = 0;
+            $swellings2 = 0;
+            $swellings3 = 0;
+            $swellings4 = 0;
+            $swellings5 = 0;
+            $exercise1 = 0;
+            $exercise2 = 0;
+            $exercise3 = 0;
+            $exercise4 = 0;
+            $exercise5 = 0;
+            $dyspnoea1 = 0;
+            $dyspnoea2 = 0;
+            $dyspnoea3 = 0;
+            $dyspnoea4 = 0;
+            $dyspnoea5 = 0;
+
+            foreach ($day as $measurement) {
+                $swellings = $measurement['swellings'];
+                if ($swellings == 1) {
+                    $swellings1++;
+                } elseif ($swellings == 2) {
+                    $swellings2++;
+                } elseif ($swellings == 3) {
+                    $swellings3++;
+                } elseif ($swellings == 4) {
+                    $swellings4++;
+                } elseif ($swellings == 5) {
+                    $swellings5++;
+                }
+
+                $exercise = $measurement['exercise_tolerance'];
+                if ($exercise == 1) {
+                    $exercise1++;
+                } elseif ($exercise == 2) {
+                    $exercise2++;
+                } elseif ($exercise == 3) {
+                    $exercise3++;
+                } elseif ($exercise == 4) {
+                    $exercise4++;
+                } elseif ($exercise == 5) {
+                    $exercise5++;
+                }
+
+                $dyspnoea = $measurement['dyspnoea'];
+                if ($dyspnoea == 1) {
+                    $dyspnoea1++;
+                } elseif ($dyspnoea == 2) {
+                    $dyspnoea2++;
+                } elseif ($dyspnoea == 3) {
+                    $dyspnoea3++;
+                } elseif ($dyspnoea == 4) {
+                    $dyspnoea4++;
+                } elseif ($dyspnoea == 5) {
+                    $dyspnoea5++;
+                }
+            }
+
+            $counts[$date] =
+                [
+                    'swellings' => [
+                        1 => $swellings1,
+                        2 => $swellings2,
+                        3 => $swellings3,
+                        4 => $swellings4,
+                        5 => $swellings5,
+                    ],
+                    'exercise' => [
+                        1 => $exercise1,
+                        2 => $exercise2,
+                        3 => $exercise3,
+                        4 => $exercise4,
+                        5 => $exercise5,
+                    ],
+                    'dyspnoea' => [
+                        1 => $dyspnoea1,
+                        2 => $dyspnoea2,
+                        3 => $dyspnoea3,
+                        4 => $dyspnoea4,
+                        5 => $dyspnoea5,
+                    ],
+                ];
+        }
+        
+        return $counts;
+    }
+
+
     public function extraMeasurementsByDay()
     {
         return Measurement::where('user_id', $this->id)->where('extra', true)->orderBy('created_at', 'desc')->get()->groupBy(function ($measurement) {
