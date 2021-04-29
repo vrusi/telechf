@@ -140,7 +140,7 @@
         @endif
 
         @if ($chartECG)
-            <div class="d-flex justify-content-between  align-items-center  p-5 mt-5 bg-white">
+            <div class="d-flex justify-content-between  align-items-center  px-5 pt-5 pb-1 mt-5 bg-white">
                 <div>
                     <table>
                         <tr>
