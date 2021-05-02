@@ -19,6 +19,7 @@ class ChartController extends Controller
 
         $filterOption = $request->has('filter') ? $request->input('filter') : "5";
         $chosenEcgDate = $request->has('chosenEcgDate') ? Carbon::parse($request->chosenEcgDate) : null;
+        $chosenConditionsDate = $request->has('chosenConditionsDate') ? Carbon::parse($request->chosenConditionsDate) : null;
 
         $user = Auth::user();
 
@@ -107,20 +108,41 @@ class ChartController extends Controller
 
         // get conditions data
 
-        $conditions = $user->conditionsAveragesByDay();
+        $conditions = $user->conditionsCountsByDay();
         $conditionsDates = array();
         $swellingsValues = array();
         $exerciseValues = array();
         $dyspnoeaValues = array();
+        $entryDate = null;
+        $hasOneEntry = false;
         foreach ($conditions as $date => $conditionsInDay) {
-            array_push($conditionsDates, Carbon::parse($date));
-            array_push($swellingsValues, round($conditionsInDay['swellings'], 2));
-            array_push($exerciseValues, round($conditionsInDay['exercise'], 2));
-            array_push($dyspnoeaValues, round($conditionsInDay['dyspnoea'], 2));
+            $parsedDate = Carbon::parse($date);
+            // if a date was chosen, take the corresponding measurements
+            if ($chosenConditionsDate) {
+                if ($parsedDate->isSameDay($chosenConditionsDate)) {
+                    array_push($swellingsValues, $conditionsInDay['swellings']);
+                    array_push($exerciseValues, $conditionsInDay['exercise']);
+                    array_push($dyspnoeaValues, $conditionsInDay['dyspnoea']);
+                    $entryDate = $parsedDate->copy()->format('d M Y');
+                }
+            }
+            // else take the latest measurement
+            else {
+                if (!$hasOneEntry) {
+                    array_push($swellingsValues, $conditionsInDay['swellings']);
+                    array_push($exerciseValues, $conditionsInDay['exercise']);
+                    array_push($dyspnoeaValues, $conditionsInDay['dyspnoea']);
+                    $hasOneEntry = true;
+                    $entryDate = $parsedDate->copy()->format('d M Y');
+                }
+            }
+
+            array_push($conditionsDates, $parsedDate);
         }
 
         $conditionsParsed = [
             'dates' => $conditionsDates,
+            'date' => $entryDate,
             'swellings' => $swellingsValues,
             'exercise' => $exerciseValues,
             'dyspnoea' => $dyspnoeaValues,
@@ -159,11 +181,69 @@ class ChartController extends Controller
         $ecgValuesRaw = explode(',', $ecgData['values']);
 
         $ecgDates = array();
+        $ecgDatesMs = array();
         $ecgValues = array();
-
+        $currentDate = $ecgData['created_at'];
         for ($i = 0; $i < count($ecgValuesRaw); $i++) {
-            array_push($ecgDates, $i);
+            array_push($ecgDatesMs, $i);
+            array_push($ecgDates, $currentDate->copy()->addMilliseconds($i));
             array_push($ecgValues, round(intval($ecgValuesRaw[$i]) / 1000, 2));
+        }
+
+        $eventsP = explode(',', $ecgData['eventsP']);
+        $eventsB = explode(',', $ecgData['eventsB']);
+        $eventsT = explode(',', $ecgData['eventsT']);
+        $eventsAF = explode(',', $ecgData['eventsAF']);
+
+        $eventsPSegments = array();
+        $eventsBSegments = array();
+        $eventsTSegments = array();
+        $eventsAFSegments = array();
+
+        $eventsMerged = [$eventsP, $eventsB, $eventsT, $eventsAF];
+        foreach ($eventsMerged as $indexEvents => $events) {
+
+            $eventsLength = count($events);
+            $isEmpty = $eventsLength == 0 || ($eventsLength == 1 && !$events[0]);
+            if ($isEmpty) {
+                continue;
+            }
+            $segmentStart = null;
+            $current = null;
+            // $event is the position in time
+            foreach ($events as $index => $event) {
+
+                // if start was unassigned, start is now
+                if ($segmentStart == null) {
+                    $segmentStart = $ecgData['created_at']->copy()->addMilliseconds($event);
+                    $current = $segmentStart->copy();
+                    continue;
+                }
+
+                $willOverflow = $eventsLength - 1 == $index;
+                $valueAhead = $ecgData['created_at']->copy()->addMilliseconds($events[$index]);
+                // if next event is one ms away, it's a part of the current event segment
+                if (!$willOverflow && ($valueAhead->eq($current->copy()->addMillisecond()))) {
+                    $current->addMillisecond();
+                }
+                // if this is the last item in the array
+                // or if next event is more than a ms away,
+                // the current event marks the end of the segment
+                else {
+                    if ($indexEvents == 0) {
+                        array_push($eventsPSegments, ['start' => $segmentStart, 'end' => $current]);
+                    } elseif ($indexEvents == 1) {
+                        array_push($eventsBSegments, ['start' => $segmentStart, 'end' => $current]);
+                    } elseif ($indexEvents == 2) {
+                        array_push($eventsTSegments, ['start' => $segmentStart, 'end' => $current]);
+                    } elseif ($indexEvents == 3) {
+                        array_push($eventsAFSegments, ['start' => $segmentStart, 'end' => $current]);
+                    }
+
+                    $segmentStart = null;
+                    $current = null;
+                }
+            }
         }
 
         $chartECG = [
@@ -172,11 +252,12 @@ class ChartController extends Controller
             'unit' => $ecgParam->unit,
             'values' =>  $ecgValues,
             'dates' => $ecgDates,
+            'datesMs' => $ecgDatesMs,
             'date' => $ecgData['created_at']->format('d M Y, H:i:s'),
-            'eventsP' => explode(',', $ecgData['eventsP']),
-            'eventsB' => explode(',', $ecgData['eventsB']),
-            'eventsT' => explode(',', $ecgData['eventsT']),
-            'eventsAF' => explode(',', $ecgData['eventsAF']),
+            'eventsP' => $eventsPSegments,
+            'eventsB' => $eventsBSegments,
+            'eventsT' => $eventsTSegments,
+            'eventsAF' => $eventsAFSegments,
         ];
 
         return view(
@@ -203,6 +284,11 @@ class ChartController extends Controller
     function selectDate(Request $request)
     {
         $chosenEcgDate = $request->ecgDateChoice ? $request->ecgDateChoice : null;
-        return redirect()->action([ChartController::class, 'index'], ['chosenEcgDate' => $chosenEcgDate]);
+        $chosenConditionsDate = $request->conditionsDateChoice ? $request->conditionsDateChoice : null;
+
+        return redirect()->action([ChartController::class, 'index'], [
+            'chosenEcgDate' => $chosenEcgDate,
+            'chosenConditionsDate' => $chosenConditionsDate,
+            ]);
     }
 }

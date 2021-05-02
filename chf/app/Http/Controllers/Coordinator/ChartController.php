@@ -120,6 +120,7 @@ class ChartController extends Controller
         foreach ($conditions as $date => $conditionsInDay) {
             $parsedDate = Carbon::parse($date);
 
+            // if a date was chosen, take the corresponding measurements
             if ($chosenConditionsDate) {
                 if ($parsedDate->isSameDay($chosenConditionsDate)) {
                     array_push($swellingsValues, $conditionsInDay['swellings']);
@@ -128,6 +129,7 @@ class ChartController extends Controller
                     $entryDate = $parsedDate->copy()->format('d M Y');
                 }
             }
+            // else take the latest measurement
             else {
                 if (!$hasOneEntry) {
                     array_push($swellingsValues, $conditionsInDay['swellings']);
@@ -184,11 +186,8 @@ class ChartController extends Controller
 
         $ecgDates = array();
         $ecgDatesMs = array();
-
         $ecgValues = array();
-
         $currentDate = $ecgData['created_at'];
-
         for ($i = 0; $i < count($ecgValuesRaw); $i++) {
             array_push($ecgDatesMs, $i);
             array_push($ecgDates, $currentDate->copy()->addMilliseconds($i));

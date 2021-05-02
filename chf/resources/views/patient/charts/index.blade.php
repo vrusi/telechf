@@ -51,39 +51,39 @@
                                 <div class="col-12 col-md-4">
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="filterOption" id="inlineRadio1"
-                                            value="1" x-bind:checked="select1">
+                                            value="1">
                                         <label class="form-check-label" for="inlineRadio1">{{ __('week ') }}</label>
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-4">
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="filterOption" id="inlineRadio2"
-                                            value="2" x-bind:checked="select2">
+                                            value="2">
                                         <label class="form-check-label" for="inlineRadio2">{{ __('month ') }}</label>
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-4">
                                     <div class="form-check form-check-inline">
                                         <input class="form-check-input" type="radio" name="filterOption" id="inlineRadio3"
-                                            value="3" x-bind:checked="select3">
+                                            value="3">
                                         <label class="form-check-label"
                                             for="inlineRadio3">{{ __('three months') }}</label>
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-4">
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="filterOption" id="inlineRadio3"
-                                            value="4" x-bind:checked="select4">
-                                        <label class="form-check-label" for="inlineRadio3">{{ __('six months') }}</label>
+                                        <input class="form-check-input" type="radio" name="filterOption" id="inlineRadio4"
+                                            value="4">
+                                        <label class="form-check-label" for="inlineRadio4">{{ __('six months') }}</label>
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-4">
 
                                     <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="filterOption" id="inlineRadio3"
-                                            value="5" x-bind:checked="select5">
+                                        <input class="form-check-input" type="radio" name="filterOption" id="inlineRadio5"
+                                            value="5">
                                         <label class="form-check-label"
-                                            for="inlineRadio3">{{ __('all time data') }}</label>
+                                            for="inlineRadio5">{{ __('all time data') }}</label>
                                     </div>
                                 </div>
                                 <div class="col-12 col-md-4">
@@ -145,8 +145,28 @@
             </div>
         @endforeach
 
-        @if ($conditions)
-            <div id="chart-conditions" class="mt-5">
+        @if ($conditions && (count($conditions['swellings']) > 0 || count($conditions['exercise']) > 0 || count($conditions['dyspnoea']) > 0))
+            <div class="d-flex justify-content-end align-items-center px-5 pt-5 mt-5 bg-white">
+                <div>
+                    <form method="POST" action="{{ '/charts#chart-conditions' }}">
+                        @csrf
+                        <div class="form-group">
+                            <label for="conditionsDateChoice">{{ __('Select a measurement by date') }}</label>
+                            <select class="form-control" id="conditionsDateChoice" name="conditionsDateChoice">
+                                @foreach ($conditions['dates'] as $conditionsAvailableDate)
+                                    <option value="{{ $conditionsAvailableDate }}">
+                                        {{ $conditionsAvailableDate->format('d M Y') }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-outline-primary w-100">
+                            {{ __('Select') }}
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div id="chart-conditions">
             </div>
         @endif
 
@@ -346,41 +366,53 @@
 
         // fill the conditions plot
         var conditions = {!! $conditions_encoded !!};
-        var plotSwellings = {
-            x: conditions['dates'],
-            y: conditions['swellings'],
-            mode: 'lines',
-            name: navigator.language === 'sk' ? 'Opuchy' : 'Swellings',
-        };
 
-        var plotExercise = {
-            x: conditions['dates'],
-            y: conditions['exercise'],
-            mode: 'lines',
-            name: navigator.language === 'sk' ? 'Tolerancia fyzickej námahy' : 'Physical exertion tolerance',
-        };
+        var plotSwellings = conditions['swellings'].length > 0 ? {
+                x: Object.keys(conditions['swellings'][0]),
+                y: Object.values(conditions['swellings'][0]),
+                type: 'bar',
+                name: navigator.language === 'sk' ? 'Opuchy' : 'Swellings',
+            } :
+            null;
 
-        var plotDyspnoea = {
-            x: conditions['dates'],
-            y: conditions['dyspnoea'],
-            mode: 'lines',
+        var plotExercise = conditions['exercise'].length > 0 ? {
+                x: Object.keys(conditions['exercise'][0]),
+                y: Object.values(conditions['exercise'][0]),
+                type: 'bar',
+                name: navigator.language === 'sk' ? 'Tolerancia fyzickej námahy' : 'Physical exertion tolerance',
+            } :
+            null;
+
+        var plotDyspnoea = conditions['dyspnoea'].length > 0 ? {
+            x: Object.keys(conditions['dyspnoea'][0]),
+            y: Object.values(conditions['dyspnoea'][0]),
+            type: 'bar',
             name: navigator.language === 'sk' ? 'Dýchavičnosť v ľahu' : 'Dyspnoea while lying down',
-        };
+        } : null;
 
         var layout = {
+            barmode: 'group',
             title: {
-                text: navigator.language === 'sk' ? 'Stav' : 'Status',
+                text: navigator.language === 'sk' ? 'Stav zo dňa ' + conditions['date'] : 'Status from ' + conditions[
+                    'date'],
             },
             xaxis: {
                 title: {
-                    text: navigator.language === 'sk' ? 'Dátum' : 'Date',
+                    text: navigator.language === 'sk' ? 'Hodnotenie' : 'Rating',
                 },
+                tickvals: [1, 2, 3, 4, 5],
+                ticktext: navigator.language === 'sk' ? ['Veľmi dobré', 'Dobré', 'Stredne', 'Zlé', 'Veľmi zlé'] : [
+                    'Very good', 'Good', 'Neutral', 'Bad', 'Very bad'
+                ]
             },
             yaxis: {
                 title: {
-                    text: navigator.language === 'sk' ? 'Hodnotenie (1: Veľmi dobré - 5: Veľmi zlé)' :
-                        'Rating (1: Very good - 5: Very bad)',
+                    text: navigator.language === 'sk' ? 'Počet' : 'Count',
                 },
+                autotick: false,
+                tick0: 0,
+                dtick: 1,
+                range: [0, 5],
             },
             showlegend: true,
             legend: {
@@ -392,12 +424,97 @@
             },
         };
 
-        traces = [plotSwellings, plotExercise, plotDyspnoea];
-
-        Plotly.newPlot('chart-conditions', traces, layout);
+        traces = [];
+        if (plotSwellings) {
+            traces.push(plotSwellings);
+        }
+        if (plotExercise) {
+            traces.push(plotExercise);
+        }
+        if (plotDyspnoea) {
+            traces.push(plotDyspnoea);
+        }
+        if (traces.length > 0) {
+            Plotly.newPlot('chart-conditions', traces, layout);
+        }
 
         // set up ecg charts
         chartECG = {!! $chartECG_encoded !!};
+
+        // taken from https://stackoverflow.com/a/8273091
+        function range(start, stop, step) {
+            if (typeof stop == 'undefined') {
+                // one param defined
+                stop = start;
+                start = 0;
+            }
+
+            if (typeof step == 'undefined') {
+                step = 1;
+            }
+
+            if ((step > 0 && start >= stop) || (step < 0 && start <= stop)) {
+                return [];
+            }
+
+            var result = [];
+            for (var i = start; step > 0 ? i < stop : i > stop; i += step) {
+                result.push(i);
+            }
+
+            return result;
+        };
+
+        // taken and edited from https://jsfiddle.net/76s1px0j/27/
+        function generateXgrid(x) {
+            var lines = [];
+            var counter = 0;
+            let length = x.length;
+            for (let i = 0; i < length; i += 40) {
+                lines.push({
+                    type: 'line',
+                    xref: 'x',
+                    yref: 'paper',
+                    x0: x[i],
+                    y0: 0,
+                    x1: x[i],
+                    opacity: 0.7,
+                    y1: 1,
+                    layer: 'below',
+                    line: {
+                        color: '#ff000040',
+                        width: counter++ % 5 != 0 ? 0.5 : 2,
+                    }
+                });
+            }
+            return lines;
+        }
+
+        // taken and edited from https://jsfiddle.net/76s1px0j/27/
+        function generateYgrid(y) {
+            var lines = [];
+            var counter = 0;
+            let min = Math.min(...y);
+            let max = Math.max(...y);
+            for (let i = min; i < max; i += 0.1) {
+                lines.push({
+                    type: 'line',
+                    xref: 'paper',
+                    yref: 'y',
+                    x0: 0,
+                    y0: i,
+                    x1: 1,
+                    opacity: 0.7,
+                    y1: i,
+                    layer: 'below',
+                    line: {
+                        color: '#ff000040',
+                        width: counter++ % 5 != 0 ? 0.5 : 2,
+                    }
+                });
+            }
+            return lines;
+        }
 
         if (chartECG) {
             id = chartECG['id'];
@@ -405,123 +522,119 @@
             unit = chartECG['unit'];
             values = chartECG['values'];
             dates = chartECG['dates'];
+            datesMs = chartECG['datesMs'];
             date = chartECG['date'];
             eventsP = chartECG['eventsP'];
             eventsB = chartECG['eventsB'];
             eventsT = chartECG['eventsT'];
             eventsAF = chartECG['eventsAF'];
 
+            var datesWithTimezone = []
+            for (let d of dates) {
+                //let dWithTimezone = new Date(d);
+                let dWithTimezone = moment(d).tz("Europe/Bratislava").format('YYYY-MM-DD[T]HH:mm:ss.SSSSSS');
+                datesWithTimezone.push(dWithTimezone);
+            }
+
             var plot = {
-                x: dates,
+                x: datesWithTimezone,
                 y: values,
-                type: 'scatter',
+                type: 'lines',
                 name: navigator.language === 'sk' ? names_sk[name] : name,
             };
 
-            var shapes = [];
-            if (!(eventsP.length == 1 && !eventsT[0])) {
-                for (event of eventsP) {
-                    shapes.push({
-                        type: 'rect',
-                        xref: 'x',
-                        yref: 'paper',
-                        x0: event,
-                        x1: event + 1,
-                        y0: 0,
-                        y1: 1,
-                        fillcolor: '#b4aee880',
-                        line: {
-                            width: 0,
-                        },
-                        layer: 'below',
-                    });
-                }
+            var grid = [...generateXgrid(datesWithTimezone), ...generateYgrid(values)]
+
+            var shapesEvents = [];
+            for (event of eventsP) {
+                shapesEvents.push({
+                    type: 'rect',
+                    xref: 'x',
+                    yref: 'paper',
+                    x0: moment(event['start']).tz("Europe/Bratislava").format('YYYY-MM-DD[T]HH:mm:ss.SSSSSS'),
+                    x1: moment(event['end']).tz("Europe/Bratislava").format('YYYY-MM-DD[T]HH:mm:ss.SSSSSS'),
+                    y0: 0,
+                    y1: 1,
+                    fillcolor: '#b4aee840',
+                    line: {
+                        width: 0,
+                    },
+                    layer: 'below',
+                });
+
             }
 
-            if (!(eventsB.length == 1 && !eventsT[0])) {
-                for (event of eventsB) {
-                    shapes.push({
-                        type: 'rect',
-                        xref: 'x',
-                        yref: 'paper',
-                        x0: event,
-                        x1: event + 1,
-                        y0: 0,
-                        y1: 1,
-                        fillcolor: '#f0c92980',
-                        line: {
-                            width: 0,
-                        },
-                        layer: 'below',
-                    });
-                }
+            for (event of eventsB) {
+                shapesEvents.push({
+                    type: 'rect',
+                    xref: 'x',
+                    yref: 'paper',
+                    x0: moment(event['start']).tz("Europe/Bratislava").format('YYYY-MM-DD[T]HH:mm:ss.SSSSSS'),
+                    x1: moment(event['end']).tz("Europe/Bratislava").format('YYYY-MM-DD[T]HH:mm:ss.SSSSSS'),
+                    y0: 0,
+                    y1: 1,
+                    fillcolor: '#f0c92940',
+                    line: {
+                        width: 0,
+                    },
+                    layer: 'below',
+                });
             }
 
-            if (!(eventsT.length == 1 && !eventsT[0])) {
-                for (event of eventsT) {
-                    shapes.push({
-                        type: 'rect',
-                        xref: 'x',
-                        yref: 'paper',
-                        x0: event,
-                        x1: event + 1,
-                        y0: 0,
-                        y1: 1,
-                        fillcolor: '#f3918980',
-                        line: {
-                            width: 0,
-                        },
-                        layer: 'below',
-                    });
-                }
+            for (event of eventsT) {
+                shapesEvents.push({
+                    type: 'rect',
+                    xref: 'x',
+                    yref: 'paper',
+                    x0: moment(event['start']).tz("Europe/Bratislava").format('YYYY-MM-DD[T]HH:mm:ss.SSSSSS'),
+                    x1: moment(event['end']).tz("Europe/Bratislava").format('YYYY-MM-DD[T]HH:mm:ss.SSSSSS'),
+                    y0: 0,
+                    y1: 1,
+                    fillcolor: '#f3918940',
+                    line: {
+                        width: 0,
+                    },
+                    layer: 'below',
+                });
             }
 
-            if (!(eventsAF.length == 1 && !eventsT[0])) {
-                for (event of eventsAF) {
-                    shapes.push({
-                        type: 'rect',
-                        xref: 'x',
-                        yref: 'paper',
-                        x0: event,
-                        x1: event + 1,
-                        y0: 0,
-                        y1: 1,
-                        fillcolor: '#04658280',
-                        line: {
-                            width: 0,
-                        },
-                        layer: 'below',
-                    });
-                }
+            for (event of eventsAF) {
+                shapesEvents.push({
+                    type: 'rect',
+                    xref: 'x',
+                    yref: 'paper',
+                    x0: moment(event['start']).tz("Europe/Bratislava").format('YYYY-MM-DD[T]HH:mm:ss.SSSSSS'),
+                    x1: moment(event['end']).tz("Europe/Bratislava").format('YYYY-MM-DD[T]HH:mm:ss.SSSSSS'),
+                    y0: 0,
+                    y1: 1,
+                    fillcolor: '#04658240',
+                    line: {
+                        width: 0,
+                    },
+                    layer: 'below',
+                });
             }
 
             var layout = {
                 title: {
-                    text: navigator.language === 'sk' ? names_sk[name] : name,
+                    text: navigator.language === 'sk' ? names_sk[name] + ' zo dňa ' + date : name + ' from ' + date,
                 },
-                height: 1000,
+                height: 800,
                 xaxis: {
                     title: {
-                        text: navigator.language === 'sk' ? 'Čas v ms' : 'Time in ms',
+                        text: navigator.language === 'sk' ? 'Čas merania' : 'Time of the measurement (s)',
                     },
-                    autotick: false,
-                    tick0: dates[0],
-                    dtick: 40,
-                    showgrid: true,
-                    gridcolor: '#ff000020',
+                    showgrid: false,
+                    range: [datesWithTimezone[14000], datesWithTimezone[17000]],
                 },
-
                 yaxis: {
                     title: {
-                        text: navigator.language === 'sk' ? 'Hodnota (' + units_sk[unit] + ')' : 'Value (' + unit + ')',
+                        text: navigator.language === 'sk' ? 'Hodnota (' + units_sk[unit] + ')' : 'Value (' + unit +
+                            ')',
                     },
-                    autotick: false,
-                    tick0: -10,
-                    dtick: 1,
-                    showgrid: true,
-                    gridcolor: '#ff000020',
+                    showgrid: false,
                 },
-                shapes: length.shapes > 0 ? shapes : null,
+                shapes: [...shapesEvents, ...grid],
                 showlegend: true,
                 legend: {
                     orientation: 'h',
@@ -533,6 +646,7 @@
             };
 
             Plotly.newPlot('chart-ecg', [plot], layout);
+
         }
 
     </script>

@@ -563,7 +563,6 @@
             Plotly.newPlot('chart-conditions', traces, layout);  
         }
 
-
         // set up ecg charts
         chartECG = {!! $chartECG_encoded !!};
 
@@ -655,7 +654,6 @@
             eventsT = chartECG['eventsT'];
             eventsAF = chartECG['eventsAF'];
 
-
             var datesWithTimezone = []
             for (let d of dates) {
                 //let dWithTimezone = new Date(d);
@@ -725,7 +723,6 @@
             }
 
             for (event of eventsAF) {
-
                 shapesEvents.push({
                     type: 'rect',
                     xref: 'x',
