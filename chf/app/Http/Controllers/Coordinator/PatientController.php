@@ -184,6 +184,7 @@ class PatientController extends Controller
                 'username' => $validated['email'],
                 'password' => $validated['password'],
                 'type' => 'patient',
+                'doctorId' => 143,
             ]
         );
 
