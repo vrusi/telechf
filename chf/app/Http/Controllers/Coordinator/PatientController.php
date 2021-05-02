@@ -373,19 +373,20 @@ class PatientController extends Controller
     function storeEcg(Request $request)
     {
         $params = $request->all();
-        $params['patient'] = $request->route('patient');
 
         $validator = Validator::make(
             $params,
             [
-                'patient' => 'required|exists:users,id',
                 'file' => 'required|mimes:zip',
+                'patientId' => 'required|exists:users,id_external'
             ]
         );
 
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 422);
         }
+
+        $patient = User::where('id_external', $request->patientId)->first();
 
         $filePath = $request->file->getPathName();
         $parser = new Parser();
@@ -394,8 +395,6 @@ class PatientController extends Controller
         $ecgIds = array();
         foreach ($ecgParsedArray as $ecgParsed) {
             $ecgDate = Carbon::createFromTimestampMs($ecgParsed['timestamp']);
-
-            $userId = $params['patient'];
             $values = implode(',', $ecgParsed['values']);
             $eventsE = implode(',', $ecgParsed['eventsP']);
             $eventsB = implode(',', $ecgParsed['eventsB']);
@@ -404,7 +403,7 @@ class PatientController extends Controller
             $createdAt = $ecgDate;
 
             $ecg = ECG::create([
-                'user_id' => $userId,
+                'user_id' => $patient->id,
                 'values' => $values,
                 'eventsE' => $eventsE,
                 'eventsB' => $eventsB,
