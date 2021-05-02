@@ -495,26 +495,28 @@
         // fill the conditions plot
         var conditions = {!! $conditions_encoded !!};
 
-        var plotSwellings = {
+        var plotSwellings = conditions['swellings'].length > 0 ? {
             x: Object.keys(conditions['swellings'][0]),
             y: Object.values(conditions['swellings'][0]),
             type: 'bar',
             name: navigator.language === 'sk' ? 'Opuchy' : 'Swellings',
-        };
+        }
+        : null;
 
-        var plotExercise = {
+        var plotExercise = conditions['exercise'].length > 0 ? {
             x: Object.keys(conditions['exercise'][0]),
             y: Object.values(conditions['exercise'][0]),
             type: 'bar',
             name: navigator.language === 'sk' ? 'Tolerancia fyzickej námahy' : 'Physical exertion tolerance',
-        };
+        }
+        : null;
 
-        var plotDyspnoea = {
+        var plotDyspnoea = conditions['dyspnoea'].length > 0 ? {
             x: Object.keys(conditions['dyspnoea'][0]),
             y: Object.values(conditions['dyspnoea'][0]),
             type: 'bar',
             name: navigator.language === 'sk' ? 'Dýchavičnosť v ľahu' : 'Dyspnoea while lying down',
-        };
+        } : null;
 
         var layout = {
             barmode: 'group',
