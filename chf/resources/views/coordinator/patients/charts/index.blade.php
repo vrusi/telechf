@@ -114,7 +114,7 @@
             </div>
         @endforeach
 
-        @if ($conditions)
+        @if ($conditions && (count($conditions['swellings']) > 0 || count($conditions['exercise']) > 0 || count($conditions['dyspnoea']) > 0))
             <div class="d-flex justify-content-end align-items-center px-5 pt-5 mt-5 bg-white">
                 <div>
                     <form method="POST" action="{{ '/coordinator/patients/' . $patient['id'] . '/charts#chart-conditions' }}">
