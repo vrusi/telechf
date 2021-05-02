@@ -549,9 +549,20 @@
             },
         };
 
-        traces = [plotSwellings, plotExercise, plotDyspnoea];
+        traces = [];
+        if (plotSwellings) {
+            traces.push(plotSwellings);
+        }
+        if (plotExercise) {
+            traces.push(plotExercise);
+        }
+        if (plotDyspnoea) {
+            traces.push(plotDyspnoea);
+        }
+        if (traces.length > 0) { 
+            Plotly.newPlot('chart-conditions', traces, layout);  
+        }
 
-        Plotly.newPlot('chart-conditions', traces, layout);
 
         // set up ecg charts
         chartECG = {!! $chartECG_encoded !!};
