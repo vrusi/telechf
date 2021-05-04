@@ -36,10 +36,19 @@ class ProfileController extends Controller
         $user->mobile = $validated['mobile'] ?? $user->mobile;
         $response = $user->save();
 
+        $locale = $request->getPreferredLanguage(['en', 'sk']);
         if ($response) {
-            flash('Your personal information was successfully edited')->success();
+            if ($locale == 'sk') {
+                flash('Vaše osobné údaje boli úspešne zmenené.')->success();
+            } else {
+                flash('Your personal information was successfully edited.')->success();
+            }
         } else {
-            flash('Something went wrong.')->error();
+            if ($locale == 'sk') {
+                flash('Vaše osobné údaje sa nepodarilo zmeneniť.')->error();
+            } else {
+                flash('Your personal information could not be edited.')->error();
+            }
         }
 
         return view('patient.profile.index', ['user' => $user]);
@@ -58,6 +67,6 @@ class ProfileController extends Controller
             'conditions' => $conditions,
             'drugs' => $drugs,
             'locale' => $locale,
-            ]);
+        ]);
     }
 }

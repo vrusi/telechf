@@ -358,7 +358,21 @@ class PatientController extends Controller
             }
         }
 
-        flash('Patient ' . $patient->name . ' ' . $patient->surname . ' was successfully added.')->success();
+        $locale = $request->getPreferredLanguage(['en', 'sk']);
+        if ($patient) {
+            if ($locale == 'sk') {
+                flash('Pacienta ' . $patient->name . ' ' . $patient->surname . ' bol úspešne pridaný.')->success();
+            } else {
+                flash('Patient ' . $patient->name . ' ' . $patient->surname . ' was successfully added.')->success();
+            }
+        } else {
+            if ($locale == 'sk') {
+                flash('Pacienta ' . $patient->name . ' ' . $patient->surname . ' sa nepodarilo pridať.')->success();
+            } else {
+                flash('Patient ' . $patient->name . ' ' . $patient->surname . ' could not be added.')->success();
+            }
+        }
+
         return redirect()->action([ProfileController::class, 'index'], ['patient' => $patient->id]);
     }
 
@@ -366,14 +380,28 @@ class PatientController extends Controller
     public function deactivate(Request $request)
     {
         User::destroy($request->route('patient'));
-        flash('The user was successfully deactivated')->success();
+        $locale = $request->getPreferredLanguage(['en', 'sk']);
+        if ($locale == 'sk') {
+            flash('Používateľov účet bol úspešne deaktivovaný.')->success();
+
+        } else {
+            flash('The account was successfully deactivated.')->success();
+        }
+
         return redirect()->action([PatientController::class, 'index']);
     }
 
     public function restore(Request $request)
     {
         $user = User::where('id', $request->route('patient'))->restore();
-        flash('The user was successfully restored')->success();
+        $locale = $request->getPreferredLanguage(['en', 'sk']);
+        if ($locale == 'sk') {
+            flash('Používateľov účet bol úspešne obnovený.')->success();
+
+        } else {
+            flash('The account was successfully restored.')->success();
+        }
+
         return redirect()->action([PatientController::class, 'index']);
     }
 

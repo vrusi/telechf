@@ -32,7 +32,6 @@ class NotesController extends Controller
                 'parameters' => $parameters,
                 'measurements' => null,
             ]);
-            
         } else {
             $measurements = $patient->measurementsInDay($date);
         }
@@ -64,7 +63,7 @@ class NotesController extends Controller
 
             $measurementId = $measurement['id'];
             $notes = Measurement::find($measurementId)->notes;
-            
+
             if (count($notes) > 0) {
                 array_push($notesAll, ['measurement' => $measurement, 'notes' => $notes]);
             }
@@ -82,6 +81,7 @@ class NotesController extends Controller
     public function store(Request $request)
     {
         $author = Auth::user();
+        $locale = $request->getPreferredLanguage(['en', 'sk']);
 
         $validated = $request->validate([
             'measurementSelect' => 'required|exists:measurements,id',
@@ -95,9 +95,18 @@ class NotesController extends Controller
         ]);
 
         if ($noteId) {
-            flash('The note was successfully created')->success();
+
+            if ($locale == 'sk') {
+                flash('Poznámka bola vytvorená.')->error();
+            } else {
+                flash('The note was successfully created')->success();
+            }
         } else {
-            flash('The note was not created.')->error();
+            if ($locale == 'sk') {
+                flash('Poznámku sa nepodarilo vytvoriť.')->error();
+            } else {
+                flash('The note could not be created not created.')->error();
+            }
         };
 
         $date = $request->query('date');

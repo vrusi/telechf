@@ -30,24 +30,46 @@ class MeasurementController extends Controller
     public function checkDayAlarms(Request $request)
     {
         $patient = User::where('id', $request->route('patient'))->first();
+        $locale = $request->getPreferredLanguage(['en', 'sk']);
 
         $checkAll = $request->date == "null";
         if ($checkAll) {
             $success = $patient->setAllMeasurementsChecked(true);
 
             if ($success) {
-                flash('All alarms were successfully checked.')->success();
+                if ($locale == 'sk') 
+                {
+                    flash('Všetky alarmy boli označené ako skontrolované.')->success();
+                } else {
+                    flash('All alarms were successfully checked.')->success();
+                }
             } else {
-                flash('Something went wrong.')->error();
+                if ($locale == 'sk') 
+                {
+                    flash('Alarmy sa nepodarilo označiť ako skontrolované.')->error();
+                } else {
+                    flash('The alarms could not be checked.')->error();
+                }
             }
         } else {
             $date = Carbon::parse($request->date);
             $success = $patient->setMeasurementsInDayChecked($date, true);
 
             if ($success) {
-                flash('The alarm was successfully checked.')->success();
+                if ($locale == 'sk') 
+                {
+                    flash('Alarm bol označený ako skontrolovaný.')->success();
+                } else {
+                    flash('The alarm was successfully checked.')->success();
+                }
+                
             } else {
-                flash('Something went wrong.')->error();
+                if ($locale == 'sk') 
+                {
+                    flash('Alarm sa nepodarilo označiť ako skontrolovaný.')->error();
+                } else {
+                    flash('The alarm could not be checked.')->error();
+                }
             }
         }
 
