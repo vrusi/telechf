@@ -96,5 +96,5 @@ Route::get('coordinator/patients/{patient}/restore', 'App\Http\Controllers\Coord
 */
 
 Route::post('patients/ecgData', 'App\Http\Controllers\Coordinator\PatientController@storeEcg');
-//Route::post('patients/{patient}/ecg', 'App\Http\Controllers\Coordinator\PatientController@storeEcg');
+Route::post('patients/{patient}/ecgData', 'App\Http\Controllers\Coordinator\PatientController@storeEcgWithQuery');
 
