@@ -24,6 +24,7 @@ class UserSeeder extends Seeder
             'password' => Hash::make('coordinator'),
         ]);
 
+
 /* 
 
         DB::table('users')->insert([
@@ -158,6 +159,15 @@ class UserSeeder extends Seeder
             'height' => 177,
             'weight' => 89,
             'coordinator_id' => 1,
+        ]);
+
+        DB::table('users')->insert([
+            'name' => 'Eva',
+            'surname' => 'Goncalvesova',
+            'email' => 'eva.goncalvesova@nusch.sk',
+            'mobile' => '+421000000000',
+            'is_coordinator' => true,
+            'password' => Hash::make('nusch.sk21'),
         ]);
     }
 }
