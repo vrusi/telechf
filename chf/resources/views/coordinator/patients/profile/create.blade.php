@@ -79,14 +79,14 @@
                             <div class="form-group">
                                 <label for="birthDay">{{ __('Day') }}</label>
                                 <input type="number" class="form-control" id="birthDay" name="birthDay" min="1" max="31"
-                                    value={{ intval(date('d', strtotime($patient['dob']))) }}>
+                                    value={{ $patient['dob'] ? intval(date('d', strtotime($patient['dob']))) : null }}>
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="form-group">
                                 <label for="birthMonth">{{ __('Month') }}</label>
                                 <input type="number" class="form-control" id="birthMonth" name="birthMonth" min="1" max="12"
-                                    value={{ intval(date('m', strtotime($patient['dob']))) }}>
+                                    value={{ $patient['dob'] ? intval(date('m', strtotime($patient['dob']))) : null }}>
                             </div>
                         </div>
                     </div>
@@ -95,7 +95,7 @@
                             <div class="form-group">
                                 <label for="birthYear">{{ __('Year') }}</label>
                                 <input type="number" class="form-control" id="birthYear" name="birthYear" min="1900"
-                                    max="2021" value={{ intval(date('Y', strtotime($patient['dob']))) }}>
+                                    max="2021" value={{ $patient['dob'] ? intval(date('Y', strtotime($patient['dob']))) : null }}>
                             </div>
                         </div>
                     </div>

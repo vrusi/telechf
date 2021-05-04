@@ -86,6 +86,16 @@ Route::post('coordinator/thresholds/store', 'App\Http\Controllers\Coordinator\Th
 Route::get('coordinator/patients/{patient}/therapy/thresholds/create', 'App\Http\Controllers\Coordinator\PatientThresholdController@create')->middleware(['auth', 'coordinator']);
 Route::post('coordinator/patients/{patient}/therapy/thresholds/store', 'App\Http\Controllers\Coordinator\PatientThresholdController@store')->middleware(['auth', 'coordinator']);
 
+Route::get('coordinator/patients/{patient}/therapy/recommendations/create', 'App\Http\Controllers\Coordinator\ProfileController@createRecommendations')->middleware(['auth', 'coordinator']);
+Route::post('coordinator/patients/{patient}/therapy/recommendations/store', 'App\Http\Controllers\Coordinator\ProfileController@storeRecommendations')->middleware(['auth', 'coordinator'])->name('coordinator.patients.profile.recommendations.store');
+
+Route::get('coordinator/patients/{patient}/therapy/conditions/create', 'App\Http\Controllers\Coordinator\ProfileController@createConditions')->middleware(['auth', 'coordinator']);
+Route::post('coordinator/patients/{patient}/therapy/conditions/store', 'App\Http\Controllers\Coordinator\ProfileController@storeConditions')->middleware(['auth', 'coordinator'])->name('coordinator.patients.profile.conditions.store');
+
+Route::get('coordinator/patients/{patient}/therapy/prescriptions/create', 'App\Http\Controllers\Coordinator\ProfileController@createPrescriptions')->middleware(['auth', 'coordinator']);
+Route::post('coordinator/patients/{patient}/therapy/prescriptions/store', 'App\Http\Controllers\Coordinator\ProfileController@storePrescriptions')->middleware(['auth', 'coordinator'])->name('coordinator.patients.profile.prescriptions.store');
+
+
 Route::get('coordinator/patients/{patient}/deactivate', 'App\Http\Controllers\Coordinator\PatientController@deactivate')->middleware(['auth', 'coordinator']);
 Route::get('coordinator/patients/{patient}/restore', 'App\Http\Controllers\Coordinator\PatientController@restore')->middleware(['auth', 'coordinator']);
 

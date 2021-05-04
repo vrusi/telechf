@@ -105,29 +105,29 @@
 
                 <td> 
 
-                    {{ $patient->age().' '.__('years') ?? '--' }}
+                    {{ $patient->age() ? $patient->age().' '.__('years') : '--' }}
                 </td>
 
                 <td>
-                    {{ $patient['height'].' cm' ?? '--' }}
+                    {{ $patient['height'] ? $patient['height'].' cm' : '--' }}
                 </td>
 
                 <td>
-                    {{ $patient['weight'].' kg' ?? '--' }}
+                    {{ $patient['weight'] ? $patient['weight'].' kg' : '--' }}
                 </td>
                 <td>
                     <a href="mailto:{{ $patient['email'] }}">
-                        {{ $patient['email'] }}
+                        {{ $patient['email'] ?? '--' }}
                     </a>
                 </td>
                 <td>
                     <a href="tel:{{ $patient['mobile'] }}">
-                        {{ $patient['mobile'] }}
+                        {{ $patient['mobile'] ?? '--' }}
                     </a>
                 </td>
                 @if($active)
                 <td>
-                    <div class="d-flex justify-content-center align-items-center">
+                    <div class="d-flex ">
                         <a href="{{'/coordinator/patients/'.$patient['id'] }}">
                             <i class="fas fa-chevron-circle-right"></i>
                         </a>

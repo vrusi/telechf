@@ -26,6 +26,62 @@ class ProfileController extends Controller
         return view('coordinator.patients.profile.create', ['patient' => $patient]);
     }
 
+    public function createRecommendations(Request $request)
+    {
+        $patient = User::where('id', $request->route('patient'))->first();
+        return view('coordinator.patients.profile.recommendations.create', ['patient' => $patient]);
+    }
+
+    public function storeRecommendations(Request $request)
+    {
+        $patient = User::where('id', $request->route('patient'))->first();
+        $patient->recommendations = $request->recommendations;
+        $success = $patient->save();
+        $locale = $request->getPreferredLanguage(['en', 'sk']);
+        if ($success) {
+            if ($locale == 'sk') {
+                flash('Odporúčania pre pacienta boli uložené.')->success();
+            } else {
+                flash('The recommendations for the patient were saved.')->success();
+            }
+        } else {
+            if ($locale == 'sk') {
+                flash('Odporúčania pre pacienta neboli uložené.')->error();
+            } else {
+                flash('The recommendations for the patient could not be saved.')->error();
+            }
+        }
+        return redirect()->action([ProfileController::class, 'therapy'], ['patient' => $patient]);
+    }
+
+    public function createConditions(Request $request)
+    {
+        $patient = User::where('id', $request->route('patient'))->first();
+        return view('coordinator.patients.profile.conditions.create', ['patient' => $patient]);
+    }
+
+    public function storeConditions(Request $request)
+    {
+        $patient = User::where('id', $request->route('patient'))->first();
+        //$patient->recommendations = $request->recommendations;
+        //$patient->save();
+        return redirect()->action([ProfileController::class, 'therapy'], ['patient' => $patient]);
+    }
+
+    public function createPrescriptions(Request $request)
+    {
+        $patient = User::where('id', $request->route('patient'))->first();
+        return view('coordinator.patients.profile.prescriptions.create', ['patient' => $patient]);
+    }
+
+    public function storePrescriptions(Request $request)
+    {
+        $patient = User::where('id', $request->route('patient'))->first();
+        //$patient->recommendations = $request->recommendations;
+        //$patient->save();
+        return redirect()->action([ProfileController::class, 'therapy'], ['patient' => $patient]);
+    }
+
     public function update(Request $request)
     {
         $validated = $request->validate([
@@ -83,7 +139,7 @@ class ProfileController extends Controller
         }
 
         $dateOfBirth = $request['birthDay'] && $request['birthMonth'] && $request['birthYear'] ? strval($validated['birthYear']) . '-' . strval($validated['birthMonth']) . '-' . strval($validated['birthDay']) : null;
-        $patient = User::where('id', $validated['patientId'])->update([
+        $result = User::where('id', $validated['patientId'])->update([
             'id_external' => $validated['externalId'],
             'name' => $validated['name'] ?? null,
             'surname' =>  $validated['surname'] ?? null,
@@ -98,6 +154,23 @@ class ProfileController extends Controller
             'mac' => $validated['mac'] ?? null,
             'id_external_doctor' => $validated['externalDoctorId'],
         ]);
+
+        $locale = $request->getPreferredLanguage(['en', 'sk']);
+
+        if ($result == 0) {
+            if ($locale == 'sk') {
+                flash('Pacientove údaje neboli zmenené.')->success();
+            } else {
+                flash('The patient\'s personal information was not updated.')->success();
+            }
+        }
+        if ($result == 1) {
+            if ($locale == 'sk') {
+                flash('Pacientove údaje boli úspešne zmenené.')->success();
+            } else {
+                flash('The patient\'s personal information successfully updated.')->success();
+            }
+        }
 
         return redirect()->action([ProfileController::class, 'index'], ['patient' => $validated['patientId']]);
     }
