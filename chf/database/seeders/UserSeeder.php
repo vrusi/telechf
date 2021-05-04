@@ -16,6 +16,17 @@ class UserSeeder extends Seeder
     public function run()
     {
         DB::table('users')->insert([
+            'name' => 'Fedor',
+            'surname' => 'Lehocki',
+            'email' => 'fedor.lehocki@stuba.sk',
+            'mobile' => '+421000000000',
+            'is_coordinator' => true,
+            'password' => Hash::make('coordinator'),
+        ]);
+
+
+
+       /*  DB::table('users')->insert([
             'name' => 'Alice',
             'surname' => 'Stone',
             'email' => 'coordinator@gmail.com',
@@ -143,6 +154,6 @@ class UserSeeder extends Seeder
             'height' => 177,
             'weight' => 89,
             'coordinator_id' => 1,
-        ]);
+        ]); */
     }
 }
