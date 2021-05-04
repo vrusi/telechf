@@ -109,7 +109,7 @@ class ChartController extends Controller
             unset($dates);
         }
 
-        // get conditions data
+       /*  // get conditions data
         $conditions = $patient->conditionsCountsByDay();
         $conditionsDates = array();
         $swellingsValues = array();
@@ -149,7 +149,7 @@ class ChartController extends Controller
             'swellings' => $swellingsValues,
             'exercise' => $exerciseValues,
             'dyspnoea' => $dyspnoeaValues,
-        ];
+        ]; */
 
         // get available ECG data dates
         $ecgAvailableDatesRaw = ECG::where('user_id', $patient->id)->orderBy('created_at', 'DESC')->orderBy('updated_at', 'DESC')->pluck('created_at');
@@ -271,8 +271,8 @@ class ChartController extends Controller
                 'charts' => $charts,
                 'charts_encoded' => json_encode($charts, JSON_HEX_QUOT | JSON_HEX_APOS | JSON_NUMERIC_CHECK),
                 'filterOption' => $filterOption,
-                'conditions' => $conditionsParsed,
-                'conditions_encoded' => json_encode($conditionsParsed, JSON_HEX_QUOT | JSON_HEX_APOS | JSON_NUMERIC_CHECK),
+                'conditions' => null, //$conditionsParsed,
+                'conditions_encoded' => null, //json_encode($conditionsParsed, JSON_HEX_QUOT | JSON_HEX_APOS | JSON_NUMERIC_CHECK),
                 'chartECG' => $chartECG,
                 'chartECG_encoded' => json_encode($chartECG, JSON_HEX_QUOT | JSON_HEX_APOS | JSON_NUMERIC_CHECK),
                 'ecgAvailableDates' => $ecgAvailableDates,
