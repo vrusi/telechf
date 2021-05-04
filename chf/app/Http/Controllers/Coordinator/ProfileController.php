@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Coordinator;
 
 use App\Http\Controllers\Controller;
+use App\Models\Condition;
 use App\Models\User;
 use DateTime;
 
@@ -56,15 +57,55 @@ class ProfileController extends Controller
 
     public function createConditions(Request $request)
     {
+        $conditions = Condition::orderBy('name', 'ASC')->get();
         $patient = User::where('id', $request->route('patient'))->first();
-        return view('coordinator.patients.profile.conditions.create', ['patient' => $patient]);
+        return view('coordinator.patients.profile.conditions.create', [
+            'patient' => $patient,
+            'conditions' => $conditions
+        ]);
     }
 
     public function storeConditions(Request $request)
     {
         $patient = User::where('id', $request->route('patient'))->first();
-        //$patient->recommendations = $request->recommendations;
-        //$patient->save();
+        $locale = $request->getPreferredLanguage(['en', 'sk']);
+
+        if ($request->purge == "on") {
+            // remove all conditions
+            $patient->purgeConditions();
+            if ($locale == 'sk') {
+                flash('Všetky pacientove stavy boli zmazané.')->success();
+            } else {
+                flash('All the conditions were removed.')->success();
+            }
+        } else {
+
+            if ($request->conditions) {
+                // first remove all
+                $patient->purgeConditions();
+
+                // then attach the specified conditions
+                foreach ($request->conditions as $conditionId) {
+                    $patient->conditions()->attach($conditionId);
+                }
+
+                $success = $patient->save();
+                if ($success) {
+                    if ($locale == 'sk') {
+                        flash('Stav pre pacienta bol uložený.')->success();
+                    } else {
+                        flash('The conditions for the patient were saved.')->success();
+                    }
+                } else {
+                    if ($locale == 'sk') {
+                        flash('Stav pre pacienta sa nepodarilo uložiť.')->error();
+                    } else {
+                        flash('The conditions for the patient could not be saved.')->error();
+                    }
+                }
+            }
+        }
+
         return redirect()->action([ProfileController::class, 'therapy'], ['patient' => $patient]);
     }
 

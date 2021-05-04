@@ -361,7 +361,7 @@ class PatientController extends Controller
         $locale = $request->getPreferredLanguage(['en', 'sk']);
         if ($patient) {
             if ($locale == 'sk') {
-                flash('Pacienta ' . $patient->name . ' ' . $patient->surname . ' bol úspešne pridaný.')->success();
+                flash('Pacient ' . $patient->name . ' ' . $patient->surname . ' bol úspešne pridaný.')->success();
             } else {
                 flash('Patient ' . $patient->name . ' ' . $patient->surname . ' was successfully added.')->success();
             }

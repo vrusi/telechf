@@ -56,17 +56,11 @@
             </div>
 
             <div class="d-flex align-items-center my-5 justify-content-center">
-                <a href="{{ route('coordinator.patients.profile', ['patient' => $patient->id]) }}"
+                <a href="{{ route('coordinator.patients.therapy', ['patient' => $patient->id]) }}"
                     class="btn btn-secondary mr-3">{{ __('Cancel') }}</a>
                 <input type="hidden" name="patientId" id="patientId" value="{{ $patient->id }}">
                 <button type="submit" class="btn btn-primary">{{ __('Save') }}</button>
             </div>
         </form>
-
-
-
-
-
-
     </div>
 @endsection

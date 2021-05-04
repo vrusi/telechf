@@ -219,7 +219,7 @@ class User extends Authenticatable
                     ],
                 ];
         }
-        
+
         return $counts;
     }
 
@@ -666,5 +666,24 @@ class User extends Authenticatable
         }
 
         return $allChecked;
+    }
+
+    public function hasCondition(int $id)
+    {
+        $conditions = $this->conditions;
+        foreach ($conditions as $condition) {
+            if ($condition->id == $id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function purgeConditions()
+    {
+        $conditions = $this->conditions;
+        foreach ($conditions as $condition) {
+            $this->conditions()->detach($condition->id);
+        }
     }
 }

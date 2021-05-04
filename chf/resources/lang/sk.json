@@ -158,7 +158,7 @@
     "Enter some recommendations for the patient to stay healthy": "Napíšte odporúčania pre pacienta, aby ostal zdravý",
     "Do not smoke. Exercise 3 times a week.": "Nefajčite. Cvičte 3-krát týždeňne.",
     "Conditions": "Stav",
-    "Select which conditions the patient is being treated for, separate them with commas": "Vyberte na čo všetko je pacient liečený, oddelte ich čiarkami",
+    "Select which conditions the patient is being treated for": "Vyberte na čo všetko je pacient liečený",
     "Drugs": "Lieky",
     "Select which drugs the patient is currently prescribed": "Vyberte lieky, ktoré sú pacientovi predpísané",
     "Dosage": "Dávkovanie",
@@ -237,6 +237,7 @@
     "Update": "Aktualizovať",
     "Edit personal information": "Upraviť osobné údaje",
     "Edit recommendations": "Upraviť odporúčania",
-    "Edit conditions": "Upraviť liečbu",
-    "Edit prescriptions": "Upraviť predpisy"
+    "Edit conditions": "Upraviť stavy",
+    "Edit prescriptions": "Upraviť predpisy",
+    "Remove all conditions": "Odstrániť všetky stavy"
 }

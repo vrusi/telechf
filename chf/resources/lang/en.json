@@ -158,7 +158,7 @@
     "Enter some recommendations for the patient to stay healthy": "Enter some recommendations for the patient to stay healthy",
     "Do not smoke. Exercise 3 times a week.": "Do not smoke. Exercise 3 times a week.",
     "Conditions": "Conditions",
-    "Select which conditions the patient is being treated for, separate them with commas": "Select which conditions the patient is being treated for, separate them with commas",
+    "Select which conditions the patient is being treated for": "Select which conditions the patient is being treated for",
     "Drugs": "Drugs",
     "Select which drugs the patient is currently prescribed": "Select which drugs the patient is currently prescribed",
     "Dosage": "Dosage",
@@ -238,5 +238,6 @@
     "Edit personal information": "Edit personal information",
     "Edit recommendations": "Edit recommendations",
     "Edit conditions": "Edit conditions",
-    "Edit prescriptions": "Edit prescriptions"
+    "Edit prescriptions": "Edit prescriptions",
+    "Remove all conditions": "Remove all conditions"
 }
