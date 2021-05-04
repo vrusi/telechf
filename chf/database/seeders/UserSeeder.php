@@ -165,7 +165,7 @@ class UserSeeder extends Seeder
             'name' => 'Eva',
             'surname' => 'Goncalvesova',
             'email' => 'eva.goncalvesova@nusch.sk',
-            'mobile' => '+421000000000',
+            'mobile' => '+421001110000',
             'is_coordinator' => true,
             'password' => Hash::make('nusch.sk21'),
         ]);
