@@ -23,22 +23,6 @@ class UserSeeder extends Seeder
             'password' => Hash::make('coordinator'),
         ]);
 
-
-/* 
-
-        DB::table('users')->insert([
-            'name' => 'Alice',
-            'surname' => 'Stone',
-            'email' => 'coordinator@gmail.com',
-            'mobile' => '+447700900139',
-            'is_coordinator' => true,
-            'password' => Hash::make('coordinator'),
-        ]);
-
- */
-
-        
-
         $min = strtotime("80 years ago");
         $max = strtotime("55 years ago");
 
@@ -162,11 +146,18 @@ class UserSeeder extends Seeder
 
         DB::table('users')->insert([
             'name' => 'Eva',
-            'surname' => 'Goncalvesova',
+            'surname' => 'Goncalvesová',
             'email' => 'eva.goncalvesova@nusch.sk',
-            'mobile' => '+421001110000',
             'is_coordinator' => true,
             'password' => Hash::make('nusch.sk21'),
+        ]);
+
+        DB::table('users')->insert([
+            'name' => 'Veronika',
+            'surname' => 'Rusinková',
+            'email' => 'xrusinkova@stuba.sk',
+            'is_coordinator' => true,
+            'password' => Hash::make('fiitjepeklo'),
         ]);
     }
 }
