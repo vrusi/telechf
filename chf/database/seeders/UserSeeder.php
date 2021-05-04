@@ -24,7 +24,7 @@ class UserSeeder extends Seeder
             'password' => Hash::make('coordinator'),
         ]);
 
-
+/* 
 
         DB::table('users')->insert([
             'name' => 'Alice',
@@ -35,7 +35,9 @@ class UserSeeder extends Seeder
             'password' => Hash::make('coordinator'),
         ]);
 
-        /* 
+ */
+
+        
 
         $min = strtotime("80 years ago");
         $max = strtotime("55 years ago");
@@ -156,6 +158,6 @@ class UserSeeder extends Seeder
             'height' => 177,
             'weight' => 89,
             'coordinator_id' => 1,
-        ]); */
+        ]);
     }
 }
