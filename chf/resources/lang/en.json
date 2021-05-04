@@ -221,5 +221,12 @@
     "no conditions": "no conditions",
     "Select a measurement by date": "Select a measurement by date",
     "Select": "Select",
-    "External ID": "External ID"
+    "External ID": "External ID",
+    "required": "required",
+    "Required fields": "Required fields",
+    "Optional fields": "Optional fields",
+    "These fields can be added later.": "These fields can be added later.",
+    "External doctor ID": "External doctor ID",
+    "Update": "Update"
+    
 }

@@ -19,7 +19,6 @@ class UserSeeder extends Seeder
             'name' => 'Fedor',
             'surname' => 'Lehocki',
             'email' => 'fedor.lehocki@stuba.sk',
-            'mobile' => '+421000000000',
             'is_coordinator' => true,
             'password' => Hash::make('coordinator'),
         ]);

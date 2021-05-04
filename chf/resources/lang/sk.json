@@ -221,5 +221,12 @@
     "no conditions": "bez podmienok",
     "Select a measurement by date": "Vyberte meranie podľa dátumu",
     "Select": "Vybrať",
-    "External ID": "Externé ID"
+    "External ID": "Externé ID",
+    "required": "povinné",
+    "Required fields": "Povinné polia",
+    "Optional fields": "Nepovinné polia",
+    "These fields can be added later.": "Tieto polia môžu byť vyplnené neskôr.",
+    "External doctor ID": "Externé ID doktora",
+    "Update": "Aktualizovať"
+
 }

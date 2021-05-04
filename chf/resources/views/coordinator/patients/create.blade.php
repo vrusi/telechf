@@ -21,27 +21,51 @@
             <div class="row">
                 <div class="col-6">
                     <h2>{{ __('Personal information') }}</h2>
+                    <h3>{{ __('Required fields') }}</h3>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="email">{{ __('Email') }}</label>
+                                    <input type="email" class="form-control" id="email" name="email" value="@" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-6">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="password">{{ __('Password') }}</label>
+                                    <input type="password" class="form-control" id="password" name="password" required>
+                                    <small>{{ __('Format:') }} {{ __('no conditions') }}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <h3>{{ __('Optional fields') }}</h3>
+                    <p>{{ __('These fields can be added later.') }}</p>
                     <div class="row">
                         <div class="col-6">
                             <div class="col-12">
                                 <div class="form-group">
                                     <label for="name">{{ __('First name') }}</label>
-                                    <input type="text" class="form-control" id="name" name="name" required>
+                                    <input type="text" class="form-control" id="name" name="name">
                                 </div>
                             </div>
 
                             <div class="col-12">
                                 <div class="form-group">
                                     <label for="surname">{{ __('Surname') }}</label>
-                                    <input type="text" class="form-control" id="surname" name="surname" required>
+                                    <input type="text" class="form-control" id="surname" name="surname">
                                 </div>
                             </div>
 
                             <div class="col-12">
                                 <div class="form-group">
                                     <label for="sex">{{ __('Sex') }}</label>
-                                    <select id="sex" name="sex" class="form-control" required>
-                                        <option value="male" selected>{{ __('male') }}</option>
+                                    <select id="sex" name="sex" class="form-control">
+                                        <option value="" selected>--</option>
+                                        <option value="male">{{ __('male') }}</option>
                                         <option value="female">{{ __('female') }}</option>
                                     </select>
                                 </div>
@@ -56,14 +80,14 @@
                                             <div class="form-group">
                                                 <label for="birthDay">{{ __('Day') }}</label>
                                                 <input type="number" class="form-control" id="birthDay" name="birthDay"
-                                                    min="1" max="31" required>
+                                                    min="1" max="31">
                                             </div>
                                         </div>
                                         <div class="col-6">
                                             <div class="form-group">
                                                 <label for="birthMonth">{{ __('Month') }}</label>
                                                 <input type="number" class="form-control" id="birthMonth" name="birthMonth"
-                                                    min="1" max="12" required>
+                                                    min="1" max="12">
                                             </div>
                                         </div>
                                     </div>
@@ -72,7 +96,7 @@
                                             <div class="form-group">
                                                 <label for="birthYear">{{ __('Year') }}</label>
                                                 <input type="number" class="form-control" id="birthYear" name="birthYear"
-                                                    min="1900" max="2021" required>
+                                                    min="1900" max="2021">
                                             </div>
                                         </div>
                                     </div>
@@ -85,7 +109,7 @@
                                 <div class="form-group">
                                     <label for="height">{{ __('Height') }} (cm)</label>
                                     <input type="number" step=".01" pattern="^\d+(?:\.\d{1,2})?$" class="form-control"
-                                        id="height" name="height" required>
+                                        id="height" name="height">
                                 </div>
                             </div>
 
@@ -93,29 +117,15 @@
                                 <div class="form-group">
                                     <label for="weight">{{ __('Weight') }} (kg)</label>
                                     <input type="number" step=".01" pattern="^\d+(?:\.\d{1,2})?$" class="form-control"
-                                        id="weight" name="weight" required>
+                                        id="weight" name="weight">
                                 </div>
-                            </div>
-
-                            <div class="col-12">
-                                <label for="email">{{ __('Email') }}</label>
-                                <input type="email" class="form-control" id="email" name="email" value="@" required>
                             </div>
 
                             <div class="col-12 mt-3">
                                 <div class="form-group">
                                     <label for="mobile">{{ __('Mobile') }}</label>
-                                    <input type="tel" class="form-control" id="mobile" name="mobile" value="+421">
+                                    <input type="tel" class="form-control" id="mobile" name="mobile">
                                     <small>{{ __('Format:') }} +421000111222</small>
-                                </div>
-                            </div>
-
-                            <div class="col-12">
-                                <div class="form-group">
-                                    <label for="password">{{ __('Password') }}</label>
-                                    <input type="password" class="form-control" id="password" name="password" required>
-                                    <small>{{ __('Format:') }} {{ __('no conditions') }}</small>
-
                                 </div>
                             </div>
                         </div>
@@ -127,7 +137,7 @@
                                 <div class="form-group">
                                     <label for="mac">{{ __("The MAC address of patient's ECG sensor") }}</label>
                                     <input pattern="^([0-9A-Fa-f]{2}[:]){5}([0-9A-Fa-f]{2})$" type="text"
-                                        class="form-control" id="mac" name="mac" required>
+                                        class="form-control" id="mac" name="mac">
                                     <small>{{ __('Format:') }} 01:23:45:67:89:AB</small>
                                 </div>
                             </div>
@@ -137,7 +147,7 @@
 
                 <div class="col-6">
                     <h2>{{ __('Therapy information') }}</h2>
-
+                    <p>{{ __('These fields can be added later.') }}</p>
                     <div class="parameters">
                         <h3>{{ __('Parameters to monitor') }}</h3>
                         @foreach ($parameters as $parameter)
@@ -304,7 +314,8 @@
 
                                     <div class="d-flex align-items-center">
                                         <div class="form-group mr-3">
-                                            <label for="{{ 'drug' . $drug->id . 'times' }}">{{ __('Times') }}</label>
+                                            <label
+                                                for="{{ 'drug' . $drug->id . 'times' }}">{{ __('Times') }}</label>
                                             <input type="number" class="form-control"
                                                 id="{{ 'drug' . $drug->id . 'times' }}"
                                                 name="{{ 'drug' . $drug->id . 'times' }}" placeholder="3">

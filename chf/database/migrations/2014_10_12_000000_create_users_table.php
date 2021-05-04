@@ -16,10 +16,12 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('id_external')->nullable();
-            $table->string('name');
-            $table->string('surname');
+            $table->string('mac')->nullable();
+            $table->string('id_external_doctor')->nullable();
+            $table->string('name')->nullable();
+            $table->string('surname')->nullable();
             $table->string('email')->unique();
-            $table->string('mobile')->unique();
+            $table->string('mobile')->nullable();
             $table->boolean('is_coordinator')->default(false);
             $table->string('password');
             $table->enum('sex', ['male', 'female'])->nullable();
@@ -27,7 +29,6 @@ class CreateUsersTable extends Migration
             $table->float('height')->nullable();
             $table->float('weight')->nullable();
             $table->string('recommendations')->nullable();
-            $table->string('mac')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();

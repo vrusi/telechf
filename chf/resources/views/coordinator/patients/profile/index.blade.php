@@ -33,19 +33,31 @@
             </li>
         </ul>
 
-        <h3 class="mb-3">
-            {{ __('Personal information') }}
-        </h3>
+        <div class="d-flex align-items-center justify-content-between">
+            <div>
+                <h3 class="mb-3">
+                    {{ __('Personal information') }}
+                </h3>
+            </div>
+
+            <div>
+                <a href="{{ '/coordinator/patients/' . $patient['id'] . '/profile/edit' }}"
+                    class="btn btn-outline-secondary">
+                    <i class="fas fa-edit"></i>
+                    {{ __('Edit personal information') }}
+                </a>
+            </div>
+        </div>
 
         <table>
-                <tr>
-                    <td class="font-weight-bold pr-3">
-                        {{ __('Name') }}
-                    </td>
-                    <td>
-                        {{ $patient['name'] ?? '--'}}
-                    </td>
-                </tr>
+            <tr>
+                <td class="font-weight-bold pr-3">
+                    {{ __('Name') }}
+                </td>
+                <td>
+                    {{ $patient['name'] ?? '--' }}
+                </td>
+            </tr>
 
             <tr>
                 <td class="font-weight-bold pr-3">
@@ -149,11 +161,20 @@
 
             <tr>
                 <td class="font-weight-bold pr-3">
+                    {{ __('External doctor ID') }}
+                </td>
+                <td>
+                    {{ $patient['id_external_doctor'] ?? '--' }}
+
+                </td>
+            </tr>
+
+            <tr>
+                <td class="font-weight-bold pr-3">
                     {{ __("The MAC address of patient's ECG sensor") }}
                 </td>
                 <td>
                     {{ $patient['mac'] ?? '--' }}
-
                 </td>
             </tr>
         </table>

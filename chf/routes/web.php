@@ -42,13 +42,12 @@ Route::get('/charts', 'App\Http\Controllers\Patient\ChartController@index')->mid
 Route::post('/charts/filter', 'App\Http\Controllers\Patient\ChartController@filter')->middleware(['auth', 'patient']);
 Route::post('/charts', 'App\Http\Controllers\Patient\ChartController@selectDate')->middleware(['auth', 'patient']);
 
-
-
 require __DIR__ . '/auth.php';
 
 Auth::routes();
-
-
+Route::get('/register', function() {
+    return redirect('/login');
+});
 /*
 |--------------------------------------------------------------------------
 | Coordinator Routes
@@ -71,8 +70,10 @@ Route::get('coordinator/patients/{patient}/charts', 'App\Http\Controllers\Coordi
 Route::post('coordinator/patients/{patient}/charts/filter', 'App\Http\Controllers\Coordinator\ChartController@filter')->middleware(['auth', 'coordinator']);
 Route::post('coordinator/patients/{patient}/charts', 'App\Http\Controllers\Coordinator\ChartController@selectDate')->middleware(['auth', 'coordinator'])->name('coordinator.patients.charts');
 
-
 Route::get('coordinator/patients/{patient}/profile', 'App\Http\Controllers\Coordinator\ProfileController@index')->middleware(['auth', 'coordinator'])->name('coordinator.patients.profile');
+Route::get('coordinator/patients/{patient}/profile/edit', 'App\Http\Controllers\Coordinator\ProfileController@create')->middleware(['auth', 'coordinator']);
+Route::post('coordinator/patients/{patient}/profile/edit', 'App\Http\Controllers\Coordinator\ProfileController@update')->middleware(['auth', 'coordinator'])->name('coordinator.patients.profile.update');
+
 Route::get('coordinator/patients/{patient}/therapy', 'App\Http\Controllers\Coordinator\ProfileController@therapy')->middleware(['auth', 'coordinator'])->name('coordinator.patients.therapy');
 Route::get('coordinator/patients/{patient}/contacts', 'App\Http\Controllers\Coordinator\ContactController@index')->middleware(['auth', 'coordinator'])->name('coordinator.patients.contact');
 Route::get('coordinator/patients/{patient}/contacts/create', 'App\Http\Controllers\Coordinator\ContactController@create')->middleware(['auth', 'coordinator']);

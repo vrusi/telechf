@@ -61,21 +61,21 @@ class PatientController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required',
-            'surname' => 'required',
-            'sex' => 'required|in:male,female',
+            'name' => 'nullable',
+            'surname' => 'nullable',
+            'sex' => 'nullable|in:male,female',
 
-            'birthDay' => 'required|integer|between:1,31',
-            'birthMonth' => 'required|integer|between:1,12',
-            'birthYear' => 'required|integer|between:1900,2021',
+            'birthDay' => 'nullable|integer|between:1,31',
+            'birthMonth' => 'nullable|integer|between:1,12',
+            'birthYear' => 'nullable|integer|between:1900,2021',
 
-            'height' => 'required|min:1',
-            'weight' => 'required|min:1',
+            'height' => 'nullable|min:1',
+            'weight' => 'nullable|min:1',
             'email' => 'required',
             'mobile' => 'nullable',
-            'coordinatorId' => 'required|exists:users,id',
+            'coordinatorId' => 'nullable|exists:users,id',
             'password' => 'required',
-            'mac' => ['required', 'string', 'regex:/^([0-9A-Fa-f]{2}[:]){5}([0-9A-Fa-f]{2})$/'],
+            'mac' => ['nullable', 'string', 'regex:/^([0-9A-Fa-f]{2}[:]){5}([0-9A-Fa-f]{2})$/'],
 
             'parameter1MinSafety' => 'nullable|numeric|min:1',
             'parameter1MaxSafety' => 'nullable|numeric|min:1',
@@ -151,40 +151,46 @@ class PatientController extends Controller
             'drug4per' => 'nullable|in:hour,day,week,month',
         ]);
 
-        // validate date of birth
-        if (in_array($validated['birthMonth'], [4, 6, 9, 11])) {
-            if ($validated['birthDay'] >= 31) {
-                $dateObj = DateTime::createFromFormat('!m', $validated['birthMonth']);
-                $monthName = $dateObj->format('F');
-                throw ValidationException::withMessages([$monthName . ' has only 30 days.']);
+        if ($request['birthDay'] && $request['birthMonth'] && $request['birthYear']) {
+
+            // validate date of birth
+            if (in_array($validated['birthMonth'], [4, 6, 9, 11])) {
+                if ($validated['birthDay'] >= 31) {
+                    $dateObj = DateTime::createFromFormat('!m', $validated['birthMonth']);
+                    $monthName = $dateObj->format('F');
+                    throw ValidationException::withMessages([$monthName . ' has only 30 days.']);
+                }
+            }
+
+            if ($validated['birthMonth'] == 2) {
+                // leap year
+                if ($validated['birthYear'] % 4 != 0) {
+                    if ($validated['birthDay'] >= 29) {
+                        throw ValidationException::withMessages(['February ' . strval($validated['birthYear']) . ' has only 28 days.']);
+                    }
+                    // non-leap year
+                } else {
+                    if ($validated['birthDay'] >= 30) {
+                        throw ValidationException::withMessages(['February ' . strval($validated['birthYear']) . ' has only 29 days.']);
+                    }
+                }
             }
         }
 
-        if ($validated['birthMonth'] == 2) {
-            // leap year
-            if ($validated['birthYear'] % 4 != 0) {
-                if ($validated['birthDay'] >= 29) {
-                    throw ValidationException::withMessages(['February ' . strval($validated['birthYear']) . ' has only 28 days.']);
-                }
-                // non-leap year
-            } else {
-                if ($validated['birthDay'] >= 30) {
-                    throw ValidationException::withMessages(['February ' . strval($validated['birthYear']) . ' has only 29 days.']);
-                }
-            }
-        }
+
+        $doctorId = 143;
 
         // create external user
         $responsePatient = Http::post(
             'http://147.175.106.7:5000/api/patient/createExternal',
             [
                 'email' => $validated['email'],
-                'name' => $validated['name'],
-                'lastname' => $validated['surname'],
+                'name' => $validated['name'] ?? null,
+                'lastname' => $validated['surname'] ?? null,
                 'username' => $validated['email'],
                 'password' => $validated['password'],
                 'type' => 'patient',
-                'doctorId' => 143,
+                'doctorId' => $doctorId,
             ]
         );
 
@@ -196,22 +202,23 @@ class PatientController extends Controller
             ]
         );
 
-        $dateOfBirth = strval($validated['birthYear']) . '-' . strval($validated['birthMonth']) . '-' . strval($validated['birthDay']);
+        $dateOfBirth = $request['birthDay'] && $request['birthMonth'] && $request['birthYear'] ? strval($validated['birthYear']) . '-' . strval($validated['birthMonth']) . '-' . strval($validated['birthDay']) : null;
         $patient = User::create([
-            'id_external' => $responsePatient->body(),
-            'name' => $validated['name'],
-            'surname' =>  $validated['surname'],
-            'sex' => $validated['sex'],
-            'dob' =>  $dateOfBirth,
-            'height' =>  $validated['height'],
-            'weight' =>  $validated['weight'],
+            'id_external' => $responsePatient->body() ?? null,
+            'name' => $validated['name'] ?? null,
+            'surname' =>  $validated['surname'] ?? null,
+            'sex' => $validated['sex'] ?? null,
+            'dob' =>  $dateOfBirth ?? null,
+            'height' =>  $validated['height'] ?? null,
+            'weight' =>  $validated['weight'] ?? null,
             'email' =>  $validated['email'],
-            'mobile' =>  $validated['mobile'],
-            'recommendations' => $validated['recommendations'],
+            'mobile' =>  $validated['mobile'] ?? null,
+            'recommendations' => $validated['recommendations'] ?? null,
             'coordinator_id' => $validated['coordinatorId'],
             'password' => Hash::make($validated['password']),
             'is_coordinator' => false,
-            'mac' => $validated['mac'],
+            'mac' => $validated['mac'] ?? null,
+            'id_external_doctor' =>  $doctorId,
         ]);
 
         if ($request->parameter1check) {
