@@ -99,7 +99,7 @@ class ProfileController extends Controller
             'id_external_doctor' => $validated['externalDoctorId'],
         ]);
 
-        return redirect()->action(ProfileController::class, 'index', ['patient' => $validated['patientId']]);
+        return redirect()->action([ProfileController::class, 'index'], ['patient' => $validated['patientId']]);
     }
 
 
