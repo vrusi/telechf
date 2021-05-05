@@ -369,76 +369,77 @@
 
         if (conditions != null) {
 
-        var plotSwellings = conditions['swellings'].length > 0 ? {
-                x: Object.keys(conditions['swellings'][0]),
-                y: Object.values(conditions['swellings'][0]),
+            var plotSwellings = conditions['swellings'].length > 0 ? {
+                    x: Object.keys(conditions['swellings'][0]),
+                    y: Object.values(conditions['swellings'][0]),
+                    type: 'bar',
+                    name: navigator.language === 'sk' ? 'Opuchy' : 'Swellings',
+                } :
+                null;
+
+            var plotExercise = conditions['exercise'].length > 0 ? {
+                    x: Object.keys(conditions['exercise'][0]),
+                    y: Object.values(conditions['exercise'][0]),
+                    type: 'bar',
+                    name: navigator.language === 'sk' ? 'Tolerancia fyzickej námahy' : 'Physical exertion tolerance',
+                } :
+                null;
+
+            var plotDyspnoea = conditions['dyspnoea'].length > 0 ? {
+                x: Object.keys(conditions['dyspnoea'][0]),
+                y: Object.values(conditions['dyspnoea'][0]),
                 type: 'bar',
-                name: navigator.language === 'sk' ? 'Opuchy' : 'Swellings',
-            } :
-            null;
+                name: navigator.language === 'sk' ? 'Dýchavičnosť v ľahu' : 'Dyspnoea while lying down',
+            } : null;
 
-        var plotExercise = conditions['exercise'].length > 0 ? {
-                x: Object.keys(conditions['exercise'][0]),
-                y: Object.values(conditions['exercise'][0]),
-                type: 'bar',
-                name: navigator.language === 'sk' ? 'Tolerancia fyzickej námahy' : 'Physical exertion tolerance',
-            } :
-            null;
-
-        var plotDyspnoea = conditions['dyspnoea'].length > 0 ? {
-            x: Object.keys(conditions['dyspnoea'][0]),
-            y: Object.values(conditions['dyspnoea'][0]),
-            type: 'bar',
-            name: navigator.language === 'sk' ? 'Dýchavičnosť v ľahu' : 'Dyspnoea while lying down',
-        } : null;
-
-        var layout = {
-            barmode: 'group',
-            title: {
-                text: navigator.language === 'sk' ? 'Stav zo dňa ' + conditions['date'] : 'Status from ' + conditions[
-                    'date'],
-            },
-            xaxis: {
+            var layout = {
+                barmode: 'group',
                 title: {
-                    text: navigator.language === 'sk' ? 'Hodnotenie' : 'Rating',
+                    text: navigator.language === 'sk' ? 'Stav zo dňa ' + conditions['date'] : 'Status from ' +
+                        conditions[
+                            'date'],
                 },
-                tickvals: [1, 2, 3, 4, 5],
-                ticktext: navigator.language === 'sk' ? ['Veľmi dobré', 'Dobré', 'Stredne', 'Zlé', 'Veľmi zlé'] : [
-                    'Very good', 'Good', 'Neutral', 'Bad', 'Very bad'
-                ]
-            },
-            yaxis: {
-                title: {
-                    text: navigator.language === 'sk' ? 'Počet' : 'Count',
+                xaxis: {
+                    title: {
+                        text: navigator.language === 'sk' ? 'Hodnotenie' : 'Rating',
+                    },
+                    tickvals: [1, 2, 3, 4, 5],
+                    ticktext: navigator.language === 'sk' ? ['Veľmi dobré', 'Dobré', 'Stredne', 'Zlé', 'Veľmi zlé'] : [
+                        'Very good', 'Good', 'Neutral', 'Bad', 'Very bad'
+                    ]
                 },
-                autotick: false,
-                tick0: 0,
-                dtick: 1,
-                range: [0, 5],
-            },
-            showlegend: true,
-            legend: {
-                "orientation": "h",
-                xanchor: "center",
-                yanchor: "top",
-                y: -0.3,
-                x: 0.5,
-            },
-        };
+                yaxis: {
+                    title: {
+                        text: navigator.language === 'sk' ? 'Počet' : 'Count',
+                    },
+                    autotick: false,
+                    tick0: 0,
+                    dtick: 1,
+                    range: [0, 5],
+                },
+                showlegend: true,
+                legend: {
+                    "orientation": "h",
+                    xanchor: "center",
+                    yanchor: "top",
+                    y: -0.3,
+                    x: 0.5,
+                },
+            };
 
-        traces = [];
-        if (plotSwellings) {
-            traces.push(plotSwellings);
-        }
-        if (plotExercise) {
-            traces.push(plotExercise);
-        }
-        if (plotDyspnoea) {
-            traces.push(plotDyspnoea);
-        }
-        if (traces.length > 0) {
-            Plotly.newPlot('chart-conditions', traces, layout);
-        }
+            traces = [];
+            if (plotSwellings) {
+                traces.push(plotSwellings);
+            }
+            if (plotExercise) {
+                traces.push(plotExercise);
+            }
+            if (plotDyspnoea) {
+                traces.push(plotDyspnoea);
+            }
+            if (traces.length > 0) {
+                Plotly.newPlot('chart-conditions', traces, layout);
+            }
         }
 
         // set up ecg charts
