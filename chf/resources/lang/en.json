@@ -243,5 +243,6 @@
     "Prescriptions": "Prescriptions",
     "The patient does not have any data to generate charts for now.": "The patient does not have any data to generate charts for now.",
     "The patient does not have any contacts.": "The patient does not have any contacts.",
-    "You do not have any contacts.": "You do not have any contacts."
+    "You do not have any contacts.": "You do not have any contacts.",
+    "There are no extra measurements for you to take.": "There are no extra measurements for you to take."
 }

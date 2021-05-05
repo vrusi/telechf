@@ -170,7 +170,7 @@ class ChartController extends Controller
             : ECG::where('user_id', $user->id)->orderBy('created_at', 'DESC')->orderBy('updated_at', 'DESC')->first();
 
         if (!$ecgData) {
-            return view('coordinator.patients.charts.index', [
+            return view('patient.charts.index', [
                 'charts' => $charts,
                 'charts_encoded' => json_encode($charts, JSON_HEX_QUOT | JSON_HEX_APOS | JSON_NUMERIC_CHECK),
                 'filterOption' => $filterOption,
