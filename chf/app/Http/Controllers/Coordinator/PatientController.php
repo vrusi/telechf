@@ -466,7 +466,6 @@ class PatientController extends Controller
         $params = $request->all();
         $params['patient'] = $request->route('patient');
 
-        dd($params);
         $validator = Validator::make(
             $params,
             [
