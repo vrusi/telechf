@@ -41,7 +41,7 @@
             </div>
 
             <div>
-                <a href="{{ '/coordinator/patients/' . $patient['id'] . '/profile/create' }}"
+                <a href="{{ '/coordinator/patients/' . $patient['id'] . '/profile/edit' }}"
                     class="btn btn-outline-secondary">
                     <i class="fas fa-edit"></i>
                     {{ __('Edit personal information') }}
