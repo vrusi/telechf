@@ -41,6 +41,15 @@ class PatientController extends Controller
     public function show(Request $request)
     {
         $patient =  User::where('id', $request->route('patient'))->first();
+        if (!$patient) {
+            $locale = $request->getPreferredLanguage(['en', 'sk']);
+            if ($locale == 'sk') {
+                flash('Používateľ s požadovaným ID sa nenašiel.')->error();
+            } else {
+                flash('No user with the specified ID was found.')->error();
+            }
+            return redirect()->action([PatientController::class, 'index']);
+        }
         return redirect()->action([ProfileController::class, 'index'], ['patient' => $patient->id]);
     }
 
@@ -176,7 +185,6 @@ class PatientController extends Controller
                 }
             }
         }
-
 
         $doctorId = 143;
 

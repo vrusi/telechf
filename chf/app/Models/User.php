@@ -464,7 +464,7 @@ class User extends Authenticatable
 
     public function drugs()
     {
-        return $this->belongsToMany(Drug::class, 'user_drugs');
+        return $this->belongsToMany(Drug::class, 'user_drugs', 'user_id', 'drug_id')->withPivot('dosage_volume', 'dosage_unit', 'dosage_times', 'dosage_span');
     }
 
     public function thresholds()
@@ -684,6 +684,25 @@ class User extends Authenticatable
         $conditions = $this->conditions;
         foreach ($conditions as $condition) {
             $this->conditions()->detach($condition->id);
+        }
+    }
+
+    public function hasDrug(Drug $drugToCheck)
+    {
+        $drugs = $this->drugs;
+        foreach ($drugs as $drug) {
+            if ($drug->id == $drugToCheck->id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public function purgeDrugs()
+    {
+        $drugs = $this->drugs;
+        foreach ($drugs as $drug) {
+            $this->drugs()->detach($drug->id);
         }
     }
 }

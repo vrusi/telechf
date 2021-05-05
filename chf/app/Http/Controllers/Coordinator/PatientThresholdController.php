@@ -72,7 +72,6 @@ class PatientThresholdController extends Controller
         ]);
 
         $patient = User::where('id', $validated['patientId'])->first();
-        //$patientParameters = $patient->parameters()->orderBy('id', 'ASC')->get();
         $patientParameters = Parameter::orderBy('id', 'ASC')->get();
 
         $parameter1 =  Parameter::where('id', 1)->first();

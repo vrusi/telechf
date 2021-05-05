@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Coordinator;
 
 use App\Http\Controllers\Controller;
 use App\Models\Condition;
+use App\Models\Drug;
 use App\Models\User;
 use DateTime;
 
@@ -18,47 +19,86 @@ class ProfileController extends Controller
     public function index(Request $request)
     {
         $patient = User::where('id', $request->route('patient'))->first();
+        if (!$patient) {
+            $locale = $request->getPreferredLanguage(['en', 'sk']);
+            if ($locale == 'sk') {
+                flash('Používateľ s požadovaným ID sa nenašiel.')->error();
+            } else {
+                flash('No user with the specified ID was found.')->error();
+            }
+            return redirect()->action([PatientController::class, 'index']);
+        }
         return view('coordinator.patients.profile.index', ['patient' => $patient]);
     }
 
     public function create(Request $request)
     {
         $patient = User::where('id', $request->route('patient'))->first();
+        if (!$patient) {
+            $locale = $request->getPreferredLanguage(['en', 'sk']);
+            if ($locale == 'sk') {
+                flash('Používateľ s požadovaným ID sa nenašiel.')->error();
+            } else {
+                flash('No user with the specified ID was found.')->error();
+            }
+            return redirect()->action([PatientController::class, 'index']);
+        }
         return view('coordinator.patients.profile.create', ['patient' => $patient]);
     }
 
     public function createRecommendations(Request $request)
     {
         $patient = User::where('id', $request->route('patient'))->first();
+        if (!$patient) {
+            $locale = $request->getPreferredLanguage(['en', 'sk']);
+            if ($locale == 'sk') {
+                flash('Používateľ s požadovaným ID sa nenašiel.')->error();
+            } else {
+                flash('No user with the specified ID was found.')->error();
+            }
+            return redirect()->action([PatientController::class, 'index']);
+        }
         return view('coordinator.patients.profile.recommendations.create', ['patient' => $patient]);
     }
 
     public function storeRecommendations(Request $request)
     {
         $patient = User::where('id', $request->route('patient'))->first();
+        if (!$patient) {
+            $locale = $request->getPreferredLanguage(['en', 'sk']);
+            if ($locale == 'sk') {
+                flash('Používateľ s požadovaným ID sa nenašiel.')->error();
+            } else {
+                flash('No user with the specified ID was found.')->error();
+            }
+            return redirect()->action([PatientController::class, 'index']);
+        }
         $patient->recommendations = $request->recommendations;
         $success = $patient->save();
         $locale = $request->getPreferredLanguage(['en', 'sk']);
-        if ($success) {
-            if ($locale == 'sk') {
-                flash('Odporúčania pre pacienta boli uložené.')->success();
-            } else {
-                flash('The recommendations for the patient were saved.')->success();
-            }
+
+        if ($locale == 'sk') {
+            flash('Odporúčania pre pacienta boli uložené.')->success();
         } else {
-            if ($locale == 'sk') {
-                flash('Odporúčania pre pacienta neboli uložené.')->error();
-            } else {
-                flash('The recommendations for the patient could not be saved.')->error();
-            }
+            flash('The recommendations for the patient were saved.')->success();
         }
+
         return redirect()->action([ProfileController::class, 'therapy'], ['patient' => $patient]);
     }
 
     public function createConditions(Request $request)
     {
-        $conditions = Condition::orderBy('name', 'ASC')->get();
         $patient = User::where('id', $request->route('patient'))->first();
+        if (!$patient) {
+            $locale = $request->getPreferredLanguage(['en', 'sk']);
+            if ($locale == 'sk') {
+                flash('Používateľ s požadovaným ID sa nenašiel.')->error();
+            } else {
+                flash('No user with the specified ID was found.')->error();
+            }
+            return redirect()->action([PatientController::class, 'index']);
+        }
+        $conditions = Condition::orderBy('name', 'ASC')->get();
         return view('coordinator.patients.profile.conditions.create', [
             'patient' => $patient,
             'conditions' => $conditions
@@ -68,6 +108,15 @@ class ProfileController extends Controller
     public function storeConditions(Request $request)
     {
         $patient = User::where('id', $request->route('patient'))->first();
+        if (!$patient) {
+            $locale = $request->getPreferredLanguage(['en', 'sk']);
+            if ($locale == 'sk') {
+                flash('Používateľ s požadovaným ID sa nenašiel.')->error();
+            } else {
+                flash('No user with the specified ID was found.')->error();
+            }
+            return redirect()->action([PatientController::class, 'index']);
+        }
         $locale = $request->getPreferredLanguage(['en', 'sk']);
 
         if ($request->purge == "on") {
@@ -90,18 +139,11 @@ class ProfileController extends Controller
                 }
 
                 $success = $patient->save();
-                if ($success) {
-                    if ($locale == 'sk') {
-                        flash('Stav pre pacienta bol uložený.')->success();
-                    } else {
-                        flash('The conditions for the patient were saved.')->success();
-                    }
+
+                if ($locale == 'sk') {
+                    flash('Stav pre pacienta bol uložený.')->success();
                 } else {
-                    if ($locale == 'sk') {
-                        flash('Stav pre pacienta sa nepodarilo uložiť.')->error();
-                    } else {
-                        flash('The conditions for the patient could not be saved.')->error();
-                    }
+                    flash('The conditions for the patient were saved.')->success();
                 }
             }
         }
@@ -112,14 +154,110 @@ class ProfileController extends Controller
     public function createPrescriptions(Request $request)
     {
         $patient = User::where('id', $request->route('patient'))->first();
-        return view('coordinator.patients.profile.prescriptions.create', ['patient' => $patient]);
+        if (!$patient) {
+            $locale = $request->getPreferredLanguage(['en', 'sk']);
+            if ($locale == 'sk') {
+                flash('Používateľ s požadovaným ID sa nenašiel.')->error();
+            } else {
+                flash('No user with the specified ID was found.')->error();
+            }
+            return redirect()->action([PatientController::class, 'index']);
+        }
+        $drugs = Drug::all();
+        $drugsPatient = $patient->drugs;
+        return view('coordinator.patients.profile.prescriptions.create', [
+            'patient' => $patient,
+            'drugs' => $drugs,
+            'drugsPatient' => $drugsPatient,
+        ]);
     }
 
     public function storePrescriptions(Request $request)
     {
         $patient = User::where('id', $request->route('patient'))->first();
-        //$patient->recommendations = $request->recommendations;
-        //$patient->save();
+        if (!$patient) {
+            $locale = $request->getPreferredLanguage(['en', 'sk']);
+            if ($locale == 'sk') {
+                flash('Používateľ s požadovaným ID sa nenašiel.')->error();
+            } else {
+                flash('No user with the specified ID was found.')->error();
+            }
+            return redirect()->action([PatientController::class, 'index']);
+        }
+        $validated = $request->validate([
+            'drug1volume' => 'nullable|numeric',
+            'drug1unit' => 'nullable',
+            'drug1times' => 'nullable|numeric|min:1',
+            'drug1per' => 'nullable|in:hour,day,week,month',
+
+            'drug2volume' => 'nullable|numeric',
+            'drug2unit' => 'nullable',
+            'drug2times' => 'nullable|numeric|min:1',
+            'drug2per' => 'nullable|in:hour,day,week,month',
+
+            'drug3volume' => 'nullable|numeric',
+            'drug3unit' => 'nullable',
+            'drug3times' => 'nullable|numeric|min:1',
+            'drug3per' => 'nullable|in:hour,day,week,month',
+
+            'drug4times' => 'nullable|numeric|min:1',
+            'drug4per' => 'nullable|in:hour,day,week,month',
+            'drug4times' => 'nullable|numeric|min:1',
+            'drug4per' => 'nullable|in:hour,day,week,month',
+        ]);
+
+        $patient->purgeDrugs();
+        $attach1 = null;
+        $attach2 = null;
+        $attach3 = null;
+        $update1 = null;
+        $update2 = null;
+        $update3 = null;
+
+        if ($request->drug1) {
+            $drug = Drug::where('id', 1)->first();
+            $attach1 = $patient->drugs()->attach(1);
+            $update1 = $patient->drugs()->updateExistingPivot(
+                1,
+                [
+                    'dosage_volume' => $validated['drug1volume'],
+                    'dosage_unit' => $validated['drug1unit'],
+                    'dosage_times' => $validated['drug1times'],
+                    'dosage_span' => $validated['drug1per'],
+                ]
+            );
+        }
+
+        if ($request->drug2) {
+            $drug = Drug::where('id', 2)->first();
+            $attach2 = $patient->drugs()->attach(2);
+            $update2 = $patient->drugs()->updateExistingPivot(
+                2,
+                [
+                    'dosage_volume' => $validated['drug2volume'],
+                    'dosage_unit' => $validated['drug2unit'],
+                    'dosage_times' => $validated['drug2times'],
+                    'dosage_span' => $validated['drug2per'],
+                ]
+            );
+        }
+
+        if ($request->drug3) {
+            $drug = Drug::where('id', 3)->first();
+            $attach3 =  $patient->drugs()->attach(3);
+            $update3 =  $patient->drugs()->updateExistingPivot(
+                3,
+                [
+                    'dosage_volume' => $validated['drug3volume'],
+                    'dosage_unit' => $validated['drug3unit'],
+                    'dosage_times' => $validated['drug3times'],
+                    'dosage_span' => $validated['drug3per'],
+                ]
+            );
+        }
+
+        $success = $patient->save();
+
         return redirect()->action([ProfileController::class, 'therapy'], ['patient' => $patient]);
     }
 
@@ -219,8 +357,16 @@ class ProfileController extends Controller
 
     public function therapy(Request $request)
     {
-        $user = Auth::user();
         $patient = User::where('id', $request->route('patient'))->first();
+        if (!$patient) {
+            $locale = $request->getPreferredLanguage(['en', 'sk']);
+            if ($locale == 'sk') {
+                flash('Používateľ s požadovaným ID sa nenašiel.')->error();
+            } else {
+                flash('No user with the specified ID was found.')->error();
+            }
+            return redirect()->action([PatientController::class, 'index']);
+        }
         $thresholds = $patient->thresholds();
         $parameters = $patient->parameters()->orderBy('id', 'ASC')->get();
         $conditions = $patient->conditions;

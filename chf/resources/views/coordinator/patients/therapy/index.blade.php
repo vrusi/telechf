@@ -272,6 +272,8 @@
 
         </div>
         <div class="my-3">
+            <hr>
+
             <div class="d-flex align-items-center justify-content-between">
                 <div>
                     @if ($patient->sex == 'female')
@@ -303,23 +305,27 @@
                             </td>
 
                             <td class="pr-3">
-                                {{ $drug->dosage_volume . ' ' . $drug->dosage_unit }}
+                                @if ($drug->pivot->dosage_volume)
+                                    {{ $drug->pivot->dosage_volume . ' ' . $drug->pivot->dosage_unit }}
+                                @else
+                                    --
+                                @endif
                             </td>
 
                             <td class="pr-3">
-                                @if ($drug->dosage_times)
-                                    @if ($drug->dosage_times == 1)
-                                        {{ __('once per') . ' ' . __($drug->dosage_span) }}
+                                @if ($drug->pivot->dosage_times)
+                                    @if ($drug->pivot->dosage_times == 1)
+                                        {{ __('once per') . ' ' . (__($drug->pivot->dosage_span) ?? '--') }}
                                     @endif
-                                    @if ($drug->dosage_times == 2)
-                                        {{ __('twice per') . ' ' . __($drug->dosage_span) }}
+                                    @if ($drug->pivot->dosage_times == 2)
+                                        {{ __('twice per') . ' ' .(__($drug->pivot->dosage_span) ?? '--') }}
                                     @endif
-                                    @if ($drug->dosage_times >= 3)
-                                        {{ $drug->dosage_times . __('times per') . ' ' . __($drug->dosage_span) }}
+                                    @if ($drug->pivot->dosage_times >= 3)
+                                        {{ $drug->pivot->dosage_times . __('times per') . ' ' .( __($drug->pivot->dosage_span) ?? '--') }}
                                     @endif
                                 @endif
 
-                                @if (!$drug->dosage_times)
+                                @if (!$drug->pivot->dosage_times)
                                     {{ '--' }}
                                 @endif
                             </td>
