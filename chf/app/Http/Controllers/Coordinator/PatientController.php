@@ -193,8 +193,8 @@ class PatientController extends Controller
             'http://147.175.106.7:5000/api/patient/createExternal',
             [
                 'email' => $validated['email'],
-                'name' => $validated['name'] ?? null,
-                'lastname' => $validated['surname'] ?? null,
+                'name' => $validated['name'] ?? null, // email
+                'lastname' => $validated['surname'] ?? null, // email
                 'username' => $validated['email'],
                 'password' => $validated['password'],
                 'type' => 'patient',
@@ -478,7 +478,7 @@ class PatientController extends Controller
             return response()->json(['error' => $validator->errors()], 422);
         }
 
-        $patient = User::where('id_external', $request->patientId)->first();
+        $patient = User::where('id_external', $params['patient'])->first();
 
         $filePath = $request->file->getPathName();
         $parser = new Parser();
@@ -487,7 +487,7 @@ class PatientController extends Controller
         $ecgIds = array();
         foreach ($ecgParsedArray as $ecgParsed) {
             $ecgDate = Carbon::createFromTimestampMs($ecgParsed['timestamp']);
-            $userId = $params['patient'];
+            $userId = $patient->id;
             $values = implode(',', $ecgParsed['values']);
             $eventsE = implode(',', $ecgParsed['eventsP']);
             $eventsB = implode(',', $ecgParsed['eventsB']);
@@ -496,7 +496,7 @@ class PatientController extends Controller
             $createdAt = $ecgDate;
 
             $ecg = ECG::create([
-                'user_id' => $userId,
+                'user_id' => $patient->id,
                 'values' => $values,
                 'eventsE' => $eventsE,
                 'eventsB' => $eventsB,
