@@ -367,6 +367,8 @@
         // fill the conditions plot
         var conditions = {!! $conditions_encoded !!};
 
+        if (conditions != null) {
+
         var plotSwellings = conditions['swellings'].length > 0 ? {
                 x: Object.keys(conditions['swellings'][0]),
                 y: Object.values(conditions['swellings'][0]),
@@ -436,6 +438,7 @@
         }
         if (traces.length > 0) {
             Plotly.newPlot('chart-conditions', traces, layout);
+        }
         }
 
         // set up ecg charts

@@ -44,7 +44,7 @@
                 <a href="{{ '/coordinator/patients/' . $patient['id'] . '/profile/edit' }}"
                     class="btn btn-outline-secondary">
                     <i class="fas fa-edit"></i>
-                    {{ __('Edit personal information') }}
+                    {{ __('Edit information') }}
                 </a>
             </div>
         </div>
@@ -152,7 +152,7 @@
 
             <tr>
                 <td class="font-weight-bold pr-3">
-                    {{ __('External ID') }}
+                    {{ __('External patient ID') }}
                 </td>
                 <td>
                     {{ $patient['id_external'] ?? '--' }}
