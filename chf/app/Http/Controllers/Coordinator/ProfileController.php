@@ -307,12 +307,16 @@ class ProfileController extends Controller
             }
         }
 
-        if ($validated['mac'] && $validated['externalId']) {
-            $responseMac = Http::post(
-                'http://147.175.106.7:5000/api/patient/addSensor',
+
+        if ($validated['mac'] && $validated['patientId']) {
+            
+            $patient = User::where('id', $validated['patientId'])->first();
+            $macOld = $patient->mac;
+            $responseMac = Http::put(
+                'http://147.175.106.7:5000/api/patient/replaceSensor',
                 [
-                    'MAC' => $validated['mac'],
-                    'patientId' => $validated['externalId'],
+                    'MAC_old' => $macOld,
+                    'MAC_new' => $validated['mac'],
                 ]
             );
         }
