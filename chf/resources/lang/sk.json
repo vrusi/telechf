@@ -240,5 +240,8 @@
     "Edit conditions": "Upraviť stavy",
     "Edit prescriptions": "Upraviť predpisy",
     "Remove all conditions": "Odstrániť všetky stavy",
-    "Prescriptions": "Prescriptions"
+    "Prescriptions": "Prescriptions",
+    "The patient does not have any data to generate charts for now.": "Pacient zatiaľ nemá žiadne dáta pre generovanie grafov.",
+    "The patient does not have any contacts.": "Pacient zatiaľ nemá žiadne kontakty.",
+    "You do not have any contacts.": "Nemáte žiadne kontakty."
 }

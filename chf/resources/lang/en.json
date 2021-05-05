@@ -240,5 +240,8 @@
     "Edit conditions": "Edit conditions",
     "Edit prescriptions": "Edit prescriptions",
     "Remove all conditions": "Remove all conditions",
-    "Prescriptions": "Prescriptions"
+    "Prescriptions": "Prescriptions",
+    "The patient does not have any data to generate charts for now.": "The patient does not have any data to generate charts for now.",
+    "The patient does not have any contacts.": "The patient does not have any contacts.",
+    "You do not have any contacts.": "You do not have any contacts."
 }

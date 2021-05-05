@@ -50,55 +50,61 @@
 
         <div class="mb-3">
             <div class="row">
-                @foreach ($contacts as $contact)
-                    <div class="col">
-                        <div class="card my-3">
-                            <div class="card-body">
-                                <h4 class="card-title">
-                                    {{ ucfirst(__($contact->type)) }}
-                                </h4>
+                @if (count($contacts) == 0)
+                <div class="col">
+                    {{ __('The patient does not have any contacts.') }}
+                </div>
+                @else
+                    @foreach ($contacts as $contact)
+                        <div class="col">
+                            <div class="card my-3">
+                                <div class="card-body">
+                                    <h4 class="card-title">
+                                        {{ ucfirst(__($contact->type)) }}
+                                    </h4>
 
-                                <div class="card-text">
-                                    <table>
-                                        <tr>
-                                            <td class="font-weight-bold pr-3">
-                                                {{ __('Name') }}
-                                            </td>
-                                            <td>
-                                                {{ $contact->titles_prefix . ' ' . $contact->name . ' ' . $contact->surname . ' ' . $contact->titles_postfix }}
-                                            </td>
-                                        </tr>
-
-                                        @if ($contact->email)
+                                    <div class="card-text">
+                                        <table>
                                             <tr>
                                                 <td class="font-weight-bold pr-3">
-                                                    {{ __('Email') }}
+                                                    {{ __('Name') }}
                                                 </td>
                                                 <td>
-                                                    <a href="mailto:{{ $contact->email }}">
-                                                        {{ $contact->email }}
-                                                    </a>
+                                                    {{ $contact->titles_prefix . ' ' . $contact->name . ' ' . $contact->surname . ' ' . $contact->titles_postfix }}
                                                 </td>
                                             </tr>
-                                        @endif
-                                        @if ($contact->mobile)
-                                            <tr>
-                                                <td class="font-weight-bold pr-3">
-                                                    {{ __('Mobile') }}
-                                                </td>
-                                                <td>
-                                                    <a href="tel:{{ $contact->mobile }}">
-                                                        {{ $contact->mobile }}
-                                                    </a>
-                                                </td>
-                                            </tr>
-                                        @endif
-                                    </table>
+
+                                            @if ($contact->email)
+                                                <tr>
+                                                    <td class="font-weight-bold pr-3">
+                                                        {{ __('Email') }}
+                                                    </td>
+                                                    <td>
+                                                        <a href="mailto:{{ $contact->email }}">
+                                                            {{ $contact->email }}
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            @endif
+                                            @if ($contact->mobile)
+                                                <tr>
+                                                    <td class="font-weight-bold pr-3">
+                                                        {{ __('Mobile') }}
+                                                    </td>
+                                                    <td>
+                                                        <a href="tel:{{ $contact->mobile }}">
+                                                            {{ $contact->mobile }}
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            @endif
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                @endforeach
+                    @endforeach
+                @endif
             </div>
         </div>
     </div>

@@ -109,44 +109,47 @@ class ChartController extends Controller
         // get conditions data
 
         $conditions = $user->conditionsCountsByDay();
-        $conditionsDates = array();
-        $swellingsValues = array();
-        $exerciseValues = array();
-        $dyspnoeaValues = array();
-        $entryDate = null;
-        $hasOneEntry = false;
-        foreach ($conditions as $date => $conditionsInDay) {
-            $parsedDate = Carbon::parse($date);
-            // if a date was chosen, take the corresponding measurements
-            if ($chosenConditionsDate) {
-                if ($parsedDate->isSameDay($chosenConditionsDate)) {
-                    array_push($swellingsValues, $conditionsInDay['swellings']);
-                    array_push($exerciseValues, $conditionsInDay['exercise']);
-                    array_push($dyspnoeaValues, $conditionsInDay['dyspnoea']);
-                    $entryDate = $parsedDate->copy()->format('d M Y');
+        $conditionsParsed = null;
+        if ($conditions && count($conditions) > 0) {
+            $conditionsDates = array();
+            $swellingsValues = array();
+            $exerciseValues = array();
+            $dyspnoeaValues = array();
+            $entryDate = null;
+            $hasOneEntry = false;
+            foreach ($conditions as $date => $conditionsInDay) {
+                $parsedDate = Carbon::parse($date);
+                // if a date was chosen, take the corresponding measurements
+                if ($chosenConditionsDate) {
+                    if ($parsedDate->isSameDay($chosenConditionsDate)) {
+                        array_push($swellingsValues, $conditionsInDay['swellings']);
+                        array_push($exerciseValues, $conditionsInDay['exercise']);
+                        array_push($dyspnoeaValues, $conditionsInDay['dyspnoea']);
+                        $entryDate = $parsedDate->copy()->format('d M Y');
+                    }
                 }
-            }
-            // else take the latest measurement
-            else {
-                if (!$hasOneEntry) {
-                    array_push($swellingsValues, $conditionsInDay['swellings']);
-                    array_push($exerciseValues, $conditionsInDay['exercise']);
-                    array_push($dyspnoeaValues, $conditionsInDay['dyspnoea']);
-                    $hasOneEntry = true;
-                    $entryDate = $parsedDate->copy()->format('d M Y');
+                // else take the latest measurement
+                else {
+                    if (!$hasOneEntry) {
+                        array_push($swellingsValues, $conditionsInDay['swellings']);
+                        array_push($exerciseValues, $conditionsInDay['exercise']);
+                        array_push($dyspnoeaValues, $conditionsInDay['dyspnoea']);
+                        $hasOneEntry = true;
+                        $entryDate = $parsedDate->copy()->format('d M Y');
+                    }
                 }
+
+                array_push($conditionsDates, $parsedDate);
             }
 
-            array_push($conditionsDates, $parsedDate);
+            $conditionsParsed = [
+                'dates' => $conditionsDates,
+                'date' => $entryDate,
+                'swellings' => $swellingsValues,
+                'exercise' => $exerciseValues,
+                'dyspnoea' => $dyspnoeaValues,
+            ];
         }
-
-        $conditionsParsed = [
-            'dates' => $conditionsDates,
-            'date' => $entryDate,
-            'swellings' => $swellingsValues,
-            'exercise' => $exerciseValues,
-            'dyspnoea' => $dyspnoeaValues,
-        ];
 
         // get available ECG data dates
         $ecgAvailableDatesRaw = ECG::where('user_id', $user->id)->orderBy('created_at', 'DESC')->orderBy('updated_at', 'DESC')->pluck('created_at');
@@ -171,6 +174,8 @@ class ChartController extends Controller
                 'charts' => $charts,
                 'charts_encoded' => json_encode($charts, JSON_HEX_QUOT | JSON_HEX_APOS | JSON_NUMERIC_CHECK),
                 'filterOption' => $filterOption,
+                'conditions' => $conditionsParsed,
+                'conditions_encoded' => json_encode($conditionsParsed, JSON_HEX_QUOT | JSON_HEX_APOS | JSON_NUMERIC_CHECK),
                 'chartECG' => null,
                 'chartECG_encoded' => json_encode(false, JSON_HEX_QUOT | JSON_HEX_APOS | JSON_NUMERIC_CHECK),
                 'ecgAvailableDates' => $ecgAvailableDates,
@@ -289,6 +294,6 @@ class ChartController extends Controller
         return redirect()->action([ChartController::class, 'index'], [
             'chosenEcgDate' => $chosenEcgDate,
             'chosenConditionsDate' => $chosenConditionsDate,
-            ]);
+        ]);
     }
 }

@@ -109,12 +109,31 @@
             {{ __('Charts') }}
         </h3>
 
+        @php
+            $nocharts = true;
+            if ($charts && count($charts) > 0) {
+                $nocharts = false;
+            }
+
+            if ($conditions) {
+                $nocharts = false;
+            }
+
+            if ($chartECG) {
+                $nocharts = false;
+            }
+        @endphp
+
+        @if($nocharts)
+        <p>{{ __('The patient does not have any data to generate charts for now.') }}</p>
+        @endif
+
         @foreach ($charts as $chart)
             <div id="{{ 'chart-' . $chart['name'] }}" class="mt-5">
             </div>
         @endforeach
 
-        {{-- @if ($conditions && (count($conditions['swellings']) > 0 || count($conditions['exercise']) > 0 || count($conditions['dyspnoea']) > 0))
+        @if ($conditions && (count($conditions['swellings']) > 0 || count($conditions['exercise']) > 0 || count($conditions['dyspnoea']) > 0))
             <div class="d-flex justify-content-end align-items-center px-5 pt-5 mt-5 bg-white">
                 <div>
                     <form method="POST" action="{{ '/coordinator/patients/' . $patient['id'] . '/charts#chart-conditions' }}">
@@ -137,7 +156,7 @@
             </div>
             <div id="chart-conditions">
             </div>
-        @endif --}}
+        @endif
 
         @if ($chartECG)
             <div class="d-flex justify-content-between  align-items-center  px-5 pt-5 pb-1 mt-5 bg-white">
@@ -492,77 +511,78 @@
             Plotly.newPlot('chart-' + name, traces, layout);
         }
 
-        // fill the conditions plot
-       //
 
-        //var plotSwellings = conditions['swellings'].length > 0 ? {
-        //    x: Object.keys(conditions['swellings'][0]),
-        //    y: Object.values(conditions['swellings'][0]),
-        //    type: 'bar',
-        //    name: navigator.language === 'sk' ? 'Opuchy' : 'Swellings',
-        //}
-        //: null;
-//
-        //var plotExercise = conditions['exercise'].length > 0 ? {
-        //    x: Object.keys(conditions['exercise'][0]),
-        //    y: Object.values(conditions['exercise'][0]),
-        //    type: 'bar',
-        //    name: navigator.language === 'sk' ? 'Tolerancia fyzickej námahy' : 'Physical exertion tolerance',
-        //}
-        //: null;
-//
-        //var plotDyspnoea = conditions['dyspnoea'].length > 0 ? {
-        //    x: Object.keys(conditions['dyspnoea'][0]),
-        //    y: Object.values(conditions['dyspnoea'][0]),
-        //    type: 'bar',
-        //    name: navigator.language === 'sk' ? 'Dýchavičnosť v ľahu' : 'Dyspnoea while lying down',
-        //} : null;
-//
-        //var layout = {
-        //    barmode: 'group',
-        //    title: {
-        //        text: navigator.language === 'sk' ? 'Stav zo dňa ' + conditions['date'] : 'Status from ' + conditions['date'],
-        //    },
-        //    xaxis: {
-        //        title: {
-        //            text: navigator.language === 'sk' ? 'Hodnotenie' : 'Rating',
-        //        },
-        //        tickvals: [1, 2, 3, 4, 5],
-        //        ticktext: navigator.language === 'sk' ? ['Veľmi dobré', 'Dobré', 'Stredne', 'Zlé', 'Veľmi zlé'] : ['Very good', 'Good', 'Neutral', 'Bad', 'Very bad']
-        //    },
-        //    yaxis: {
-        //        title: {
-        //            text: navigator.language === 'sk' ? 'Počet' : 'Count',
-        //        },
-        //        autotick: false,
-        //        tick0: 0,
-        //        dtick: 1,
-        //        range: [0, 5],
-        //    },
-        //    showlegend: true,
-        //    legend: {
-        //        "orientation": "h",
-        //        xanchor: "center",
-        //        yanchor: "top",
-        //        y: -0.3,
-        //        x: 0.5,
-        //    },
-        //};
-//
-        //traces = [];
-        //if (plotSwellings) {
-        //    traces.push(plotSwellings);
-        //}
-        //if (plotExercise) {
-        //    traces.push(plotExercise);
-        //}
-        //if (plotDyspnoea) {
-        //    traces.push(plotDyspnoea);
-        //}
-        //if (traces.length > 0) { 
-        //    Plotly.newPlot('chart-conditions', traces, layout);  
-        //}
-//
+        // fill the conditions plot
+        var conditions = {!! $conditions_encoded !!}
+
+        var plotSwellings = conditions['swellings'].length > 0 ? {
+            x: Object.keys(conditions['swellings'][0]),
+            y: Object.values(conditions['swellings'][0]),
+            type: 'bar',
+            name: navigator.language === 'sk' ? 'Opuchy' : 'Swellings',
+        }
+        : null;
+
+        var plotExercise = conditions['exercise'].length > 0 ? {
+            x: Object.keys(conditions['exercise'][0]),
+            y: Object.values(conditions['exercise'][0]),
+            type: 'bar',
+            name: navigator.language === 'sk' ? 'Tolerancia fyzickej námahy' : 'Physical exertion tolerance',
+        }
+        : null;
+
+        var plotDyspnoea = conditions['dyspnoea'].length > 0 ? {
+            x: Object.keys(conditions['dyspnoea'][0]),
+            y: Object.values(conditions['dyspnoea'][0]),
+            type: 'bar',
+            name: navigator.language === 'sk' ? 'Dýchavičnosť v ľahu' : 'Dyspnoea while lying down',
+        } : null;
+
+        var layout = {
+            barmode: 'group',
+            title: {
+                text: navigator.language === 'sk' ? 'Stav zo dňa ' + conditions['date'] : 'Status from ' + conditions['date'],
+            },
+            xaxis: {
+                title: {
+                    text: navigator.language === 'sk' ? 'Hodnotenie' : 'Rating',
+                },
+                tickvals: [1, 2, 3, 4, 5],
+                ticktext: navigator.language === 'sk' ? ['Veľmi dobré', 'Dobré', 'Stredne', 'Zlé', 'Veľmi zlé'] : ['Very good', 'Good', 'Neutral', 'Bad', 'Very bad']
+            },
+            yaxis: {
+                title: {
+                    text: navigator.language === 'sk' ? 'Počet' : 'Count',
+                },
+                autotick: false,
+                tick0: 0,
+                dtick: 1,
+                range: [0, 5],
+            },
+            showlegend: true,
+            legend: {
+                "orientation": "h",
+                xanchor: "center",
+                yanchor: "top",
+                y: -0.3,
+                x: 0.5,
+            },
+        };
+
+        traces = [];
+        if (plotSwellings) {
+            traces.push(plotSwellings);
+        }
+        if (plotExercise) {
+            traces.push(plotExercise);
+        }
+        if (plotDyspnoea) {
+            traces.push(plotDyspnoea);
+        }
+        if (traces.length > 0) { 
+            Plotly.newPlot('chart-conditions', traces, layout);  
+        }
+
         // set up ecg charts
         chartECG = {!! $chartECG_encoded !!};
 
