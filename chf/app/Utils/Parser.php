@@ -53,7 +53,7 @@ class Parser
             // cut the values up into chunks so the memory si not overflowed
 
             // 150000 bytes allow for ~38000 values worth ~1 minute of ecg
-            $maxMemSize = 150000;
+            $maxMemSize = 300000;
             $valuesEndIndex = $contentLen - 2;
 
             // for now work on the first chunk only
