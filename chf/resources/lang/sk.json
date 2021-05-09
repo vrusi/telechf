@@ -245,5 +245,6 @@
     "The patient does not have any data to generate charts for now.": "Pacient zatiaľ nemá žiadne dáta pre generovanie grafov.",
     "The patient does not have any contacts.": "Pacient zatiaľ nemá žiadne kontakty.",
     "You do not have any contacts.": "Nemáte žiadne kontakty.",
-    "There are no extra measurements for you to take.": "Nemáte žiadne extra merania na odmeranie."
+    "There are no extra measurements for you to take.": "Nemáte žiadne extra merania na odmeranie.",
+    "Please use the mobile application to upload your ECG data.": "Použite mobilnú aplikáciu pre načítanie dát z EKG merania."
 }

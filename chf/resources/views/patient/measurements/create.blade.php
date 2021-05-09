@@ -21,7 +21,7 @@
                 </h2>
                 @if (!empty($takeToday))
                     @foreach ($takeToday as $parameter)
-                        @if ($parameter->fillable && strtolower($parameter->name) != 'ecg')
+                        @if ($parameter->fillable)
                             <div class="my-3">
                                 <a class="btn btn-outline-primary w-100 text-left"
                                     href="{{ url('/measurements/create/' . $parameter->id) }}">
@@ -46,7 +46,7 @@
 
                 @if (!empty($takeThisWeek))
                     @foreach ($takeThisWeek as $parameter)
-                        @if ($parameter->fillable && strtolower($parameter->name) != 'ecg')
+                        @if ($parameter->fillable)
                             <div class="my-3">
                                 <a class="btn btn-outline-primary w-100 text-left"
                                     href="{{ url('/measurements/create/' . $parameter->id) }}">
@@ -77,14 +77,14 @@
 
                 @if (!empty($extra))
                     @foreach ($extra as $parameter)
-                        @if($parameter->fillable && strtolower($parameter->name) != 'ecg')
-                            
-                        <div class="my-3">
-                            <a class="btn btn-outline-primary w-100 text-left"
-                                href="{{ url('/measurements/create/' . $parameter['id'] . '?extra=1') }}">
-                                {{ __($parameter['name']) }}
-                            </a>
-                        </div>
+                        @if ($parameter->fillable)
+
+                            <div class="my-3">
+                                <a class="btn btn-outline-primary w-100 text-left"
+                                    href="{{ url('/measurements/create/' . $parameter['id'] . '?extra=1') }}">
+                                    {{ __($parameter['name']) }}
+                                </a>
+                            </div>
                         @endif
                     @endforeach
                 @else
