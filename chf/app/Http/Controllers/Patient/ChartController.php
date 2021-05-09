@@ -185,6 +185,7 @@ class ChartController extends Controller
 
         $ecgParam = Parameter::where('name', 'ECG')->first();
         $ecgValuesRaw = explode(',', $ecgData['values']);
+        $ecgValuesRaw = array_slice($ecgValuesRaw, 0, 38000);
 
         $ecgDates = array();
         $ecgDatesMs = array();
