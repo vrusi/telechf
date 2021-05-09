@@ -8,6 +8,8 @@ class Parser
 {
     function parse(String $path)
     {
+        ini_set('memory_limit', '-1');
+
         $zipFile = new \PhpZip\ZipFile();
 
         $file = $zipFile->openFile($path);
