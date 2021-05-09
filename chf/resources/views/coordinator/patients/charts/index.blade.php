@@ -771,7 +771,7 @@
                 height: 800,
                 xaxis: {
                     title: {
-                        text: navigator.language === 'sk' ? 'Čas merania' : 'Time of the measurement (s)',
+                        text: navigator.language === 'sk' ? 'Čas merania' : 'Time of the measurement',
                     },
                     showgrid: false,
                     range: [datesWithTimezone[14000], datesWithTimezone[17000]],
