@@ -9,6 +9,7 @@ class Parser
     function parse(String $path)
     {
         ini_set('memory_limit', '-1');
+        ini_set('max_execution_time', '300');
 
         $zipFile = new \PhpZip\ZipFile();
 

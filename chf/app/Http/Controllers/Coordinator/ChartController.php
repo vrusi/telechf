@@ -15,6 +15,7 @@ class ChartController extends Controller
     function index(Request $request)
     {
         ini_set('memory_limit', '-1');
+        ini_set('max_execution_time', '300');
 
         $filterOption = $request->has('filter') ? $request->input('filter') : "5";
         $chosenEcgDate = $request->has('chosenEcgDate') ? Carbon::parse($request->chosenEcgDate) : null;
