@@ -60,7 +60,7 @@ class Parser
             $valuesEndIndex = $contentLen - 2;
 
             // for now work on the first chunk only
-            $valuesContent = substr($content, $valuesStartIndex, $maxMemSize);
+            $valuesContent = substr($content, $valuesStartIndex, $valuesEndIndex);
             $valuesArray = explode(',', $valuesContent);
 
             // cut the first second off
