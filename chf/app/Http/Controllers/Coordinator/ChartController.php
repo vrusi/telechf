@@ -21,6 +21,8 @@ class ChartController extends Controller
         $chosenEcgDate = $request->has('chosenEcgDate') ? Carbon::parse($request->chosenEcgDate) : null;
         $chosenConditionsDate = $request->has('chosenConditionsDate') ? Carbon::parse($request->chosenConditionsDate) : null;
 
+        $ecgSegment = intval($request->route('segment'));
+        
         $patient = User::where('id', $request->route('patient'))->first();
 
         $thresholds = $patient->thresholds();
@@ -190,13 +192,16 @@ class ChartController extends Controller
 
         $ecgParam = Parameter::where('name', 'ECG')->first();
         $ecgValuesRaw = explode(',', $ecgData['values']);
+        $maxMemSize = 38000; // ms
+        
+        $maxSegment = ceil(count($ecgValuesRaw)/38000) - 1;
 
-        $ecgValuesRaw = array_slice($ecgValuesRaw, 0, 38000);
+        $ecgValuesRaw = array_slice($ecgValuesRaw, $ecgSegment * $maxMemSize, $ecgSegment * $maxMemSize + $maxMemSize);
 
         $ecgDates = array();
         $ecgDatesMs = array();
         $ecgValues = array();
-        $currentDate = $ecgData['created_at'];
+        $currentDate = $ecgData['created_at']->copy()->addMilliseconds($ecgSegment * $maxMemSize);
         for ($i = 0; $i < count($ecgValuesRaw); $i++) {
             array_push($ecgDatesMs, $i);
             array_push($ecgDates, $currentDate->copy()->addMilliseconds($i));
@@ -271,6 +276,9 @@ class ChartController extends Controller
             'eventsB' => $eventsBSegments,
             'eventsT' => $eventsTSegments,
             'eventsAF' => $eventsAFSegments,
+            'segment' => $ecgSegment,
+            'maxSegment' => $maxSegment,
+
         ];
 
         return view(
@@ -285,6 +293,8 @@ class ChartController extends Controller
                 'chartECG' => $chartECG,
                 'chartECG_encoded' => json_encode($chartECG, JSON_HEX_QUOT | JSON_HEX_APOS | JSON_NUMERIC_CHECK),
                 'ecgAvailableDates' => $ecgAvailableDates,
+                'currentSegment' => $ecgSegment,
+                'maxSegment' => $maxSegment,
             ]
         );
     }
@@ -320,7 +330,7 @@ class ChartController extends Controller
                 'patient' => $patient->id,
                 'chosenEcgDate' => $chosenEcgDate,
                 'chosenConditionsDate' => $chosenConditionsDate,
-
+                'segment' => 0,
             ]
         );
     }

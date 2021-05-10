@@ -69,6 +69,7 @@ Route::post('coordinator/patients/{patient}/measurements/check', 'App\Http\Contr
 Route::get('coordinator/patients/{patient}/charts', 'App\Http\Controllers\Coordinator\ChartController@index')->middleware(['auth', 'coordinator'])->name('coordinator.patients.charts');
 Route::post('coordinator/patients/{patient}/charts/filter', 'App\Http\Controllers\Coordinator\ChartController@filter')->middleware(['auth', 'coordinator']);
 Route::post('coordinator/patients/{patient}/charts', 'App\Http\Controllers\Coordinator\ChartController@selectDate')->middleware(['auth', 'coordinator'])->name('coordinator.patients.charts');
+Route::get('coordinator/patients/{patient}/charts/segment/{segment}', 'App\Http\Controllers\Coordinator\ChartController@index')->middleware(['auth', 'coordinator']);
 
 Route::get('coordinator/patients/{patient}/profile', 'App\Http\Controllers\Coordinator\ProfileController@index')->middleware(['auth', 'coordinator'])->name('coordinator.patients.profile');
 Route::get('coordinator/patients/{patient}/profile/edit', 'App\Http\Controllers\Coordinator\ProfileController@create')->middleware(['auth', 'coordinator']);

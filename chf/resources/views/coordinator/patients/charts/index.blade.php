@@ -114,18 +114,18 @@
             if ($charts && count($charts) > 0) {
                 $nocharts = false;
             }
-
+            
             if ($conditions) {
                 $nocharts = false;
             }
-
+            
             if ($chartECG) {
                 $nocharts = false;
             }
         @endphp
 
-        @if($nocharts)
-        <p>{{ __('The patient does not have any data to generate charts for now.') }}</p>
+        @if ($nocharts)
+            <p>{{ __('The patient does not have any data to generate charts for now.') }}</p>
         @endif
 
         @foreach ($charts as $chart)
@@ -136,7 +136,8 @@
         @if ($conditions && (count($conditions['swellings']) > 0 || count($conditions['exercise']) > 0 || count($conditions['dyspnoea']) > 0))
             <div class="d-flex justify-content-end align-items-center px-5 pt-5 mt-5 bg-white">
                 <div>
-                    <form method="POST" action="{{ '/coordinator/patients/' . $patient['id'] . '/charts#chart-conditions' }}">
+                    <form method="POST"
+                        action="{{ '/coordinator/patients/' . $patient['id'] . '/charts#chart-conditions' }}">
                         @csrf
                         <div class="form-group">
                             <label for="conditionsDateChoice">{{ __('Select a measurement by date') }}</label>
@@ -264,8 +265,46 @@
                             {{ __('Select') }}
                         </button>
                     </form>
+
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        @php
+                            $d = null;
+                            if (count($_GET) > 0) {
+                                $d = $_GET['chosenEcgDate'];
+                            }
+                        @endphp
+                        <div>
+                            @if ($currentSegment <= 0)
+                                <button class="btn btn-outline-primary " disabled>
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                            @else
+                                <a class="btn btn-outline-primary"
+                                    href="{{ '/coordinator/patients/' . $patient['id'] . '/charts/segment/' . ($currentSegment - 1) . ($d ? '?chosenEcgDate=' . $d : '') . '#chart-ecg' }}">
+                                    <i class="fas fa-chevron-left"></i>
+                                </a>
+                            @endif
+
+                        </div>
+                        <div>
+                            {{ __('Segment') }}
+                        </div>
+                        <div>
+                            @if ($currentSegment >= $maxSegment)
+                                <button class="btn btn-outline-primary " disabled>
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            @else
+                                <a class="btn btn-outline-primary"
+                                    href="{{ '/coordinator/patients/' . $patient['id'] . '/charts/segment/' . ($currentSegment + 1) . ($d ? '?chosenEcgDate=' . $d : '') . '#chart-ecg' }}">
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
+                            @endif
+                        </div>
+                    </div>
                 </div>
             </div>
+
             <div class="ecg-chart" id="chart-ecg">
                 <div class="d-flex align-items-center justify-content-center pr-5 pb-5 pl-5 mb-5 bg-white">
                     <div class="d-flex align-items-center mx-3">
@@ -517,73 +556,76 @@
 
         if (conditions != null) {
 
-        var plotSwellings = conditions['swellings'].length > 0 ? {
-            x: Object.keys(conditions['swellings'][0]),
-            y: Object.values(conditions['swellings'][0]),
-            type: 'bar',
-            name: navigator.language === 'sk' ? 'Opuchy' : 'Swellings',
-        }
-        : null;
+            var plotSwellings = conditions['swellings'].length > 0 ? {
+                    x: Object.keys(conditions['swellings'][0]),
+                    y: Object.values(conditions['swellings'][0]),
+                    type: 'bar',
+                    name: navigator.language === 'sk' ? 'Opuchy' : 'Swellings',
+                } :
+                null;
 
-        var plotExercise = conditions['exercise'].length > 0 ? {
-            x: Object.keys(conditions['exercise'][0]),
-            y: Object.values(conditions['exercise'][0]),
-            type: 'bar',
-            name: navigator.language === 'sk' ? 'Tolerancia fyzickej námahy' : 'Physical exertion tolerance',
-        }
-        : null;
+            var plotExercise = conditions['exercise'].length > 0 ? {
+                    x: Object.keys(conditions['exercise'][0]),
+                    y: Object.values(conditions['exercise'][0]),
+                    type: 'bar',
+                    name: navigator.language === 'sk' ? 'Tolerancia fyzickej námahy' : 'Physical exertion tolerance',
+                } :
+                null;
 
-        var plotDyspnoea = conditions['dyspnoea'].length > 0 ? {
-            x: Object.keys(conditions['dyspnoea'][0]),
-            y: Object.values(conditions['dyspnoea'][0]),
-            type: 'bar',
-            name: navigator.language === 'sk' ? 'Dýchavičnosť v ľahu' : 'Dyspnoea while lying down',
-        } : null;
+            var plotDyspnoea = conditions['dyspnoea'].length > 0 ? {
+                x: Object.keys(conditions['dyspnoea'][0]),
+                y: Object.values(conditions['dyspnoea'][0]),
+                type: 'bar',
+                name: navigator.language === 'sk' ? 'Dýchavičnosť v ľahu' : 'Dyspnoea while lying down',
+            } : null;
 
-        var layout = {
-            barmode: 'group',
-            title: {
-                text: navigator.language === 'sk' ? 'Stav zo dňa ' + conditions['date'] : 'Status from ' + conditions['date'],
-            },
-            xaxis: {
+            var layout = {
+                barmode: 'group',
                 title: {
-                    text: navigator.language === 'sk' ? 'Hodnotenie' : 'Rating',
+                    text: navigator.language === 'sk' ? 'Stav zo dňa ' + conditions['date'] : 'Status from ' +
+                        conditions['date'],
                 },
-                tickvals: [1, 2, 3, 4, 5],
-                ticktext: navigator.language === 'sk' ? ['Veľmi dobré', 'Dobré', 'Stredne', 'Zlé', 'Veľmi zlé'] : ['Very good', 'Good', 'Neutral', 'Bad', 'Very bad']
-            },
-            yaxis: {
-                title: {
-                    text: navigator.language === 'sk' ? 'Počet' : 'Count',
+                xaxis: {
+                    title: {
+                        text: navigator.language === 'sk' ? 'Hodnotenie' : 'Rating',
+                    },
+                    tickvals: [1, 2, 3, 4, 5],
+                    ticktext: navigator.language === 'sk' ? ['Veľmi dobré', 'Dobré', 'Stredne', 'Zlé', 'Veľmi zlé'] : [
+                        'Very good', 'Good', 'Neutral', 'Bad', 'Very bad'
+                    ]
                 },
-                autotick: false,
-                tick0: 0,
-                dtick: 1,
-                range: [0, 5],
-            },
-            showlegend: true,
-            legend: {
-                "orientation": "h",
-                xanchor: "center",
-                yanchor: "top",
-                y: -0.3,
-                x: 0.5,
-            },
-        };
+                yaxis: {
+                    title: {
+                        text: navigator.language === 'sk' ? 'Počet' : 'Count',
+                    },
+                    autotick: false,
+                    tick0: 0,
+                    dtick: 1,
+                    range: [0, 5],
+                },
+                showlegend: true,
+                legend: {
+                    "orientation": "h",
+                    xanchor: "center",
+                    yanchor: "top",
+                    y: -0.3,
+                    x: 0.5,
+                },
+            };
 
-        traces = [];
-        if (plotSwellings) {
-            traces.push(plotSwellings);
-        }
-        if (plotExercise) {
-            traces.push(plotExercise);
-        }
-        if (plotDyspnoea) {
-            traces.push(plotDyspnoea);
-        }
-        if (traces.length > 0) { 
-            Plotly.newPlot('chart-conditions', traces, layout);  
-        }
+            traces = [];
+            if (plotSwellings) {
+                traces.push(plotSwellings);
+            }
+            if (plotExercise) {
+                traces.push(plotExercise);
+            }
+            if (plotDyspnoea) {
+                traces.push(plotDyspnoea);
+            }
+            if (traces.length > 0) {
+                Plotly.newPlot('chart-conditions', traces, layout);
+            }
 
         }
 
@@ -678,6 +720,8 @@
             eventsB = chartECG['eventsB'];
             eventsT = chartECG['eventsT'];
             eventsAF = chartECG['eventsAF'];
+            segment = chartECG['segment'] + 1;
+            segmentMax = chartECG['maxSegment'] + 1;
 
             var datesWithTimezone = []
             for (let d of dates) {
@@ -766,7 +810,8 @@
 
             var layout = {
                 title: {
-                    text: navigator.language === 'sk' ? names_sk[name] + ' zo dňa ' + date : name + ' from ' + date,
+                    text: navigator.language === 'sk' ? names_sk[name] + ' zo dňa ' + date + ', segment ' + segment+'/'+segmentMax :
+                        name + ' from ' + date + ', segment ' + segment +'/'+segmentMax,
                 },
                 height: 800,
                 xaxis: {
@@ -774,7 +819,7 @@
                         text: navigator.language === 'sk' ? 'Čas merania' : 'Time of the measurement',
                     },
                     showgrid: false,
-                    range: [datesWithTimezone[14000], datesWithTimezone[17000]],
+                    range: [datesWithTimezone[0], datesWithTimezone[3000]],
                 },
                 yaxis: {
                     title: {
