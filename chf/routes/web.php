@@ -41,6 +41,7 @@ Route::get('/therapy', 'App\Http\Controllers\Patient\ProfileController@therapy')
 Route::get('/charts', 'App\Http\Controllers\Patient\ChartController@index')->middleware(['auth', 'patient'])->name('charts');
 Route::post('/charts/filter', 'App\Http\Controllers\Patient\ChartController@filter')->middleware(['auth', 'patient']);
 Route::post('/charts', 'App\Http\Controllers\Patient\ChartController@selectDate')->middleware(['auth', 'patient']);
+Route::get('/charts/segment/{segment}', 'App\Http\Controllers\Patient\ChartController@index')->middleware(['auth', 'patient']);
 
 require __DIR__ . '/auth.php';
 

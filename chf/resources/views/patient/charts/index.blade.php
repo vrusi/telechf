@@ -188,6 +188,42 @@
                             {{ __('Select') }}
                         </button>
                     </form>
+
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        @php
+                            $d = null;
+                            if (count($_GET) > 0) {
+                                $d = $_GET['chosenEcgDate'];
+                            }
+                        @endphp
+                        <div>
+                            @if ($currentSegment <= 0)
+                                <button class="btn btn-outline-primary " disabled>
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                            @else
+                                <a class="btn btn-outline-primary"
+                                    href="{{ '/charts/segment/' . ($currentSegment - 1) . ($d ? '?chosenEcgDate=' . $d : '') . '#chart-ecg' }}">
+                                    <i class="fas fa-chevron-left"></i>
+                                </a>
+                            @endif
+                        </div>
+                        <div>
+                            {{ __('Segment') }}
+                        </div>
+                        <div>
+                            @if ($currentSegment >= $maxSegment)
+                                <button class="btn btn-outline-primary " disabled>
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            @else
+                                <a class="btn btn-outline-primary"
+                                    href="{{ '/charts/segment/' . ($currentSegment + 1) . ($d ? '?chosenEcgDate=' . $d : '') . '#chart-ecg' }}">
+                                    <i class="fas fa-chevron-right"></i>
+                                </a>
+                            @endif
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -532,6 +568,8 @@
             eventsB = chartECG['eventsB'];
             eventsT = chartECG['eventsT'];
             eventsAF = chartECG['eventsAF'];
+            segment = chartECG['segment'] + 1;
+            segmentMax = chartECG['maxSegment'] + 1;
 
             var datesWithTimezone = []
             for (let d of dates) {
@@ -621,7 +659,8 @@
 
             var layout = {
                 title: {
-                    text: navigator.language === 'sk' ? names_sk[name] + ' zo dňa ' + date : name + ' from ' + date,
+                    text: navigator.language === 'sk' ? names_sk[name] + ' zo dňa ' + date + ', segment ' + segment+'/'+segmentMax :
+                        name + ' from ' + date + ', segment ' + segment +'/'+segmentMax,
                 },
                 height: 800,
                 xaxis: {

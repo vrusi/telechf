@@ -20,9 +20,8 @@ class ChartController extends Controller
         $filterOption = $request->has('filter') ? $request->input('filter') : "5";
         $chosenEcgDate = $request->has('chosenEcgDate') ? Carbon::parse($request->chosenEcgDate) : null;
         $chosenConditionsDate = $request->has('chosenConditionsDate') ? Carbon::parse($request->chosenConditionsDate) : null;
-
         $ecgSegment = intval($request->route('segment'));
-        
+
         $patient = User::where('id', $request->route('patient'))->first();
 
         $thresholds = $patient->thresholds();
@@ -187,6 +186,8 @@ class ChartController extends Controller
                 'chartECG' => null,
                 'chartECG_encoded' => json_encode(false, JSON_HEX_QUOT | JSON_HEX_APOS | JSON_NUMERIC_CHECK),
                 'ecgAvailableDates' => $ecgAvailableDates,
+                'segment' => null,
+                'maxSegment' => null,
             ]);
         }
 
@@ -278,7 +279,6 @@ class ChartController extends Controller
             'eventsAF' => $eventsAFSegments,
             'segment' => $ecgSegment,
             'maxSegment' => $maxSegment,
-
         ];
 
         return view(
