@@ -87,7 +87,7 @@
                     data-target="#instructions" aria-expanded="false" aria-controls="instructions">
                     <button class="btn btn-outline-secondary">
                         <div class="d-flex align-items-center justify-content-center">
-                            <div class="mr-3 ">
+                            <div class="mr-3 text-justify">
                                 {{ __('Tap to read instructions') }}
                             </div>
 
@@ -99,11 +99,11 @@
                 </div>
 
                 <div class="collapse" id="instructions">
-                    <div class="card card-body">
+                    <div class="card card-body text-justify">
                         @if ($locale == 'en')
                             {!! $parameter->instructions_en !!}
                         @elseif ($locale == 'sk')
-                            {!! $parameter->instructions_esk !!}
+                            {!! $parameter->instructions_sk !!}
                         @endif
                     </div>
                 </div>

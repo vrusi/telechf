@@ -19,6 +19,8 @@ Route::get('/', function () {
     }
 });
 
+Route::get('manual', 'App\Http\Controllers\ManualController@index')->middleware(['auth'])->name('manual');
+
 /*
 |--------------------------------------------------------------------------
 | Patient Routes

@@ -121,6 +121,8 @@
                              <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                  @csrf
                              </form>
+
+                             <a class="dropdown-item" href="{{ route('manual') }}">{{ __('Manual') }}</a>
                          </div>
                      </li>
                  @endguest

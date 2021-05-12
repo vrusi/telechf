@@ -247,5 +247,7 @@
     "You do not have any contacts.": "Nemáte žiadne kontakty.",
     "There are no extra measurements for you to take.": "Nemáte žiadne extra merania na odmeranie.",
     "Please use the mobile application to upload your ECG data.": "Použite mobilnú aplikáciu pre načítanie dát z EKG merania.",
-    "Segment": "Segment"
+    "Segment": "Segment",
+    "Manual": "Manuál"
+
 }

@@ -247,5 +247,6 @@
     "You do not have any contacts.": "You do not have any contacts.",
     "There are no extra measurements for you to take.": "There are no extra measurements for you to take.",
     "Please use the mobile application to upload your ECG data.": "Please use the mobile application to upload your ECG data.",
-    "Segment": "Segment"
+    "Segment": "Segment",
+    "Manual": "Manual"
 }
