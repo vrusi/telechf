@@ -12,7 +12,7 @@ class PatientThresholdController extends Controller
     public function create(Request $request)
     {
         $patient =  User::where('id', $request->route('patient'))->first();
-        $parameters = Parameter::orderBy('id', 'ASC')->get();
+        $parameters = $patient->parameters()->get();
         return view('coordinator.patients.therapy.thresholds.create', ['patient' => $patient, 'parameters' => $parameters]);
     }
 

@@ -95,7 +95,7 @@
     "Enter your measurement": "Enter your measurement",
     "Rate your swellings": "Rate your swellings",
     "Rate your physical exertion tolerance": "Rate your physical exertion tolerance",
-    "Rate your sleeping breathlessness": "Rate your sleeping breathlessness",
+    "Rate your breathlessness when lying down": "Rate your breathlessness when lying down",
     "Why did you take the extra measurement?": "Why did you take the extra measurement?",
     "Describe how you're feeling": "Describe how you're feeling",
     "Back": "Back",
@@ -248,5 +248,8 @@
     "There are no extra measurements for you to take.": "There are no extra measurements for you to take.",
     "Please use the mobile application to upload your ECG data.": "Please use the mobile application to upload your ECG data.",
     "Segment": "Segment",
-    "Manual": "Manual"
+    "Manual": "Manual",
+    "Drug name": "Drug name",
+    "Dosage volume": "Dosage volume",
+    "Dosage frequency": "Dosage frequency"
 }

@@ -95,7 +95,7 @@
     "Enter your measurement": "Zadajte svoje meranie",
     "Rate your swellings": "Ohodnoťte svoje opuchy",
     "Rate your physical exertion tolerance": "Ohodnoťte svoju toleranciu fyzickej námahy",
-    "Rate your sleeping breathlessness": "Ohodnoťte svoju dýchavičnosť v spánku",
+    "Rate your breathlessness when lying down": "Ohodnoťte svoju dýchavičnosť v ľahu",
     "Why did you take the extra measurement?": "Prečo ste vykonali extra meranie?",
     "Describe how you're feeling": "Popíšte ako sa cítite",
     "Back": "Späť",
@@ -127,7 +127,7 @@
     "Edit global thresholds": "Upraviť globálne limity",
     "These threshold settings apply to every patient by default unless personal thresholds have been set for a patient. You can set personal thresholds for specific patients by visiting the thresholds tab within their profile.": "Tieto nastavenia limitov sa vzťahujú na každého pacienta, pokiaľ nemá nastavené osobné limity. Osobné limity môžete nastaviť pacientovi cez záložku limitov v rámci profilu toho-ktorého pacienta.",
     "Safety threshold": "Bezpečnostný limit",
-    "Therapeutic threshold": "Therapeutic threshold",
+    "Therapeutic threshold": "Terapeutický limit",
     "Lower threshold": "Spodný limit",
     "Upper threshold": "Horný limit",
     "Remove lower threshold": "Odstrániť spodný limit",
@@ -248,6 +248,8 @@
     "There are no extra measurements for you to take.": "Nemáte žiadne extra merania na odmeranie.",
     "Please use the mobile application to upload your ECG data.": "Použite mobilnú aplikáciu pre načítanie dát z EKG merania.",
     "Segment": "Segment",
-    "Manual": "Manuál"
-
+    "Manual": "Manuál",
+    "Drug name": "Názov lieku",
+    "Dosage volume": "Veľkosť dávky",
+    "Dosage frequency": "Frekvencia dávky"
 }

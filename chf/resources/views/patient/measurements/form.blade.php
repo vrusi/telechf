@@ -168,7 +168,7 @@
 
                 <div class="form-group">
                     <label class="mt-3">
-                        {{ __('Rate your sleeping breathlessness') }}
+                        {{ __('Rate your breathlessness when lying down') }}
                     </label>
                     <select required name="dyspnoea" class="form-control">
                         <option value="1"> {{ __('Very good') }} </option>

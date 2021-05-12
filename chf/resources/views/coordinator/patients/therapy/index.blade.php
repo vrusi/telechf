@@ -298,39 +298,54 @@
 
             @if (count($drugs) > 0)
                 <table>
-                    @foreach ($drugs as $drug)
+                    <thead>
                         <tr>
-                            <td class="font-weight-bold pr-3">
-                                {{ ucfirst(trans($drug->name)) }}
-                            </td>
-
-                            <td class="pr-3">
-                                @if ($drug->pivot->dosage_volume)
-                                    {{ $drug->pivot->dosage_volume . ' ' . $drug->pivot->dosage_unit }}
-                                @else
-                                    --
-                                @endif
-                            </td>
-
-                            <td class="pr-3">
-                                @if ($drug->pivot->dosage_times)
-                                    @if ($drug->pivot->dosage_times == 1)
-                                        {{ __('once per') . ' ' . (__($drug->pivot->dosage_span) ?? '--') }}
-                                    @endif
-                                    @if ($drug->pivot->dosage_times == 2)
-                                        {{ __('twice per') . ' ' .(__($drug->pivot->dosage_span) ?? '--') }}
-                                    @endif
-                                    @if ($drug->pivot->dosage_times >= 3)
-                                        {{ $drug->pivot->dosage_times . __('times per') . ' ' .( __($drug->pivot->dosage_span) ?? '--') }}
-                                    @endif
-                                @endif
-
-                                @if (!$drug->pivot->dosage_times)
-                                    {{ '--' }}
-                                @endif
-                            </td>
+                            <th class="pr-3">
+                                {{ __('Drug name') }}
+                            </th>
+                            <th class="pr-3">
+                                {{ __('Dosage volume') }}
+                            </th>
+                            <th class="pr-3">
+                                {{ __('Dosage frequency') }}
+                            </th>
                         </tr>
-                    @endforeach
+                    </thead>
+                    <tbody>
+                        @foreach ($drugs as $drug)
+                            <tr>
+                                <td class="pr-3">
+                                    {{ ucfirst(trans($drug->name)) }}
+                                </td>
+
+                                <td class="pr-3">
+                                    @if ($drug->pivot->dosage_volume && $drug->pivot->dosage_unit)
+                                        {{ $drug->pivot->dosage_volume . ' ' . $drug->pivot->dosage_unit }}
+                                    @else
+                                        --
+                                    @endif
+                                </td>
+
+                                <td class="pr-3">
+                                    @if ($drug->pivot->dosage_times)
+                                        @if ($drug->pivot->dosage_times == 1)
+                                            {{ __('once per') . ' ' . __($drug->pivot->dosage_span) }}
+                                        @endif
+                                        @if ($drug->pivot->dosage_times == 2)
+                                            {{ __('twice per') . ' ' . __($drug->pivot->dosage_span) }}
+                                        @endif
+                                        @if ($drug->pivot->dosage_times >= 3)
+                                            {{ $drug->pivot->dosage_times . __('times per') . ' ' . __($drug->pivot->dosage_span) }}
+                                        @endif
+                                    @endif
+
+                                    @if (!$drug->pivot->dosage_times)
+                                        {{ '--' }}
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
                 </table>
             @else
                 @if ($patient->sex == 'female')
