@@ -309,16 +309,28 @@ class ProfileController extends Controller
 
 
         if ($validated['mac'] && $validated['patientId']) {
-            
+
             $patient = User::where('id', $validated['patientId'])->first();
             $macOld = $patient->mac;
-            $responseMac = Http::put(
-                'http://147.175.106.7:5000/api/patient/replaceSensor',
-                [
-                    'MAC_old' => $macOld,
-                    'MAC_new' => $validated['mac'],
-                ]
-            );
+
+            // if no mac address was attached before, use addSensor
+            if (!$macOld) {
+                $responseMac = Http::post(
+                    'http://147.175.106.7:5000/api/patient/addSensor',
+                    [
+                        'MAC' => $validated['mac'],
+                        'patientId' => intval($patient->id_external),
+                    ],
+                );
+            } else {
+                $responseMac = Http::put(
+                    'http://147.175.106.7:5000/api/patient/replaceSensor',
+                    [
+                        'MAC_old' => $macOld,
+                        'MAC_new' => $validated['mac'],
+                    ]
+                );
+            }
         }
 
         $dateOfBirth = $request['birthDay'] && $request['birthMonth'] && $request['birthYear'] ? strval($validated['birthYear']) . '-' . strval($validated['birthMonth']) . '-' . strval($validated['birthDay']) : null;
