@@ -88,26 +88,32 @@ class MeasurementController extends Controller
         $endOfWeek = $today->copy()->endOfWeek();
 
         $user = Auth::user();
-        
+
         $parameters = [];
         $parametersRaw = $user->parameters;
-        foreach($parametersRaw as $parameter) {
+        foreach ($parametersRaw as $parameter) {
             if ($parameter['fillable']) {
                 array_push($parameters, $parameter);
             }
         }
-        
+
         $takeToday = [];
         $takeThisWeek = [];
 
         foreach ($parameters as $parameter) {
+            if ($parameter->pivot->measurement_times == null || $parameter->pivot->measurement_span == null) {
+                array_push($takeToday, $parameter);
+            }
+            
             if ($parameter->pivot->measurement_span == 'week') {
                 $count = Measurement::where('user_id', $user->id)
                     ->where('parameter_id', $parameter->id)
                     ->whereBetween('created_at', [$startOfWeek->copy(), $endOfWeek->copy()])->get()->count();
+
                 if ($count < $parameter->pivot->measurement_times) {
                     array_push($takeThisWeek, $parameter);
                 }
+
             } else if ($parameter->pivot->measurement_span == 'day') {
                 $count = Measurement::where('user_id', $user->id)
                     ->where('parameter_id', $parameter->id)
@@ -126,7 +132,7 @@ class MeasurementController extends Controller
         $extra = array_udiff($extra, $takeThisWeek, function ($a, $b) {
             return $a['id'] - $b['id'];
         });
-
+        
         $results = ['takeToday' => $takeToday, 'takeThisWeek' => $takeThisWeek, 'extra' => $extra];
         return view('patient.measurements.create', $results);
     }

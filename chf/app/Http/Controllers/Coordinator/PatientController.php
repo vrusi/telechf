@@ -233,8 +233,8 @@ class PatientController extends Controller
             $patient->parameters()->attach(
                 1,
                 [
-                    'measurement_times' => $validated['parameter1times'],
-                    'measurement_span' => $validated['parameter1per'],
+                    'measurement_times' => $validated['parameter1times'] ? $validated['parameter1per'] : Parameter::find(1)->measurement_times,
+                    'measurement_span' => $validated['parameter1per'] ? $validated['parameter1per'] :Parameter::find(1)->measurement_span,
                     'threshold_safety_max' => $validated['parameter1MaxSafety'],
                     'threshold_safety_min' => $validated['parameter1MinSafety'],
                     'threshold_therapeutic_max' => $validated['parameter1MaxTherapeutic'],
@@ -247,8 +247,8 @@ class PatientController extends Controller
             $patient->parameters()->attach(
                 2,
                 [
-                    'measurement_times' => $validated['parameter2times'],
-                    'measurement_span' => $validated['parameter2per'],
+                    'measurement_times' => $validated['parameter2times'] ? $validated['parameter2per'] : Parameter::find(2)->measurement_times,
+                    'measurement_span' => $validated['parameter2per'] ? $validated['parameter2per'] :Parameter::find(2)->measurement_span,
                     'threshold_safety_max' => $validated['parameter2MaxSafety'],
                     'threshold_safety_min' => $validated['parameter2MinSafety'],
                     'threshold_therapeutic_max' => $validated['parameter2MaxTherapeutic'],
@@ -261,8 +261,8 @@ class PatientController extends Controller
             $patient->parameters()->attach(
                 3,
                 [
-                    'measurement_times' => $validated['parameter3times'],
-                    'measurement_span' => $validated['parameter3per'],
+                    'measurement_times' => $validated['parameter3times'] ? $validated['parameter3per'] : Parameter::find(3)->measurement_times,
+                    'measurement_span' => $validated['parameter3per'] ? $validated['parameter3per'] :Parameter::find(3)->measurement_span,
                     'threshold_safety_max' => $validated['parameter3MaxSafety'],
                     'threshold_safety_min' => $validated['parameter3MinSafety'],
                     'threshold_therapeutic_max' => $validated['parameter3MaxTherapeutic'],
@@ -275,8 +275,8 @@ class PatientController extends Controller
             $patient->parameters()->attach(
                 4,
                 [
-                    'measurement_times' => $validated['parameter4times'],
-                    'measurement_span' => $validated['parameter4per'],
+                    'measurement_times' => $validated['parameter4times'] ? $validated['parameter4per'] : Parameter::find(4)->measurement_times,
+                    'measurement_span' => $validated['parameter4per'] ? $validated['parameter4per'] :Parameter::find(4)->measurement_span,
                     'threshold_safety_max' => $validated['parameter4MaxSafety'],
                     'threshold_safety_min' => $validated['parameter4MinSafety'],
                     'threshold_therapeutic_max' => $validated['parameter4MaxTherapeutic'],
@@ -289,8 +289,8 @@ class PatientController extends Controller
             $patient->parameters()->attach(
                 5,
                 [
-                    'measurement_times' => $validated['parameter5times'],
-                    'measurement_span' => $validated['parameter5per'],
+                    'measurement_times' => $validated['parameter5times'] ? $validated['parameter5per'] : Parameter::find(5)->measurement_times,
+                    'measurement_span' => $validated['parameter5per'] ? $validated['parameter5per'] :Parameter::find(5)->measurement_span,
                     'threshold_safety_max' => $validated['parameter5MaxSafety'],
                     'threshold_safety_min' => $validated['parameter5MinSafety'],
                     'threshold_therapeutic_max' => $validated['parameter5MaxTherapeutic'],
@@ -304,8 +304,8 @@ class PatientController extends Controller
             $patient->parameters()->attach(
                 6,
                 [
-                    'measurement_times' => $validated['parameter6times'],
-                    'measurement_span' => $validated['parameter6per'],
+                    'measurement_times' => $validated['parameter6times'] ? $validated['parameter6per'] : Parameter::find(6)->measurement_times,
+                    'measurement_span' => $validated['parameter6per'] ? $validated['parameter6per'] :Parameter::find(6)->measurement_span,
                     'threshold_safety_max' => $validated['parameter6MaxSafety'],
                     'threshold_safety_min' => $validated['parameter6MinSafety'],
                     'threshold_therapeutic_max' => $validated['parameter6MaxTherapeutic'],
@@ -318,8 +318,8 @@ class PatientController extends Controller
             $patient->parameters()->attach(
                 7,
                 [
-                    'measurement_times' => $validated['parameter7times'],
-                    'measurement_span' => $validated['parameter7per'],
+                    'measurement_times' => $validated['parameter7times'] ? $validated['parameter7per'] : Parameter::find(7)->measurement_times,
+                    'measurement_span' => $validated['parameter7per'] ? $validated['parameter7per'] :Parameter::find(7)->measurement_span,
                 ]
             );
         }
